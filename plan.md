@@ -9,12 +9,13 @@ AGP 9.0.1 requires a **JDK 21 toolchain** for Gradle (already configured in `gra
 ```kotlin
 kotlin {
     jvmToolchain(21)  // build‑time JDK
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+    }
 }
-// compileOptions Java 11 targets the bytecode level; jvmToolchain(21) is what AGP 9.x needs for compilation.
-// The output bytecode will still be Java-11-compatible via compileOptions.
 ```
 
-> **Risk:** If `jvmToolchain` is not set, AGP 9.x will fail or warn about unsupported JDK versions. The Kotlin `jvmTarget` should be set to `"11"` explicitly via `kotlinOptions { jvmTarget = "11" }` to match `compileOptions`.
+> **Note (AGP 9.x):** `kotlinOptions { }` block is removed in AGP 9.x — use `kotlin { compilerOptions { } }` instead. Also, AGP 9.x's `com.android.application` auto-registers the Kotlin extension, so a separate `kotlin-android` plugin is **not** needed (applying it causes a "duplicate extension" error). The `kotlin-compose` plugin still needs to be applied explicitly.
 
 ### Module Structure (single-module v1, split-ready)
 

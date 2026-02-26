@@ -1,0 +1,149 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:2:1-12:12
+INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:2:1-12:12
+INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:2:1-12:12
+INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:2:1-12:12
+MERGED from [androidx.wear.tiles:tiles-material:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\cdac8d021b21695f64feebc56d0d327a\workspace\transformed\tiles-material-1.4.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:2:1-19:12
+MERGED from [androidx.wear.protolayout:protolayout-expression:1.2.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\78e75ef5ac3638ea4da6010c23606da6\workspace\transformed\protolayout-expression-1.2.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.protolayout:protolayout:1.2.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\c12d2bb43758fdec1d70980783435ed6\workspace\transformed\protolayout-1.2.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\78bb6d29ef7f4c8a7645b9db977c1037\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.gms:play-services-wearable:18.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\183687cbc921e43ad3152276c2adc122\workspace\transformed\play-services-wearable-18.2.0\AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ba1343e142bb53ae2c517fb4b428a9d1\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f7edcc612c7a3a91d423e376e9686efe\workspace\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:2:1-5:12
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\6a69df4b9a029a41a309fcfa87e93ccf\workspace\transformed\play-services-basement-18.4.0\AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\51072ca37c97ef453d908c75d1122cd6\workspace\transformed\fragment-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\bd35e6aae46e5aa43d9b24e436a1e5ac\workspace\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ac3348ed1afb57330e8ae68576bcc060\workspace\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\26be0c639fe4e0a14ca7b761e734e2f4\workspace\transformed\activity-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\16f1f073b43a265fe3e7ebd293b40127\workspace\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f31671db1272c44d61f6393f0cb73e8d\workspace\transformed\core-1.2.0\AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\e535f9cc9a7f272388bd428261b79988\workspace\transformed\versionedparcelable-1.1.0\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\1f89b6cf613f2807093ee3f9d071f212\workspace\transformed\lifecycle-runtime-2.1.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\35a46973e6d2e8536855aba65ced864a\workspace\transformed\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\5ff3e70f207b0fd7bfc14650a270733e\workspace\transformed\savedstate-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\981acb33a81ad975bf2f6dc2632c9874\workspace\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\5fb07da2785df2eb75ee8d5023d91961\workspace\transformed\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\cf76041cb76eb3f1782a31eb58d6e07b\workspace\transformed\core-runtime-2.0.0\AndroidManifest.xml:17:1-22:12
+	package
+		INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:2:11-69
+uses-feature#android.hardware.type.watch
+ADDED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:4:5-64
+	android:name
+		ADDED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:4:19-61
+application
+ADDED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:6:5-10:62
+INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:6:5-10:62
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:13:5-17:19
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:13:5-17:19
+MERGED from [com.google.android.gms:play-services-wearable:18.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\183687cbc921e43ad3152276c2adc122\workspace\transformed\play-services-wearable-18.2.0\AndroidManifest.xml:6:5-20
+MERGED from [com.google.android.gms:play-services-wearable:18.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\183687cbc921e43ad3152276c2adc122\workspace\transformed\play-services-wearable-18.2.0\AndroidManifest.xml:6:5-20
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ba1343e142bb53ae2c517fb4b428a9d1\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:4:5-6:19
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ba1343e142bb53ae2c517fb4b428a9d1\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:4:5-6:19
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f7edcc612c7a3a91d423e376e9686efe\workspace\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:4:5-20
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f7edcc612c7a3a91d423e376e9686efe\workspace\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:4:5-20
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\6a69df4b9a029a41a309fcfa87e93ccf\workspace\transformed\play-services-basement-18.4.0\AndroidManifest.xml:5:5-7:19
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\6a69df4b9a029a41a309fcfa87e93ccf\workspace\transformed\play-services-basement-18.4.0\AndroidManifest.xml:5:5-7:19
+MERGED from [androidx.core:core:1.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f31671db1272c44d61f6393f0cb73e8d\workspace\transformed\core-1.2.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f31671db1272c44d61f6393f0cb73e8d\workspace\transformed\core-1.2.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\e535f9cc9a7f272388bd428261b79988\workspace\transformed\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\e535f9cc9a7f272388bd428261b79988\workspace\transformed\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
+	android:extractNativeLibs
+		INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f31671db1272c44d61f6393f0cb73e8d\workspace\transformed\core-1.2.0\AndroidManifest.xml:24:18-86
+	android:supportsRtl
+		ADDED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:9:9-35
+	android:label
+		ADDED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:8:9-41
+	android:allowBackup
+		ADDED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:7:9-35
+	android:theme
+		ADDED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml:10:9-59
+uses-sdk
+INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml
+INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml
+MERGED from [androidx.wear.tiles:tiles-material:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\cdac8d021b21695f64feebc56d0d327a\workspace\transformed\tiles-material-1.4.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.wear.tiles:tiles-material:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\cdac8d021b21695f64feebc56d0d327a\workspace\transformed\tiles-material-1.4.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout-expression:1.2.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\78e75ef5ac3638ea4da6010c23606da6\workspace\transformed\protolayout-expression-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout-expression:1.2.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\78e75ef5ac3638ea4da6010c23606da6\workspace\transformed\protolayout-expression-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout:1.2.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\c12d2bb43758fdec1d70980783435ed6\workspace\transformed\protolayout-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout:1.2.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\c12d2bb43758fdec1d70980783435ed6\workspace\transformed\protolayout-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\78bb6d29ef7f4c8a7645b9db977c1037\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\78bb6d29ef7f4c8a7645b9db977c1037\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-wearable:18.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\183687cbc921e43ad3152276c2adc122\workspace\transformed\play-services-wearable-18.2.0\AndroidManifest.xml:4:5-44
+MERGED from [com.google.android.gms:play-services-wearable:18.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\183687cbc921e43ad3152276c2adc122\workspace\transformed\play-services-wearable-18.2.0\AndroidManifest.xml:4:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ba1343e142bb53ae2c517fb4b428a9d1\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ba1343e142bb53ae2c517fb4b428a9d1\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f7edcc612c7a3a91d423e376e9686efe\workspace\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f7edcc612c7a3a91d423e376e9686efe\workspace\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\6a69df4b9a029a41a309fcfa87e93ccf\workspace\transformed\play-services-basement-18.4.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\6a69df4b9a029a41a309fcfa87e93ccf\workspace\transformed\play-services-basement-18.4.0\AndroidManifest.xml:3:5-44
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\51072ca37c97ef453d908c75d1122cd6\workspace\transformed\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\51072ca37c97ef453d908c75d1122cd6\workspace\transformed\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\bd35e6aae46e5aa43d9b24e436a1e5ac\workspace\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\bd35e6aae46e5aa43d9b24e436a1e5ac\workspace\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ac3348ed1afb57330e8ae68576bcc060\workspace\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ac3348ed1afb57330e8ae68576bcc060\workspace\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\26be0c639fe4e0a14ca7b761e734e2f4\workspace\transformed\activity-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\26be0c639fe4e0a14ca7b761e734e2f4\workspace\transformed\activity-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\16f1f073b43a265fe3e7ebd293b40127\workspace\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\16f1f073b43a265fe3e7ebd293b40127\workspace\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f31671db1272c44d61f6393f0cb73e8d\workspace\transformed\core-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.2.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f31671db1272c44d61f6393f0cb73e8d\workspace\transformed\core-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\e535f9cc9a7f272388bd428261b79988\workspace\transformed\versionedparcelable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\e535f9cc9a7f272388bd428261b79988\workspace\transformed\versionedparcelable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\1f89b6cf613f2807093ee3f9d071f212\workspace\transformed\lifecycle-runtime-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\1f89b6cf613f2807093ee3f9d071f212\workspace\transformed\lifecycle-runtime-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\35a46973e6d2e8536855aba65ced864a\workspace\transformed\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\35a46973e6d2e8536855aba65ced864a\workspace\transformed\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\5ff3e70f207b0fd7bfc14650a270733e\workspace\transformed\savedstate-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\5ff3e70f207b0fd7bfc14650a270733e\workspace\transformed\savedstate-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\981acb33a81ad975bf2f6dc2632c9874\workspace\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\981acb33a81ad975bf2f6dc2632c9874\workspace\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\5fb07da2785df2eb75ee8d5023d91961\workspace\transformed\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\5fb07da2785df2eb75ee8d5023d91961\workspace\transformed\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\cf76041cb76eb3f1782a31eb58d6e07b\workspace\transformed\core-runtime-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\cf76041cb76eb3f1782a31eb58d6e07b\workspace\transformed\core-runtime-2.0.0\AndroidManifest.xml:20:5-44
+	android:targetSdkVersion
+		INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\AndroidManifest.xml
+queries
+ADDED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:7:5-11:15
+intent#action:name:androidx.wear.tiles.action.BIND_UPDATE_REQUESTER
+ADDED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:8:9-10:18
+action#androidx.wear.tiles.action.BIND_UPDATE_REQUESTER
+ADDED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:9:13-87
+	android:name
+		ADDED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:9:21-84
+uses-library#wear-sdk
+ADDED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:14:9-16:40
+	android:required
+		ADDED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:16:13-37
+	android:name
+		ADDED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\11c87ab3308ded1ecbd823e584f670ab\workspace\transformed\tiles-1.4.1\AndroidManifest.xml:15:13-36
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ba1343e142bb53ae2c517fb4b428a9d1\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:9-173
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ba1343e142bb53ae2c517fb4b428a9d1\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:146-170
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ba1343e142bb53ae2c517fb4b428a9d1\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:86-145
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ba1343e142bb53ae2c517fb4b428a9d1\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:19-85
+meta-data#com.google.android.gms.version
+ADDED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\6a69df4b9a029a41a309fcfa87e93ccf\workspace\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:9-122
+	android:value
+		ADDED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\6a69df4b9a029a41a309fcfa87e93ccf\workspace\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:66-119
+	android:name
+		ADDED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\6a69df4b9a029a41a309fcfa87e93ccf\workspace\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:20-65
