@@ -24,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ashutosh.flowtimer.core.timer.TimerState
 import com.ashutosh.flowtimer.ui.components.HourglassCard
 import com.ashutosh.flowtimer.ui.components.HourglassVisualState
+import com.ashutosh.flowtimer.ui.components.PixelDurationPicker
 import com.ashutosh.flowtimer.ui.components.StarField
 import com.ashutosh.flowtimer.ui.components.TimerReadout
 import com.ashutosh.flowtimer.ui.theme.FlowTimerTheme
@@ -48,6 +49,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val showDurationPicker by viewModel.showDurationPicker.collectAsState()
 
     HomeScreenContent(
         modifier = modifier,
@@ -56,6 +58,14 @@ fun HomeScreen(
         onLongPressReset = viewModel::onLongPressReset,
         onTapSetDuration = viewModel::onTapSetDuration
     )
+
+    if (showDurationPicker) {
+        PixelDurationPicker(
+            currentMinutes = uiState.durationMinutes,
+            onConfirm = viewModel::onConfirmDuration,
+            onDismiss = viewModel::onDismissDurationPicker
+        )
+    }
 }
 
 /**
