@@ -54,19 +54,18 @@ internal object NotificationHelper {
     /**
      * Build the ongoing foreground notification showing remaining time.
      *
-     * Includes **Pause** and **Cancel** actions.
+     * Includes a **Cancel** action to reset the timer.
      */
     fun buildTimerNotification(
         context: Context,
-        remainingMs: Long,
-        isPaused: Boolean
+        remainingMs: Long
     ): Notification {
         val minutes = (remainingMs / 60_000).toInt()
         val seconds = ((remainingMs % 60_000) / 1_000).toInt()
         val timeText = String.format("%02d:%02d", minutes, seconds)
 
-        val contentTitle = if (isPaused) "Flow Time — Paused" else "Flow Time"
-        val contentText = if (isPaused) "$timeText remaining (paused)" else "$timeText remaining"
+        val contentTitle = "Flow Time"
+        val contentText = "$timeText remaining"
 
         val contentIntent = PendingIntent.getActivity(
             context,
@@ -88,21 +87,6 @@ internal object NotificationHelper {
             .setCategory(NotificationCompat.CATEGORY_PROGRESS)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-
-        // Pause / Resume action
-        if (isPaused) {
-            builder.addAction(
-                0,
-                "Resume",
-                buildServicePendingIntent(context, TimerForegroundService.ACTION_RESUME, 3)
-            )
-        } else {
-            builder.addAction(
-                0,
-                "Pause",
-                buildServicePendingIntent(context, TimerForegroundService.ACTION_PAUSE, 1)
-            )
-        }
 
         // Cancel (reset) action
         builder.addAction(

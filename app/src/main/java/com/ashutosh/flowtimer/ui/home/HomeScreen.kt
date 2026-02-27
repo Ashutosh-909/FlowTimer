@@ -63,7 +63,7 @@ import com.ashutosh.flowtimer.ui.theme.TimerPillBorder
  * HourglassCard (center) → TimerReadout (bottom).
  *
  * All interaction is gesture-driven via the [HourglassCard]:
- * - Tap → start / pause / resume
+ * - Tap → start or stop/reset
  * - Long-press → reset
  *
  * Handles `POST_NOTIFICATIONS` runtime permission (API 33+) before the
@@ -179,7 +179,6 @@ internal fun HomeScreenContent(
     val visualState = when (uiState.timerState) {
         is TimerState.Idle -> HourglassVisualState.IDLE
         is TimerState.Running -> HourglassVisualState.RUNNING
-        is TimerState.Paused -> HourglassVisualState.PAUSED
         is TimerState.Finished -> HourglassVisualState.FINISHED
     }
 
@@ -388,25 +387,6 @@ private fun HomeScreenRunningPreview() {
                 displayMillis = 18 * 60_000L + 30_000L,
                 durationMinutes = 25,
                 sandProgress = 0.26f
-            )
-        )
-    }
-}
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    name = "HomeScreen – Paused"
-)
-@Composable
-private fun HomeScreenPausedPreview() {
-    FlowTimerTheme {
-        HomeScreenContent(
-            uiState = HomeViewModel.UiState(
-                timerState = TimerState.Paused,
-                displayMillis = 12 * 60_000L,
-                durationMinutes = 25,
-                sandProgress = 0.52f
             )
         )
     }

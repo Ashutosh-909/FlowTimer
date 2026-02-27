@@ -25,8 +25,7 @@ import kotlinx.coroutines.launch
  * is active.
  *
  * Communicates with the rest of the app via:
- * - Incoming [Intent] actions: [ACTION_START], [ACTION_PAUSE], [ACTION_RESUME],
- *   [ACTION_RESET].
+ * - Incoming [Intent] actions: [ACTION_START], [ACTION_RESET].
  * - Outgoing state via [PreferencesRepository] (DataStore), which the widget
  *   and ViewModel observe.
  *
@@ -37,8 +36,6 @@ class TimerForegroundService : Service() {
 
     companion object {
         const val ACTION_START = "com.ashutosh.flowtimer.ACTION_START"
-        const val ACTION_PAUSE = "com.ashutosh.flowtimer.ACTION_PAUSE"
-        const val ACTION_RESUME = "com.ashutosh.flowtimer.ACTION_RESUME"
         const val ACTION_RESET = "com.ashutosh.flowtimer.ACTION_RESET"
 
         /** Optional extra: flow duration in minutes (used with [ACTION_START]). */
@@ -74,8 +71,6 @@ class TimerForegroundService : Service() {
             ACTION_START -> handleStart(
                 intent.getIntExtra(EXTRA_DURATION_MINUTES, -1)
             )
-            ACTION_PAUSE -> handlePause()
-            ACTION_RESUME -> handleResume()
             ACTION_RESET -> handleReset()
             null -> handleRestart() // System restart (START_STICKY)
         }
@@ -113,8 +108,7 @@ class TimerForegroundService : Service() {
         // 2. Start engine & go foreground immediately — no suspension.
         timerEngine.start(durationMinutes)
         startForegroundWithNotification(
-            timerEngine.remainingMillis.value,
-            isPaused = false
+            timerEngine.remainingMillis.value
         )
 
         // 3. Persist asynchronously (safe — foreground is already active).
@@ -128,31 +122,9 @@ class TimerForegroundService : Service() {
                 if (persisted != durationMinutes) {
                     timerEngine.cancel()
                     timerEngine.start(persisted)
-                    updateNotification(timerEngine.remainingMillis.value, isPaused = false)
+                    updateNotification(timerEngine.remainingMillis.value)
                 }
             }
-        }
-    }
-
-    private fun handlePause() {
-        timerEngine.pause()
-        val remaining = timerEngine.remainingMillis.value
-        updateNotification(remaining, isPaused = true)
-        serviceScope.launch {
-            repository.setTimerState(TimerState.Paused.name)
-            repository.setRemainingMillis(remaining)
-        }
-    }
-
-    private fun handleResume() {
-        timerEngine.resume()
-        val remaining = timerEngine.remainingMillis.value
-        updateNotification(remaining, isPaused = false)
-
-        serviceScope.launch {
-            repository.setTimerState(TimerState.Running.name)
-            repository.setRemainingMillis(remaining)
-            repository.setLastStartEpoch(System.currentTimeMillis())
         }
     }
 
@@ -218,21 +190,7 @@ class TimerForegroundService : Service() {
                     repository.setLastStartEpoch(System.currentTimeMillis())
 
                     startForegroundWithNotification(
-                        correctedRemaining,
-                        isPaused = false
-                    )
-                }
-                is TimerState.Paused -> {
-                    // Paused timers don't drift — restore as-is
-                    timerEngine.restore(
-                        timerState = state,
-                        remainingMs = persistedRemainingMs,
-                        totalDurationMs = totalDurationMs,
-                        lastStartEpoch = lastStartEpoch
-                    )
-                    startForegroundWithNotification(
-                        persistedRemainingMs,
-                        isPaused = true
+                        correctedRemaining
                     )
                 }
                 is TimerState.Idle, is TimerState.Finished -> {
@@ -261,12 +219,8 @@ class TimerForegroundService : Service() {
                 .collect { (state, remaining) ->
                     when (state) {
                         is TimerState.Running -> {
-                            updateNotification(remaining, isPaused = false)
+                            updateNotification(remaining)
                             persistState(TimerState.Running, remaining)
-                        }
-                        is TimerState.Paused -> {
-                            updateNotification(remaining, isPaused = true)
-                            persistState(TimerState.Paused, remaining)
                         }
                         is TimerState.Finished -> {
                             onTimerFinished()
@@ -312,11 +266,10 @@ class TimerForegroundService : Service() {
 
     // ── Notification helpers ─────────────────────────────────────────────
 
-    private fun startForegroundWithNotification(remainingMs: Long, isPaused: Boolean) {
+    private fun startForegroundWithNotification(remainingMs: Long) {
         val notification = NotificationHelper.buildTimerNotification(
             this,
-            remainingMs,
-            isPaused
+            remainingMs
         )
         startForeground(
             NotificationHelper.TIMER_NOTIFICATION_ID,
@@ -325,11 +278,11 @@ class TimerForegroundService : Service() {
         )
     }
 
-    private fun updateNotification(remainingMs: Long, isPaused: Boolean) {
+    private fun updateNotification(remainingMs: Long) {
         val manager = getSystemService(NotificationManager::class.java)
         manager.notify(
             NotificationHelper.TIMER_NOTIFICATION_ID,
-            NotificationHelper.buildTimerNotification(this, remainingMs, isPaused)
+            NotificationHelper.buildTimerNotification(this, remainingMs)
         )
     }
 }

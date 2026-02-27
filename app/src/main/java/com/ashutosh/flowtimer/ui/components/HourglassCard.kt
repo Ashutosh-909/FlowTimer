@@ -36,7 +36,6 @@ import com.ashutosh.flowtimer.ui.theme.SpaceBackground
 enum class HourglassVisualState {
     IDLE,
     RUNNING,
-    PAUSED,
     FINISHED
 }
 
@@ -45,14 +44,14 @@ enum class HourglassVisualState {
  *
  * Contains a pixel-art hourglass inside a [GlowContainer], with state-dependent
  * overlays and text. The entire card is the tap target:
- * - **Tap** → start / pause / resume (cycles through states)
+ * - **Tap** → start (idle) or stop/reset (running)
  * - **Long-press** → reset to persisted duration
  *
  * No visible buttons. Interaction is purely gesture-driven.
  *
  * @param visualState Current visual state determining glow, overlay, and text.
  * @param sandProgress 0.0 (start) to 1.0 (complete). Drives hourglass sand animation.
- * @param onTapHourglass Callback for tap: start / pause / resume.
+ * @param onTapHourglass Callback for tap: start or stop/reset.
  * @param onLongPressReset Callback for long-press: reset timer.
  * @param accessibilityStateDescription TalkBack state description (e.g. "Running, 24 minutes remaining").
  * @param modifier Modifier to apply.
@@ -82,11 +81,6 @@ fun HourglassCard(
             glowAlpha = 0.6f
             overlayText = null
         }
-        HourglassVisualState.PAUSED -> {
-            glowColor = GlowBlue
-            glowAlpha = 0.15f
-            overlayText = null
-        }
         HourglassVisualState.FINISHED -> {
             glowColor = GlowGold
             glowAlpha = 0.7f
@@ -96,8 +90,7 @@ fun HourglassCard(
 
     val a11yDescription = when (visualState) {
         HourglassVisualState.IDLE -> "Flow timer. Double-tap to start. Long press to reset."
-        HourglassVisualState.RUNNING -> "Flow timer running. Double-tap to pause. Long press to reset."
-        HourglassVisualState.PAUSED -> "Flow timer paused. Double-tap to resume. Long press to reset."
+        HourglassVisualState.RUNNING -> "Flow timer running. Double-tap to stop. Long press to reset."
         HourglassVisualState.FINISHED -> "Flow time complete. Double-tap to dismiss. Long press to reset."
     }
 
@@ -138,8 +131,8 @@ fun HourglassCard(
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
 
-            // Play icon overlay for Idle / Paused states
-            if (visualState == HourglassVisualState.IDLE || visualState == HourglassVisualState.PAUSED) {
+            // Play icon overlay for Idle state
+            if (visualState == HourglassVisualState.IDLE) {
                 Text(
                     text = "▶",
                     style = MaterialTheme.typography.titleLarge,
@@ -196,30 +189,6 @@ private fun HourglassCardRunningPreview() {
             HourglassCard(
                 visualState = HourglassVisualState.RUNNING,
                 sandProgress = 0.35f
-            )
-        }
-    }
-}
-
-@Preview(
-    showBackground = true,
-    backgroundColor = 0xFF0D1B2A,
-    widthDp = 320,
-    heightDp = 420,
-    name = "HourglassCard – Paused"
-)
-@Composable
-private fun HourglassCardPausedPreview() {
-    FlowTimerTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(SpaceBackground),
-            contentAlignment = Alignment.Center
-        ) {
-            HourglassCard(
-                visualState = HourglassVisualState.PAUSED,
-                sandProgress = 0.6f
             )
         }
     }

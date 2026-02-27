@@ -121,15 +121,6 @@ class UiStateTest {
     }
 
     @Test
-    fun `accessibilityStateDescription for Paused`() {
-        val state = HomeViewModel.UiState(
-            timerState = TimerState.Paused,
-            displayMillis = 300_000L
-        )
-        assertEquals("Paused, 5 minutes remaining", state.accessibilityStateDescription)
-    }
-
-    @Test
     fun `accessibilityStateDescription for Finished`() {
         val state = HomeViewModel.UiState(
             timerState = TimerState.Finished,
@@ -149,12 +140,6 @@ class UiStateTest {
     @Test
     fun `isIdle returns false for Running state`() {
         val state = HomeViewModel.UiState(timerState = TimerState.Running)
-        assertFalse(state.isIdle)
-    }
-
-    @Test
-    fun `isIdle returns false for Paused state`() {
-        val state = HomeViewModel.UiState(timerState = TimerState.Paused)
         assertFalse(state.isIdle)
     }
 

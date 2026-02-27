@@ -1,13 +1,14 @@
 package com.ashutosh.flowtimer.core.timer
 
 /**
- * Sealed class representing the four possible states of the timer.
+ * Sealed class representing the three possible states of the timer.
  * Exhaustive `when` — no `else` branch needed.
+ *
+ * There is no Paused state: tapping while running resets to Idle.
  */
 sealed class TimerState {
     data object Idle : TimerState()
     data object Running : TimerState()
-    data object Paused : TimerState()
     data object Finished : TimerState()
 
     /** Serialization name for DataStore persistence. */
@@ -15,7 +16,6 @@ sealed class TimerState {
         get() = when (this) {
             is Idle -> "IDLE"
             is Running -> "RUNNING"
-            is Paused -> "PAUSED"
             is Finished -> "FINISHED"
         }
 
@@ -23,7 +23,6 @@ sealed class TimerState {
         /** Deserialize from DataStore string. */
         fun fromName(name: String): TimerState = when (name) {
             "RUNNING" -> Running
-            "PAUSED" -> Paused
             "FINISHED" -> Finished
             else -> Idle
         }

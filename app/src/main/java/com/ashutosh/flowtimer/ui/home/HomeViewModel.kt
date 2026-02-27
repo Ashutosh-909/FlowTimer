@@ -33,13 +33,13 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         // Recover from stale DataStore state left by a previous crash.
-        // If the persisted state is Running/Paused but the foreground service
+        // If the persisted state is Running but the foreground service
         // is not alive, reset to Idle so the user isn't stuck on 00:00.
         viewModelScope.launch {
             val stateName = repository.timerState.first()
             val state = TimerState.fromName(stateName)
             when (state) {
-                is TimerState.Running, is TimerState.Paused -> {
+                is TimerState.Running -> {
                     if (!isTimerServiceRunning()) {
                         repository.resetTimerState()
                     }
@@ -70,14 +70,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
         val displayMillis = when (timerState) {
             is TimerState.Idle -> totalMs
-            is TimerState.Running, is TimerState.Paused -> remainingMs
+            is TimerState.Running -> remainingMs
             is TimerState.Finished -> 0L
         }
 
         val sandProgress = when (timerState) {
             is TimerState.Idle -> 0f
             is TimerState.Finished -> 1f
-            is TimerState.Running, is TimerState.Paused -> {
+            is TimerState.Running -> {
                 if (totalMs > 0) {
                     1f - (remainingMs.toFloat() / totalMs.toFloat())
                 } else {
@@ -100,7 +100,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     // ── User actions ─────────────────────────────────────────────────────
 
-    /** Tap hourglass: start → pause → resume cycle. */
+    /** Tap hourglass: start (idle) or stop/reset (running). */
     fun onTapHourglass() {
         val current = uiState.value.timerState
         val context = getApplication<Application>()
@@ -112,14 +112,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 context.startForegroundService(intent)
             }
             is TimerState.Running -> {
-                context.startService(
-                    TimerForegroundService.intent(context, TimerForegroundService.ACTION_PAUSE)
-                )
-            }
-            is TimerState.Paused -> {
-                context.startForegroundService(
-                    TimerForegroundService.intent(context, TimerForegroundService.ACTION_RESUME)
-                )
+                // Tapping while running resets back to Idle
+                onLongPressReset()
             }
             is TimerState.Finished -> {
                 // Tap on finished → reset
@@ -197,7 +191,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             get() = when (timerState) {
                 is TimerState.Idle -> "Idle, $formattedTime"
                 is TimerState.Running -> "Running, $accessibilityTimeDescription remaining"
-                is TimerState.Paused -> "Paused, $accessibilityTimeDescription remaining"
                 is TimerState.Finished -> "Complete"
             }
 

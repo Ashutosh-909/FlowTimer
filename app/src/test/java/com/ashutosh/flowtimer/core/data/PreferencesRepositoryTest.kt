@@ -78,7 +78,7 @@ class PreferencesRepositoryTest {
 
     @Test
     fun `setTimerState cycles through all states`() = testScope.runTest {
-        val states = listOf("IDLE", "RUNNING", "PAUSED", "FINISHED")
+        val states = listOf("IDLE", "RUNNING", "FINISHED")
         states.forEach { state ->
             repository.setTimerState(state)
             assertEquals(state, repository.timerState.first())

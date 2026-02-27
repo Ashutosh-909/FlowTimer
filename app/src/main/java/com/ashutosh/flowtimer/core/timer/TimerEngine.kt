@@ -15,6 +15,8 @@ import kotlinx.coroutines.launch
  * The timer ticks every ~1 s and recalculates remaining time from the anchor,
  * not from cumulative delay.
  *
+ * There is no pause/resume — stopping a running timer resets to Idle.
+ *
  * @param scope Coroutine scope for the tick loop (e.g., service scope).
  * @param elapsedRealtimeProvider Returns monotonic clock millis (e.g.,
  *   `SystemClock.elapsedRealtime()`). Must be provided by the caller so that
@@ -33,18 +35,14 @@ class TimerEngine(
     /** Total duration for the current session in millis. */
     private var totalDurationMillis = 0L
 
-    /** Elapsed realtime anchor when the timer was last started/resumed. */
+    /** Elapsed realtime anchor when the timer was last started. */
     private var anchorMillis = 0L
-
-    /** Accumulated elapsed millis before the latest resume (for pause support). */
-    private var elapsedBeforePause = 0L
 
     private var tickJob: Job? = null
 
     /**
      * Start a new countdown for [durationMinutes] minutes.
-     * If already running, this is a no-op. Any existing tick job (e.g.,
-     * from a Paused state) is cancelled before starting fresh.
+     * If already running, this is a no-op.
      */
     fun start(durationMinutes: Int) {
         if (_state.value is TimerState.Running) return
@@ -53,38 +51,10 @@ class TimerEngine(
         tickJob = null
 
         totalDurationMillis = durationMinutes * 60_000L
-        elapsedBeforePause = 0L
         anchorMillis = elapsedRealtimeProvider()
         _remainingMillis.value = totalDurationMillis
         _state.value = TimerState.Running
         startTickLoop()
-    }
-
-    /**
-     * Resume from [TimerState.Paused].
-     * No-op if not paused.
-     */
-    fun resume() {
-        if (_state.value !is TimerState.Paused) return
-
-        anchorMillis = elapsedRealtimeProvider()
-        _state.value = TimerState.Running
-        startTickLoop()
-    }
-
-    /**
-     * Pause the timer. Preserves elapsed time for resume.
-     * No-op if not running.
-     */
-    fun pause() {
-        if (_state.value !is TimerState.Running) return
-
-        tickJob?.cancel()
-        tickJob = null
-
-        val now = elapsedRealtimeProvider()
-        elapsedBeforePause += (now - anchorMillis)
-        _state.value = TimerState.Paused
     }
 
     /**
@@ -96,7 +66,6 @@ class TimerEngine(
         tickJob = null
 
         totalDurationMillis = durationMinutes * 60_000L
-        elapsedBeforePause = 0L
         anchorMillis = 0L
         _remainingMillis.value = totalDurationMillis
         _state.value = TimerState.Idle
@@ -123,14 +92,12 @@ class TimerEngine(
 
         when (timerState) {
             is TimerState.Running -> {
-                elapsedBeforePause = totalDurationMs - remainingMs
-                anchorMillis = elapsedRealtimeProvider()
+                // Set anchor back by the already-elapsed portion so the tick
+                // loop's (totalDurationMillis - (now - anchorMillis)) == remainingMs.
+                val alreadyElapsed = totalDurationMs - remainingMs
+                anchorMillis = elapsedRealtimeProvider() - alreadyElapsed
                 _state.value = TimerState.Running
                 startTickLoop()
-            }
-            is TimerState.Paused -> {
-                elapsedBeforePause = totalDurationMs - remainingMs
-                _state.value = TimerState.Paused
             }
             is TimerState.Finished -> {
                 _state.value = TimerState.Finished
@@ -146,7 +113,7 @@ class TimerEngine(
         tickJob = scope.launch {
             while (true) {
                 val now = elapsedRealtimeProvider()
-                val totalElapsed = elapsedBeforePause + (now - anchorMillis)
+                val totalElapsed = now - anchorMillis
                 val remaining = (totalDurationMillis - totalElapsed).coerceAtLeast(0L)
                 _remainingMillis.value = remaining
 
