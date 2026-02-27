@@ -57,12 +57,18 @@ fun TimerReadout(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Timer pill
+        // Timer pill — tappable when idle to open the duration picker.
+        // The entire pill is the touch target (not just the hint text below).
         Box(
             modifier = Modifier
                 .semantics(mergeDescendants = true) {
-                    contentDescription = accessibilityTimeDescription
+                    contentDescription = if (isIdle) {
+                        "$accessibilityTimeDescription. Double-tap to set duration."
+                    } else {
+                        accessibilityTimeDescription
+                    }
                     liveRegion = LiveRegionMode.Polite
+                    if (isIdle) role = Role.Button
                 }
                 .background(
                     color = TimerPillFill,
@@ -72,6 +78,10 @@ fun TimerReadout(
                     width = 1.dp,
                     color = TimerPillBorder,
                     shape = pillShape
+                )
+                .then(
+                    if (isIdle) Modifier.clickable(onClick = onTapSetDuration)
+                    else Modifier
                 )
                 .padding(horizontal = 32.dp, vertical = 16.dp),
             contentAlignment = Alignment.Center
@@ -92,10 +102,6 @@ fun TimerReadout(
                 color = PixelTextDim,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .semantics {
-                        role = Role.Button
-                        contentDescription = "Set your focus time"
-                    }
                     .clickable(onClick = onTapSetDuration)
                     .padding(8.dp)
             )

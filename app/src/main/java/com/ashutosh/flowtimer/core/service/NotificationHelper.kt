@@ -94,7 +94,7 @@ internal object NotificationHelper {
             builder.addAction(
                 0,
                 "Resume",
-                buildServicePendingIntent(context, TimerForegroundService.ACTION_RESUME, 1)
+                buildServicePendingIntent(context, TimerForegroundService.ACTION_RESUME, 3)
             )
         } else {
             builder.addAction(

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.IBinder
+import android.os.SystemClock
 import com.ashutosh.flowtimer.core.data.PreferencesRepository
 import com.ashutosh.flowtimer.core.timer.TimerEngine
 import com.ashutosh.flowtimer.core.timer.TimerState
@@ -63,7 +64,7 @@ class TimerForegroundService : Service() {
         NotificationHelper.createChannels(this)
 
         repository = PreferencesRepository(applicationContext)
-        timerEngine = TimerEngine(serviceScope)
+        timerEngine = TimerEngine(serviceScope, elapsedRealtimeProvider = SystemClock::elapsedRealtime)
 
         observeEngineState()
     }
@@ -91,37 +92,66 @@ class TimerForegroundService : Service() {
 
     // ── Intent handlers ──────────────────────────────────────────────────
 
+    /**
+     * Start a new flow session.
+     *
+     * **Critical:** [startForeground] must be called synchronously (before
+     * any suspension point) because the caller used [startForegroundService].
+     * Failing to do so within the system timeout (~5 s on API 34+) triggers
+     * `ForegroundServiceDidNotStartInTimeException`.
+     */
     private fun handleStart(durationMinutesExtra: Int) {
+        // 1. Determine duration synchronously — use the passed extra or
+        //    fall back to the compile-time default. We correct later if the
+        //    persisted value differs.
+        val durationMinutes = if (durationMinutesExtra > 0) {
+            durationMinutesExtra
+        } else {
+            PreferencesRepository.DEFAULT_FLOW_DURATION_MINUTES
+        }
+
+        // 2. Start engine & go foreground immediately — no suspension.
+        timerEngine.start(durationMinutes)
+        startForegroundWithNotification(
+            timerEngine.remainingMillis.value,
+            isPaused = false
+        )
+
+        // 3. Persist asynchronously (safe — foreground is already active).
         serviceScope.launch {
-            val durationMinutes = if (durationMinutesExtra > 0) {
-                durationMinutesExtra
-            } else {
-                repository.flowDurationMinutes.first()
-            }
-
-            timerEngine.start(durationMinutes)
-
-            // Persist the start epoch for drift correction / widget cold read
             repository.setLastStartEpoch(System.currentTimeMillis())
 
-            startForegroundWithNotification(
-                timerEngine.remainingMillis.value,
-                isPaused = false
-            )
+            // If we used the compile-time default, check the actual persisted
+            // preference and correct if it differs.
+            if (durationMinutesExtra <= 0) {
+                val persisted = repository.flowDurationMinutes.first()
+                if (persisted != durationMinutes) {
+                    timerEngine.cancel()
+                    timerEngine.start(persisted)
+                    updateNotification(timerEngine.remainingMillis.value, isPaused = false)
+                }
+            }
         }
     }
 
     private fun handlePause() {
         timerEngine.pause()
-        updateNotification(timerEngine.remainingMillis.value, isPaused = true)
-        persistState(TimerState.Paused, timerEngine.remainingMillis.value)
+        val remaining = timerEngine.remainingMillis.value
+        updateNotification(remaining, isPaused = true)
+        serviceScope.launch {
+            repository.setTimerState(TimerState.Paused.name)
+            repository.setRemainingMillis(remaining)
+        }
     }
 
     private fun handleResume() {
         timerEngine.resume()
-        updateNotification(timerEngine.remainingMillis.value, isPaused = false)
+        val remaining = timerEngine.remainingMillis.value
+        updateNotification(remaining, isPaused = false)
 
         serviceScope.launch {
+            repository.setTimerState(TimerState.Running.name)
+            repository.setRemainingMillis(remaining)
             repository.setLastStartEpoch(System.currentTimeMillis())
         }
     }
@@ -129,43 +159,80 @@ class TimerForegroundService : Service() {
     private fun handleReset() {
         timerEngine.cancel()
 
-        serviceScope.launch {
-            val duration = repository.flowDurationMinutes.first()
-            timerEngine.reset(duration)
-            repository.resetTimerState()
-        }
-
         val manager = getSystemService(NotificationManager::class.java)
         manager.cancel(NotificationHelper.COMPLETION_NOTIFICATION_ID)
 
         stopForeground(STOP_FOREGROUND_REMOVE)
-        stopSelf()
+
+        // Persist reset THEN stop. Calling stopSelf() before the coroutine
+        // completes would cancel serviceScope in onDestroy(), losing the
+        // DataStore write and leaving the app stuck in stale state.
+        serviceScope.launch {
+            val duration = repository.flowDurationMinutes.first()
+            timerEngine.reset(duration)
+            repository.resetTimerState()
+            stopSelf()
+        }
     }
 
     /**
      * Called when the system restarts the service after a process kill
      * (because of [START_STICKY]). Restores timer state from DataStore.
+     *
+     * For Running timers, adjusts [remainingMs] by the wall-clock time
+     * that elapsed between the last persist and now (drift correction).
      */
     private fun handleRestart() {
         serviceScope.launch {
             val stateName = repository.timerState.first()
             val state = TimerState.fromName(stateName)
-            val remainingMs = repository.remainingMillis.first()
+            val persistedRemainingMs = repository.remainingMillis.first()
             val durationMinutes = repository.flowDurationMinutes.first()
             val lastStartEpoch = repository.lastStartEpoch.first()
             val totalDurationMs = durationMinutes * 60_000L
 
             when (state) {
-                is TimerState.Running, is TimerState.Paused -> {
+                is TimerState.Running -> {
+                    // Compensate for wall-clock time elapsed since last persist
+                    val elapsedSincePersist = if (lastStartEpoch > 0L) {
+                        (System.currentTimeMillis() - lastStartEpoch).coerceAtLeast(0L)
+                    } else {
+                        0L
+                    }
+                    val correctedRemaining = (persistedRemainingMs - elapsedSincePersist)
+                        .coerceAtLeast(0L)
+
+                    if (correctedRemaining <= 0L) {
+                        // Timer would have finished while we were dead
+                        onTimerFinished()
+                        return@launch
+                    }
+
                     timerEngine.restore(
                         timerState = state,
-                        remainingMs = remainingMs,
+                        remainingMs = correctedRemaining,
+                        totalDurationMs = totalDurationMs,
+                        lastStartEpoch = lastStartEpoch
+                    )
+                    // Update the epoch to now for future drift corrections
+                    repository.setLastStartEpoch(System.currentTimeMillis())
+
+                    startForegroundWithNotification(
+                        correctedRemaining,
+                        isPaused = false
+                    )
+                }
+                is TimerState.Paused -> {
+                    // Paused timers don't drift — restore as-is
+                    timerEngine.restore(
+                        timerState = state,
+                        remainingMs = persistedRemainingMs,
                         totalDurationMs = totalDurationMs,
                         lastStartEpoch = lastStartEpoch
                     )
                     startForegroundWithNotification(
-                        remainingMs,
-                        isPaused = state is TimerState.Paused
+                        persistedRemainingMs,
+                        isPaused = true
                     )
                 }
                 is TimerState.Idle, is TimerState.Finished -> {
@@ -216,15 +283,15 @@ class TimerForegroundService : Service() {
         serviceScope.launch {
             repository.setTimerState(state.name)
             repository.setRemainingMillis(remainingMs)
+            // Keep epoch fresh for Running state so drift correction after
+            // process death uses the most recent anchor.
+            if (state is TimerState.Running) {
+                repository.setLastStartEpoch(System.currentTimeMillis())
+            }
         }
     }
 
     private fun onTimerFinished() {
-        serviceScope.launch {
-            repository.setTimerState(TimerState.Finished.name)
-            repository.setRemainingMillis(0L)
-        }
-
         // Show completion notification
         val manager = getSystemService(NotificationManager::class.java)
         manager.notify(
@@ -234,7 +301,13 @@ class TimerForegroundService : Service() {
 
         // Remove the ongoing timer notification and stop foreground
         stopForeground(STOP_FOREGROUND_REMOVE)
-        stopSelf()
+
+        // Persist THEN stop — ensures DataStore write is not cancelled.
+        serviceScope.launch {
+            repository.setTimerState(TimerState.Finished.name)
+            repository.setRemainingMillis(0L)
+            stopSelf()
+        }
     }
 
     // ── Notification helpers ─────────────────────────────────────────────

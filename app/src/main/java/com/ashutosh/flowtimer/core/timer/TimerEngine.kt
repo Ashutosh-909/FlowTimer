@@ -16,12 +16,13 @@ import kotlinx.coroutines.launch
  * not from cumulative delay.
  *
  * @param scope Coroutine scope for the tick loop (e.g., service scope).
- * @param elapsedRealtimeProvider Returns monotonic clock millis. Defaults to
- *   `SystemClock.elapsedRealtime()`. Injectable for testing.
+ * @param elapsedRealtimeProvider Returns monotonic clock millis (e.g.,
+ *   `SystemClock.elapsedRealtime()`). Must be provided by the caller so that
+ *   `core/timer` stays free of Android framework imports.
  */
 class TimerEngine(
     private val scope: CoroutineScope,
-    private val elapsedRealtimeProvider: () -> Long = { android.os.SystemClock.elapsedRealtime() }
+    private val elapsedRealtimeProvider: () -> Long
 ) {
     private val _state = MutableStateFlow<TimerState>(TimerState.Idle)
     val state: StateFlow<TimerState> = _state.asStateFlow()
@@ -42,10 +43,14 @@ class TimerEngine(
 
     /**
      * Start a new countdown for [durationMinutes] minutes.
-     * If already running, this is a no-op.
+     * If already running, this is a no-op. Any existing tick job (e.g.,
+     * from a Paused state) is cancelled before starting fresh.
      */
     fun start(durationMinutes: Int) {
         if (_state.value is TimerState.Running) return
+
+        tickJob?.cancel()
+        tickJob = null
 
         totalDurationMillis = durationMinutes * 60_000L
         elapsedBeforePause = 0L

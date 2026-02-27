@@ -1,5 +1,6 @@
 package com.ashutosh.flowtimer.ui.home
 
+import android.app.ActivityManager
 import android.app.Application
 import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -28,6 +30,29 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     /** Whether the duration picker dialog should be shown. */
     private val _showDurationPicker = MutableStateFlow(false)
     val showDurationPicker: StateFlow<Boolean> = _showDurationPicker.asStateFlow()
+
+    init {
+        // Recover from stale DataStore state left by a previous crash.
+        // If the persisted state is Running/Paused but the foreground service
+        // is not alive, reset to Idle so the user isn't stuck on 00:00.
+        viewModelScope.launch {
+            val stateName = repository.timerState.first()
+            val state = TimerState.fromName(stateName)
+            when (state) {
+                is TimerState.Running, is TimerState.Paused -> {
+                    if (!isTimerServiceRunning()) {
+                        repository.resetTimerState()
+                    }
+                }
+                is TimerState.Finished -> {
+                    // Finished with no service → reset so the user sees the
+                    // duration again instead of a stuck 00:00.
+                    repository.resetTimerState()
+                }
+                is TimerState.Idle -> { /* nothing to recover */ }
+            }
+        }
+    }
 
     /**
      * Combined UI state built from DataStore flows.
@@ -178,5 +203,20 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
         /** Whether the timer is in idle state. */
         val isIdle: Boolean get() = timerState is TimerState.Idle
+    }
+
+    // ── Helpers ──────────────────────────────────────────────────────────
+
+    /**
+     * Check whether [TimerForegroundService] is currently running.
+     * Used to detect stale DataStore state after a crash.
+     */
+    @Suppress("DEPRECATION") // getRunningServices is deprecated but still works for own services
+    private fun isTimerServiceRunning(): Boolean {
+        val manager = getApplication<Application>()
+            .getSystemService(ActivityManager::class.java)
+        return manager.getRunningServices(Int.MAX_VALUE).any {
+            it.service.className == TimerForegroundService::class.java.name
+        }
     }
 }
