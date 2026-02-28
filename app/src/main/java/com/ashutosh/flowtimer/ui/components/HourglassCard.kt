@@ -125,8 +125,9 @@ fun HourglassCard(
                 )
             }
 
-            // Hourglass (placeholder Canvas until real pixel art is provided)
+            // Hourglass PNG with rotation when running
             PlaceholderHourglass(
+                isRunning = visualState == HourglassVisualState.RUNNING,
                 sandProgress = sandProgress,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
