@@ -6,6 +6,9 @@ import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.LocalSize
+import androidx.glance.action.Action
+import androidx.glance.action.clickable
+import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.background
 import androidx.glance.layout.Alignment
@@ -237,7 +240,7 @@ private fun StatusText(timerState: TimerState) {
 /**
  * Play/Pause toggle button.
  * Shows ▶ when idle/finished, ⏸ when running.
- * Actions will be wired in Step 4.2 via ActionCallback.
+ * Tapping sends [StartAction] (idle/finished) or [ResetAction] (running → acts as pause/stop).
  */
 @Composable
 private fun PlayPauseButton(timerState: TimerState) {
@@ -251,19 +254,26 @@ private fun PlayPauseButton(timerState: TimerState) {
         is TimerState.Idle -> "Start timer"
         is TimerState.Finished -> "Start timer"
     }
-    WidgetButton(text = label, contentDescription = contentDesc)
+    // Running → reset (pause/stop); Idle/Finished → start
+    val action: Action = when (timerState) {
+        is TimerState.Running -> actionRunCallback<ResetAction>()
+        is TimerState.Idle -> actionRunCallback<StartAction>()
+        is TimerState.Finished -> actionRunCallback<StartAction>()
+    }
+    WidgetButton(text = label, contentDescription = contentDesc, action = action)
 }
 
 /**
- * Reset button. Disabled visually when idle.
- * Actions will be wired in Step 4.2 via ActionCallback.
+ * Reset button. Visually dimmed when idle (no action attached).
  */
 @Composable
 private fun ResetButton(timerState: TimerState) {
+    val isIdle = timerState is TimerState.Idle
     WidgetButton(
         text = "↺",
         contentDescription = "Reset timer",
-        dimmed = timerState is TimerState.Idle
+        dimmed = isIdle,
+        action = if (isIdle) null else actionRunCallback<ResetAction>()
     )
 }
 
@@ -271,13 +281,17 @@ private fun ResetButton(timerState: TimerState) {
 private fun WidgetButton(
     text: String,
     contentDescription: String,
-    dimmed: Boolean = false
+    dimmed: Boolean = false,
+    action: Action? = null
 ) {
+    val modifier = GlanceModifier
+        .size(36.dp)
+        .cornerRadius(8.dp)
+        .background(WidgetCardBackground)
+        .let { mod -> if (action != null) mod.clickable(action) else mod }
+
     Box(
-        modifier = GlanceModifier
-            .size(36.dp)
-            .cornerRadius(8.dp)
-            .background(WidgetCardBackground),
+        modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         Text(
