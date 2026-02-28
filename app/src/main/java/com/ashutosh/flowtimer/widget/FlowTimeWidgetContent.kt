@@ -6,6 +6,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
+import androidx.glance.Image
+import androidx.glance.ImageProvider
 import androidx.glance.LocalSize
 import androidx.glance.action.Action
 import androidx.glance.action.clickable
@@ -15,6 +17,7 @@ import androidx.glance.background
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
+import androidx.glance.layout.ContentScale
 import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
@@ -28,6 +31,7 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import com.ashutosh.flowtimer.R
 import com.ashutosh.flowtimer.core.timer.TimerState
 
 // ── Widget palette ──
@@ -92,6 +96,8 @@ private fun SmallWidgetLayout(
         verticalAlignment = Alignment.CenterVertically,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        HourglassImage(timerState, sizeDP = 28)
+        Spacer(GlanceModifier.width(4.dp))
         TimerText(formattedTime, fontSize = 14)
         Spacer(GlanceModifier.width(8.dp))
         PlayPauseButton(timerState)
@@ -113,11 +119,7 @@ private fun MediumWidgetLayout(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Hourglass icon (text glyph)
-        Text(
-            text = "⌛",
-            style = TextStyle(fontSize = 24.sp)
-        )
+        HourglassImage(timerState, sizeDP = 36)
         Spacer(GlanceModifier.height(4.dp))
 
         TimerText(formattedTime, fontSize = 16)
@@ -157,10 +159,7 @@ private fun LargeWidgetLayout(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "⌛",
-                style = TextStyle(fontSize = 16.sp)
-            )
+            HourglassImage(timerState, sizeDP = 20)
             Spacer(GlanceModifier.width(4.dp))
             Text(
                 text = "FLOW TIME",
@@ -207,6 +206,25 @@ private fun LargeWidgetLayout(
 }
 
 // ── Shared Components ───────────────────────────────────────────────────
+
+/**
+ * Hourglass PNG image. Shows normal orientation when idle/finished,
+ * flipped 180° (pre-rotated drawable) when running.
+ */
+@Composable
+private fun HourglassImage(timerState: TimerState, sizeDP: Int) {
+    val drawableRes = when (timerState) {
+        is TimerState.Running -> R.drawable.hourglass_flipped
+        is TimerState.Idle -> R.drawable.hourglass
+        is TimerState.Finished -> R.drawable.hourglass
+    }
+    Image(
+        provider = ImageProvider(drawableRes),
+        contentDescription = "Hourglass",
+        contentScale = ContentScale.Fit,
+        modifier = GlanceModifier.size(sizeDP.dp)
+    )
+}
 
 @Composable
 private fun TimerText(formattedTime: String, fontSize: Int) {
