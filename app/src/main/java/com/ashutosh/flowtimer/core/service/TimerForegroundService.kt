@@ -10,6 +10,8 @@ import android.os.SystemClock
 import com.ashutosh.flowtimer.core.data.PreferencesRepository
 import com.ashutosh.flowtimer.core.timer.TimerEngine
 import com.ashutosh.flowtimer.core.timer.TimerState
+import com.ashutosh.flowtimer.widget.FlowTimeWidget
+import androidx.glance.appwidget.updateAll
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -143,6 +145,7 @@ class TimerForegroundService : Service() {
             val duration = repository.flowDurationMinutes.first()
             timerEngine.reset(duration)
             repository.resetTimerState()
+            FlowTimeWidget().updateAll(this@TimerForegroundService)
             stopSelf()
         }
     }
@@ -242,6 +245,8 @@ class TimerForegroundService : Service() {
             if (state is TimerState.Running) {
                 repository.setLastStartEpoch(System.currentTimeMillis())
             }
+            // Refresh all widget instances so the countdown stays in sync.
+            FlowTimeWidget().updateAll(this@TimerForegroundService)
         }
     }
 
@@ -260,6 +265,7 @@ class TimerForegroundService : Service() {
         serviceScope.launch {
             repository.setTimerState(TimerState.Finished.name)
             repository.setRemainingMillis(0L)
+            FlowTimeWidget().updateAll(this@TimerForegroundService)
             stopSelf()
         }
     }
