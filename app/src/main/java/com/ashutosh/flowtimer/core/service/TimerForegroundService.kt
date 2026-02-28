@@ -11,7 +11,6 @@ import com.ashutosh.flowtimer.core.data.PreferencesRepository
 import com.ashutosh.flowtimer.core.timer.TimerEngine
 import com.ashutosh.flowtimer.core.timer.TimerState
 import com.ashutosh.flowtimer.widget.FlowTimeWidget
-import androidx.glance.appwidget.updateAll
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -145,7 +144,12 @@ class TimerForegroundService : Service() {
             val duration = repository.flowDurationMinutes.first()
             timerEngine.reset(duration)
             repository.resetTimerState()
-            FlowTimeWidget().updateAll(this@TimerForegroundService)
+            FlowTimeWidget.pushStateAndUpdate(
+                context = this@TimerForegroundService,
+                stateName = TimerState.Idle.name,
+                remainingMillis = 0L,
+                durationMinutes = duration
+            )
             stopSelf()
         }
     }
@@ -245,8 +249,14 @@ class TimerForegroundService : Service() {
             if (state is TimerState.Running) {
                 repository.setLastStartEpoch(System.currentTimeMillis())
             }
-            // Refresh all widget instances so the countdown stays in sync.
-            FlowTimeWidget().updateAll(this@TimerForegroundService)
+            // Push values into Glance state store and refresh all widget instances.
+            val duration = repository.flowDurationMinutes.first()
+            FlowTimeWidget.pushStateAndUpdate(
+                context = this@TimerForegroundService,
+                stateName = state.name,
+                remainingMillis = remainingMs,
+                durationMinutes = duration
+            )
         }
     }
 
@@ -265,7 +275,13 @@ class TimerForegroundService : Service() {
         serviceScope.launch {
             repository.setTimerState(TimerState.Finished.name)
             repository.setRemainingMillis(0L)
-            FlowTimeWidget().updateAll(this@TimerForegroundService)
+            val duration = repository.flowDurationMinutes.first()
+            FlowTimeWidget.pushStateAndUpdate(
+                context = this@TimerForegroundService,
+                stateName = TimerState.Finished.name,
+                remainingMillis = 0L,
+                durationMinutes = duration
+            )
             stopSelf()
         }
     }

@@ -1,6 +1,7 @@
 package com.ashutosh.flowtimer.widget
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceModifier
@@ -29,13 +30,13 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.ashutosh.flowtimer.core.timer.TimerState
 
-// ── Widget palette (Glance uses android.graphics.Color, not Compose Color) ──
-private val WidgetBackground = ColorProvider(android.graphics.Color.parseColor("#0D1B2A"))
-private val WidgetCardBackground = ColorProvider(android.graphics.Color.parseColor("#162234"))
-private val WidgetTextColor = ColorProvider(android.graphics.Color.parseColor("#EAEAEA"))
-private val WidgetTextDim = ColorProvider(android.graphics.Color.parseColor("#7A8B9E"))
-private val WidgetAccentBlue = ColorProvider(android.graphics.Color.parseColor("#4A90D9"))
-private val WidgetAccentGold = ColorProvider(android.graphics.Color.parseColor("#FFB347"))
+// ── Widget palette ──
+private val WidgetBackground = ColorProvider(Color(0xFF0D1B2A))
+private val WidgetCardBackground = ColorProvider(Color(0xFF162234))
+private val WidgetTextColor = ColorProvider(Color(0xFFEAEAEA))
+private val WidgetTextDim = ColorProvider(Color(0xFF7A8B9E))
+private val WidgetAccentBlue = ColorProvider(Color(0xFF4A90D9))
+private val WidgetAccentGold = ColorProvider(Color(0xFFFFB347))
 
 /**
  * Root content composable for the Flow Time widget.
