@@ -202,11 +202,11 @@ Service lifecycle:
 | Medium | 3×2 | Hourglass icon + Timer + Play/Pause/Reset |
 | Large | 4×2 | Full pixel art + Timer + all controls + duration label |
 
-#### Step 4.2: Widget actions (start / pause / reset)
+#### Step 4.2: Widget actions (start / reset)
 - **Goal:** Buttons trigger service intents without launching Activity.
-- **Tasks:** Implement `ActionCallback` subclasses: `StartAction`, `PauseAction`, `ResetAction`. Each sends intent to `TimerForegroundService`.
+- **Tasks:** Implement `ActionCallback` subclasses: `StartAction`, `ResetAction`. Each sends intent to `TimerForegroundService`.
 - **Files:** `widget/WidgetActions.kt`.
-- **Acceptance:** All three actions work from widget without app opening.
+- **Acceptance:** All  actions work from widget without app opening.
 - **Complexity:** M
 
 #### Step 4.3: Widget state refresh

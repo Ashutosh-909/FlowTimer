@@ -39,6 +39,19 @@
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="Timer countdown for focus sessions" />
         </service>
+
+        <!-- Home-screen widget (Jetpack Glance) -->
+        <receiver
+            android:name=".widget.FlowTimeWidgetReceiver"
+            android:exported="true"
+            android:label="@string/widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/flow_time_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
