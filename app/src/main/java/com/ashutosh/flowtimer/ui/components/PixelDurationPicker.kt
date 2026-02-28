@@ -279,7 +279,7 @@ private fun PickerButton(
     }
 }
 
-private const val MIN_DURATION = 1
+private const val MIN_DURATION = 5
 private const val MAX_DURATION = 120
 private const val STEP_SIZE = 5
 
@@ -309,7 +309,7 @@ private fun PixelDurationPickerDefault() {
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
     widthDp = 360,
-    name = "PixelDurationPicker – Min (1 min)"
+    name = "PixelDurationPicker – Min (5 min)"
 )
 @Composable
 private fun PixelDurationPickerMin() {
@@ -320,7 +320,7 @@ private fun PixelDurationPickerMin() {
                 .background(SpaceBackground),
             contentAlignment = Alignment.Center
         ) {
-            PixelDurationPickerContent(selectedMinutes = 1)
+            PixelDurationPickerContent(selectedMinutes = 5)
         }
     }
 }
