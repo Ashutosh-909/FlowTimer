@@ -239,19 +239,19 @@ private fun StatusText(timerState: TimerState) {
 }
 
 /**
- * Play/Pause toggle button.
- * Shows ▶ when idle/finished, ⏸ when running.
- * Tapping sends [StartAction] (idle/finished) or [ResetAction] (running → acts as pause/stop).
+ * Play/Reset toggle button.
+ * Shows ▶ when idle/finished, ↺ when running.
+ * Tapping sends [StartAction] (idle/finished) or [ResetAction] (running).
  */
 @Composable
 private fun PlayPauseButton(timerState: TimerState) {
     val label = when (timerState) {
-        is TimerState.Running -> "⏸"
+        is TimerState.Running -> "↺"
         is TimerState.Idle -> "▶"
         is TimerState.Finished -> "▶"
     }
     val contentDesc = when (timerState) {
-        is TimerState.Running -> "Pause timer"
+        is TimerState.Running -> "Reset timer"
         is TimerState.Idle -> "Start timer"
         is TimerState.Finished -> "Start timer"
     }
