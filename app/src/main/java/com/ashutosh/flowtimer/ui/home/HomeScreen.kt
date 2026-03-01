@@ -199,7 +199,7 @@ internal fun HomeScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // ── Top: Title ──
+            // ── Top: Title + session count ──
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -219,6 +219,15 @@ internal fun HomeScreenContent(
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
                 )
+                if (uiState.completedSessionCount > 0) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = "${uiState.completedSessionCount} flow session${if (uiState.completedSessionCount != 1) "s" else ""}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = PixelTextDim,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
 
             // ── Center: Hourglass card ──

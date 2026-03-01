@@ -63,8 +63,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val uiState: StateFlow<UiState> = combine(
         repository.timerState,
         repository.remainingMillis,
-        repository.flowDurationMinutes
-    ) { stateName, remainingMs, durationMinutes ->
+        repository.flowDurationMinutes,
+        repository.completedSessionCount
+    ) { stateName, remainingMs, durationMinutes, sessionCount ->
         val timerState = TimerState.fromName(stateName)
         val totalMs = durationMinutes * 60_000L
 
@@ -90,7 +91,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             timerState = timerState,
             displayMillis = displayMillis,
             durationMinutes = durationMinutes,
-            sandProgress = sandProgress
+            sandProgress = sandProgress,
+            completedSessionCount = sessionCount
         )
     }.stateIn(
         scope = viewModelScope,
@@ -161,7 +163,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         val timerState: TimerState = TimerState.Idle,
         val displayMillis: Long = PreferencesRepository.DEFAULT_FLOW_DURATION_MINUTES * 60_000L,
         val durationMinutes: Int = PreferencesRepository.DEFAULT_FLOW_DURATION_MINUTES,
-        val sandProgress: Float = 0f
+        val sandProgress: Float = 0f,
+        val completedSessionCount: Int = 0
     ) {
         /** Formatted time string for display (e.g., "25:00"). */
         val formattedTime: String

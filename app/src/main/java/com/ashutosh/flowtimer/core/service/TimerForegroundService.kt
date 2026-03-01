@@ -275,6 +275,7 @@ class TimerForegroundService : Service() {
         serviceScope.launch {
             repository.setTimerState(TimerState.Finished.name)
             repository.setRemainingMillis(0L)
+            repository.recordSessionCompleted()
             val duration = repository.flowDurationMinutes.first()
             FlowTimeWidget.pushStateAndUpdate(
                 context = this@TimerForegroundService,

@@ -29,6 +29,8 @@ class PreferencesRepository(private val dataStore: DataStore<Preferences>) {
         const val DEFAULT_TIMER_STATE = "IDLE"
         const val DEFAULT_REMAINING_MILLIS = 0L
         const val DEFAULT_LAST_START_EPOCH = 0L
+        const val DEFAULT_COMPLETED_SESSION_COUNT = 0
+        const val DEFAULT_LAST_COMPLETED_EPOCH = 0L
     }
 
     // ── Flow Duration ──
@@ -77,6 +79,27 @@ class PreferencesRepository(private val dataStore: DataStore<Preferences>) {
         dataStore.edit { prefs ->
             prefs[PreferencesKeys.LAST_START_EPOCH] = epochMillis
         }
+    }
+
+    // ── Completed Session Count ──
+
+    val completedSessionCount: Flow<Int> = dataStore.data.map { prefs ->
+        prefs[PreferencesKeys.COMPLETED_SESSION_COUNT] ?: DEFAULT_COMPLETED_SESSION_COUNT
+    }
+
+    /** Increment the completed session count by 1 and record the completion time. */
+    suspend fun recordSessionCompleted() {
+        dataStore.edit { prefs ->
+            val current = prefs[PreferencesKeys.COMPLETED_SESSION_COUNT] ?: DEFAULT_COMPLETED_SESSION_COUNT
+            prefs[PreferencesKeys.COMPLETED_SESSION_COUNT] = current + 1
+            prefs[PreferencesKeys.LAST_COMPLETED_EPOCH] = System.currentTimeMillis()
+        }
+    }
+
+    // ── Last Completed Epoch ──
+
+    val lastCompletedEpoch: Flow<Long> = dataStore.data.map { prefs ->
+        prefs[PreferencesKeys.LAST_COMPLETED_EPOCH] ?: DEFAULT_LAST_COMPLETED_EPOCH
     }
 
     // ── Bulk Clear ──

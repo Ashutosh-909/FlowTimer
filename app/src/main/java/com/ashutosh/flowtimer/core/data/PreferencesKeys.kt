@@ -21,4 +21,10 @@ internal object PreferencesKeys {
 
     /** Epoch millis when timer was last started (drift correction). Default: 0. */
     val LAST_START_EPOCH = longPreferencesKey("last_start_epoch")
+
+    /** Total number of completed flow sessions. Default: 0. */
+    val COMPLETED_SESSION_COUNT = intPreferencesKey("completed_session_count")
+
+    /** Epoch millis of the most recent session completion. Default: 0. */
+    val LAST_COMPLETED_EPOCH = longPreferencesKey("last_completed_epoch")
 }
