@@ -7,10 +7,14 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.IBinder
 import android.os.SystemClock
-import com.ashutosh.flowtimer.core.data.PreferencesRepository
-import com.ashutosh.flowtimer.core.timer.TimerEngine
-import com.ashutosh.flowtimer.core.timer.TimerState
+import android.util.Log
+import com.ashutosh.flowtimer.data.AndroidFlowTimerRepository
+import com.ashutosh.flowtimer.data.FlowTimerRepository
+import com.ashutosh.flowtimer.timer.TimerEngine
+import com.ashutosh.flowtimer.timer.TimerState
 import com.ashutosh.flowtimer.widget.FlowTimeWidget
+import com.google.android.gms.wearable.PutDataMapRequest
+import com.google.android.gms.wearable.Wearable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -19,6 +23,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 /**
  * Foreground service that keeps the timer alive through screen-off and
@@ -42,6 +47,10 @@ class TimerForegroundService : Service() {
         /** Optional extra: flow duration in minutes (used with [ACTION_START]). */
         const val EXTRA_DURATION_MINUTES = "extra_duration_minutes"
 
+        /** DataLayer path for Wear OS state sync. */
+        private const val WEAR_STATE_PATH = "/flowtimer/state"
+        private const val TAG = "TimerForegroundService"
+
         /** Convenience factory for launching the service with an action. */
         fun intent(context: Context, action: String): Intent =
             Intent(context, TimerForegroundService::class.java).apply {
@@ -52,7 +61,7 @@ class TimerForegroundService : Service() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private lateinit var timerEngine: TimerEngine
-    private lateinit var repository: PreferencesRepository
+    private lateinit var repository: AndroidFlowTimerRepository
 
     // ── Lifecycle ────────────────────────────────────────────────────────
 
@@ -61,7 +70,7 @@ class TimerForegroundService : Service() {
 
         NotificationHelper.createChannels(this)
 
-        repository = PreferencesRepository(applicationContext)
+        repository = AndroidFlowTimerRepository(applicationContext)
         timerEngine = TimerEngine(serviceScope, elapsedRealtimeProvider = SystemClock::elapsedRealtime)
 
         observeEngineState()
@@ -103,7 +112,7 @@ class TimerForegroundService : Service() {
         val durationMinutes = if (durationMinutesExtra > 0) {
             durationMinutesExtra
         } else {
-            PreferencesRepository.DEFAULT_FLOW_DURATION_MINUTES
+            FlowTimerRepository.DEFAULT_FLOW_DURATION_MINUTES
         }
 
         // 2. Start engine & go foreground immediately — no suspension.
@@ -257,6 +266,30 @@ class TimerForegroundService : Service() {
                 remainingMillis = remainingMs,
                 durationMinutes = duration
             )
+            // Publish to paired Wear OS device (fire-and-forget).
+            publishToWear(state, remainingMs, duration)
+        }
+    }
+
+    /**
+     * Publishes timer state to the Wearable DataLayer on path `/flowtimer/state`.
+     * Silently ignores failures (no watch paired, Play Services unavailable, etc.).
+     */
+    private suspend fun publishToWear(state: TimerState, remainingMs: Long, durationMinutes: Int) {
+        try {
+            val request = PutDataMapRequest.create(WEAR_STATE_PATH).apply {
+                dataMap.putString("timer_state", state.name)
+                dataMap.putLong("remaining_millis", remainingMs)
+                dataMap.putInt("flow_duration_minutes", durationMinutes)
+                // Timestamp ensures DataLayer treats each update as a new item
+                dataMap.putLong("timestamp", System.currentTimeMillis())
+            }.asPutDataRequest().setUrgent()
+
+            Wearable.getDataClient(this@TimerForegroundService)
+                .putDataItem(request)
+                .await()
+        } catch (e: Exception) {
+            Log.d(TAG, "Wear publish skipped: ${e.message}")
         }
     }
 

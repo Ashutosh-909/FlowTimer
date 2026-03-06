@@ -25,3 +25,4 @@ dependencyResolutionManagement {
 rootProject.name = "FlowTimer"
 include(":app")
 include(":wear")
+include(":shared")

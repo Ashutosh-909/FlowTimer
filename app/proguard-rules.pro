@@ -19,3 +19,18 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# ── Jetpack Glance (widget reflection) ──────────────────────────────────────
+-keep class androidx.glance.** { *; }
+-dontwarn androidx.glance.**
+
+# ── DataStore / Protobuf ────────────────────────────────────────────────────
+-keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite { *; }
+
+# ── Coroutines ───────────────────────────────────────────────────────────────
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+
+# ── Kotlin Serialization ─────────────────────────────────────────────────────
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.AnnotationsKt

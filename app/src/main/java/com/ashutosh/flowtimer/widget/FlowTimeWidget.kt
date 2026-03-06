@@ -14,9 +14,18 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.currentState
 import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
-import com.ashutosh.flowtimer.core.data.PreferencesKeys
-import com.ashutosh.flowtimer.core.data.PreferencesRepository
-import com.ashutosh.flowtimer.core.timer.TimerState
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
+import com.ashutosh.flowtimer.data.FlowTimerRepository
+import com.ashutosh.flowtimer.timer.TimerState
+
+/** Glance state store keys — widget-only, separate from app DataStore. */
+private object WidgetKeys {
+    val TIMER_STATE = stringPreferencesKey("timer_state")
+    val REMAINING_MILLIS = longPreferencesKey("remaining_millis")
+    val FLOW_DURATION_MINUTES = intPreferencesKey("flow_duration_minutes")
+}
 
 /**
  * Jetpack Glance widget for Flow Time.
@@ -65,9 +74,9 @@ class FlowTimeWidget : GlanceAppWidget() {
                     glanceId
                 ) { prefs ->
                     prefs.toMutablePreferences().apply {
-                        this[PreferencesKeys.TIMER_STATE] = stateName
-                        this[PreferencesKeys.REMAINING_MILLIS] = remainingMillis
-                        this[PreferencesKeys.FLOW_DURATION_MINUTES] = durationMinutes
+                        this[WidgetKeys.TIMER_STATE] = stateName
+                        this[WidgetKeys.REMAINING_MILLIS] = remainingMillis
+                        this[WidgetKeys.FLOW_DURATION_MINUTES] = durationMinutes
                     }
                 }
                 widget.update(context, glanceId)
@@ -87,13 +96,13 @@ class FlowTimeWidget : GlanceAppWidget() {
             val prefs = currentState<Preferences>()
 
             val timerState = TimerState.fromName(
-                prefs[PreferencesKeys.TIMER_STATE]
-                    ?: PreferencesRepository.DEFAULT_TIMER_STATE
+                prefs[WidgetKeys.TIMER_STATE]
+                    ?: FlowTimerRepository.DEFAULT_TIMER_STATE
             )
-            val remainingMillis = prefs[PreferencesKeys.REMAINING_MILLIS]
-                ?: PreferencesRepository.DEFAULT_REMAINING_MILLIS
-            val durationMinutes = prefs[PreferencesKeys.FLOW_DURATION_MINUTES]
-                ?: PreferencesRepository.DEFAULT_FLOW_DURATION_MINUTES
+            val remainingMillis = prefs[WidgetKeys.REMAINING_MILLIS]
+                ?: FlowTimerRepository.DEFAULT_REMAINING_MILLIS
+            val durationMinutes = prefs[WidgetKeys.FLOW_DURATION_MINUTES]
+                ?: FlowTimerRepository.DEFAULT_FLOW_DURATION_MINUTES
 
             // Determine display time: if idle, show full duration; otherwise remaining.
             val displayMillis = when (timerState) {

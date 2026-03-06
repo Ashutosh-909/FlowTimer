@@ -42,7 +42,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ashutosh.flowtimer.core.timer.TimerState
+import com.ashutosh.flowtimer.model.TimerUiState
+import com.ashutosh.flowtimer.timer.TimerState
 import com.ashutosh.flowtimer.ui.components.HourglassCard
 import com.ashutosh.flowtimer.ui.components.HourglassVisualState
 import com.ashutosh.flowtimer.ui.components.PixelDurationPicker
@@ -171,7 +172,7 @@ fun HomeScreen(
 @Composable
 internal fun HomeScreenContent(
     modifier: Modifier = Modifier,
-    uiState: HomeViewModel.UiState = HomeViewModel.UiState(),
+    uiState: TimerUiState = TimerUiState(),
     onTapHourglass: () -> Unit = {},
     onLongPressReset: () -> Unit = {},
     onTapSetDuration: () -> Unit = {}
@@ -372,7 +373,7 @@ internal fun NotificationRationaleDialog(
 private fun HomeScreenIdlePreview() {
     FlowTimerTheme {
         HomeScreenContent(
-            uiState = HomeViewModel.UiState(
+            uiState = TimerUiState(
                 timerState = TimerState.Idle,
                 displayMillis = 25 * 60_000L,
                 durationMinutes = 25,
@@ -391,7 +392,7 @@ private fun HomeScreenIdlePreview() {
 private fun HomeScreenRunningPreview() {
     FlowTimerTheme {
         HomeScreenContent(
-            uiState = HomeViewModel.UiState(
+            uiState = TimerUiState(
                 timerState = TimerState.Running,
                 displayMillis = 18 * 60_000L + 30_000L,
                 durationMinutes = 25,
@@ -410,7 +411,7 @@ private fun HomeScreenRunningPreview() {
 private fun HomeScreenFinishedPreview() {
     FlowTimerTheme {
         HomeScreenContent(
-            uiState = HomeViewModel.UiState(
+            uiState = TimerUiState(
                 timerState = TimerState.Finished,
                 displayMillis = 0L,
                 durationMinutes = 25,

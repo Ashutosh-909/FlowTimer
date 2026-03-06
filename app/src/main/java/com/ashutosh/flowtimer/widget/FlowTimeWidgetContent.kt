@@ -32,7 +32,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.ashutosh.flowtimer.R
-import com.ashutosh.flowtimer.core.timer.TimerState
+import com.ashutosh.flowtimer.timer.TimerState
 
 // ── Widget palette ──
 private val WidgetBackground = ColorProvider(Color(0xFF0D1B2A))
