@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+keystore.properties
+*.jks
+*.keystore
+*.pem
+encrypted_key.zip
+pepk.jar
+encryption_public_key.pem
