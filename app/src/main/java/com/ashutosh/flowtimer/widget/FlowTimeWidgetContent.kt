@@ -310,21 +310,26 @@ private fun LargeWidgetLayout(
     widgetHeight: Dp
 ) {
     val scaleFactor = minOf(widgetWidth / 250.dp, widgetHeight / 110.dp)
-    val hourglassSize = (20 * scaleFactor).toInt().coerceIn(16, 36)
+    val hourglassSize = (56 * scaleFactor).toInt().coerceIn(48, 80)
     val titleFontSize = (10 * scaleFactor).toInt().coerceIn(8, 18)
     val timerFontSize = (22 * scaleFactor).toInt().coerceIn(16, 36)
     val labelFontSize = (8 * scaleFactor).toInt().coerceIn(7, 14)
     val buttonSize = (36 * scaleFactor).toInt().coerceIn(32, 56)
 
-    Column(
+    Row(
         modifier = GlanceModifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Title row
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            HourglassImage(timerState, sizeDP = hourglassSize)
-            Spacer(GlanceModifier.width(4.dp))
+        // Big hourglass on the left
+        HourglassImage(timerState, sizeDP = hourglassSize)
+        Spacer(GlanceModifier.width(12.dp))
+
+        // Content on the right
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 text = "FLOW TIME",
                 style = TextStyle(
@@ -334,14 +339,12 @@ private fun LargeWidgetLayout(
                     fontFamily = FontFamily.Monospace
                 )
             )
-        }
-        Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
+            Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
 
-        when (timerState) {
-            is TimerState.Idle -> {
-                TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetTextDim)
-                Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
-                Row(horizontalAlignment = Alignment.CenterHorizontally) {
+            when (timerState) {
+                is TimerState.Idle -> {
+                    TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetTextDim)
+                    Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
                     Text(
                         text = "${durationMinutes} min",
                         style = TextStyle(
@@ -350,44 +353,44 @@ private fun LargeWidgetLayout(
                             fontFamily = FontFamily.Monospace
                         )
                     )
-                }
-                Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
-                Text(
-                    text = "▶ TAP TO START",
-                    style = TextStyle(
-                        color = WidgetAccentGold,
-                        fontSize = labelFontSize.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace
+                    Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
+                    Text(
+                        text = "▶ TAP TO START",
+                        style = TextStyle(
+                            color = WidgetAccentGold,
+                            fontSize = labelFontSize.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Monospace
+                        )
                     )
-                )
-            }
-            is TimerState.Running -> {
-                TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetRunningTextBright)
-                Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                }
+                is TimerState.Running -> {
+                    TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetRunningTextBright)
+                    Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        StatusText(timerState, fontSize = labelFontSize)
+                        Spacer(GlanceModifier.width(12.dp))
+                        StopButton(buttonSize = buttonSize)
+                    }
+                }
+                is TimerState.Finished -> {
+                    TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetFinishedTextDark)
+                    Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
                     StatusText(timerState, fontSize = labelFontSize)
-                    Spacer(GlanceModifier.width(12.dp))
-                    StopButton(buttonSize = buttonSize)
-                }
-            }
-            is TimerState.Finished -> {
-                TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetFinishedTextDark)
-                Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
-                StatusText(timerState, fontSize = labelFontSize)
-                Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
-                Text(
-                    text = "▶ START AGAIN",
-                    style = TextStyle(
-                        color = WidgetFinishedTextDark,
-                        fontSize = labelFontSize.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace
+                    Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
+                    Text(
+                        text = "▶ START AGAIN",
+                        style = TextStyle(
+                            color = WidgetFinishedTextDark,
+                            fontSize = labelFontSize.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Monospace
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -408,22 +411,27 @@ private fun ExtraLargeWidgetLayout(
     widgetHeight: Dp
 ) {
     val scaleFactor = minOf(widgetWidth / 320.dp, widgetHeight / 180.dp)
-    val hourglassSize = (32 * scaleFactor).toInt().coerceIn(28, 56)
+    val hourglassSize = (80 * scaleFactor).toInt().coerceIn(64, 120)
     val titleFontSize = (14 * scaleFactor).toInt().coerceIn(12, 24)
     val timerFontSize = (36 * scaleFactor).toInt().coerceIn(28, 52)
     val labelFontSize = (10 * scaleFactor).toInt().coerceIn(9, 18)
     val buttonSize = (48 * scaleFactor).toInt().coerceIn(40, 72)
     val spacing = (8 * scaleFactor).toInt().coerceAtLeast(8)
 
-    Column(
+    Row(
         modifier = GlanceModifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Title row
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            HourglassImage(timerState, sizeDP = hourglassSize)
-            Spacer(GlanceModifier.width(8.dp))
+        // Big hourglass on the left
+        HourglassImage(timerState, sizeDP = hourglassSize)
+        Spacer(GlanceModifier.width(16.dp))
+
+        // Content on the right
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 text = "FLOW TIME",
                 style = TextStyle(
@@ -433,14 +441,12 @@ private fun ExtraLargeWidgetLayout(
                     fontFamily = FontFamily.Monospace
                 )
             )
-        }
-        Spacer(GlanceModifier.height(spacing.dp))
+            Spacer(GlanceModifier.height(spacing.dp))
 
-        when (timerState) {
-            is TimerState.Idle -> {
-                TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetTextDim)
-                Spacer(GlanceModifier.height(spacing.dp))
-                Row(horizontalAlignment = Alignment.CenterHorizontally) {
+            when (timerState) {
+                is TimerState.Idle -> {
+                    TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetTextDim)
+                    Spacer(GlanceModifier.height(spacing.dp))
                     Text(
                         text = "${durationMinutes} min",
                         style = TextStyle(
@@ -449,39 +455,44 @@ private fun ExtraLargeWidgetLayout(
                             fontFamily = FontFamily.Monospace
                         )
                     )
+                    Spacer(GlanceModifier.height(spacing.dp))
+                    Text(
+                        text = "▶ TAP TO START",
+                        style = TextStyle(
+                            color = WidgetAccentGold,
+                            fontSize = (labelFontSize + 2).sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Monospace
+                        )
+                    )
                 }
-                Spacer(GlanceModifier.height(spacing.dp))
-                Text(
-                    text = "▶ TAP TO START",
-                    style = TextStyle(
-                        color = WidgetAccentGold,
-                        fontSize = (labelFontSize + 2).sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace
+                is TimerState.Running -> {
+                    TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetRunningTextBright)
+                    Spacer(GlanceModifier.height(spacing.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        StatusText(timerState, fontSize = labelFontSize)
+                        Spacer(GlanceModifier.width(12.dp))
+                        StopButton(buttonSize = buttonSize)
+                    }
+                }
+                is TimerState.Finished -> {
+                    TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetFinishedTextDark)
+                    Spacer(GlanceModifier.height(spacing.dp))
+                    StatusText(timerState, fontSize = labelFontSize)
+                    Spacer(GlanceModifier.height(spacing.dp))
+                    Text(
+                        text = "▶ START AGAIN",
+                        style = TextStyle(
+                            color = WidgetFinishedTextDark,
+                            fontSize = labelFontSize.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Monospace
+                        )
                     )
-                )
-            }
-            is TimerState.Running -> {
-                TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetRunningTextBright)
-                Spacer(GlanceModifier.height(spacing.dp))
-                StatusText(timerState, fontSize = labelFontSize)
-                Spacer(GlanceModifier.height(spacing.dp))
-                StopButton(buttonSize = buttonSize)
-            }
-            is TimerState.Finished -> {
-                TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetFinishedTextDark)
-                Spacer(GlanceModifier.height(spacing.dp))
-                StatusText(timerState, fontSize = labelFontSize)
-                Spacer(GlanceModifier.height(spacing.dp))
-                Text(
-                    text = "▶ START AGAIN",
-                    style = TextStyle(
-                        color = WidgetFinishedTextDark,
-                        fontSize = labelFontSize.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace
-                    )
-                )
+                }
             }
         }
     }
