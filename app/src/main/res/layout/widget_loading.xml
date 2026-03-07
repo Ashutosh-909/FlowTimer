@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Minimal loading layout shown before Glance composes the widget. -->
+<!-- Loading layout shown before Glance composes the widget. Matches Idle state. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0D1B2A">
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="25:00"
-        android:textColor="#EAEAEA"
-        android:textSize="16sp"
-        android:fontFamily="monospace" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25:00"
+            android:textColor="#7A8B9E"
+            android:textSize="16sp"
+            android:fontFamily="monospace" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="▶ TAP TO START"
+            android:textColor="#FFB347"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
 </FrameLayout>

@@ -35,3 +35,7 @@ val StarGold = Color(0xFFFFD700)
 // ── Timer Pill ──
 val TimerPillBorder = Color(0xFF3A5068)
 val TimerPillFill = Color(0xFF0F1E30)
+
+// ── Widget State Colors (documented here; Glance uses ColorProvider copies) ──
+val FlowOrangeActive = Color(0xFFE65100)  // Running state widget background (deep orange)
+val FlowGreen = Color(0xFF2ECC71)        // Finished state widget background (soft emerald)
