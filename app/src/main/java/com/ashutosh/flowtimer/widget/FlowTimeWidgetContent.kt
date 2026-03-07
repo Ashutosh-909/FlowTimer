@@ -64,14 +64,25 @@ internal fun FlowTimeWidgetContent(
         contentAlignment = Alignment.Center
     ) {
         when {
+            size.width >= 320.dp && size.height >= 180.dp -> ExtraLargeWidgetLayout(
+                timerState = timerState,
+                formattedTime = formattedTime,
+                durationMinutes = durationMinutes,
+                widgetWidth = size.width,
+                widgetHeight = size.height
+            )
             size.width >= 250.dp -> LargeWidgetLayout(
                 timerState = timerState,
                 formattedTime = formattedTime,
-                durationMinutes = durationMinutes
+                durationMinutes = durationMinutes,
+                widgetWidth = size.width,
+                widgetHeight = size.height
             )
             size.width >= 180.dp -> MediumWidgetLayout(
                 timerState = timerState,
-                formattedTime = formattedTime
+                formattedTime = formattedTime,
+                widgetWidth = size.width,
+                widgetHeight = size.height
             )
             else -> SmallWidgetLayout(
                 timerState = timerState,
@@ -108,34 +119,38 @@ private fun SmallWidgetLayout(
 
 /**
  * Medium layout: hourglass icon + timer + Play/Pause + Reset.
+ * Scales icon/text based on actual widget dimensions.
  */
 @Composable
 private fun MediumWidgetLayout(
     timerState: TimerState,
-    formattedTime: String
+    formattedTime: String,
+    widgetWidth: androidx.compose.ui.unit.Dp,
+    widgetHeight: androidx.compose.ui.unit.Dp
 ) {
+    // Scale factor based on the smaller dimension ratio
+    val scaleFactor = minOf(widgetWidth / 180.dp, widgetHeight / 110.dp)
+    val hourglassSize = (36 * scaleFactor).toInt().coerceIn(28, 56)
+    val timerFontSize = (16 * scaleFactor).toInt().coerceIn(14, 28)
+    val buttonSize = (36 * scaleFactor).toInt().coerceIn(32, 52)
+    val statusFontSize = (8 * scaleFactor).toInt().coerceIn(7, 14)
+
     Column(
         modifier = GlanceModifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        HourglassImage(timerState, sizeDP = 36)
+        HourglassImage(timerState, sizeDP = hourglassSize)
         Spacer(GlanceModifier.height(4.dp))
 
-        TimerText(formattedTime, fontSize = 16)
+        TimerText(formattedTime, fontSize = timerFontSize)
         Spacer(GlanceModifier.height(8.dp))
 
         // Status indicator
-        StatusText(timerState)
+        StatusText(timerState, fontSize = statusFontSize)
         Spacer(GlanceModifier.height(4.dp))
 
-        Row(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            PlayPauseButton(timerState)
-            Spacer(GlanceModifier.width(8.dp))
-            ResetButton(timerState)
-        }
+        PlayPauseButton(timerState, buttonSize = buttonSize)
     }
 }
 
@@ -143,13 +158,23 @@ private fun MediumWidgetLayout(
 
 /**
  * Full layout: header + timer + all controls + duration label.
+ * Scales proportionally based on actual widget dimensions.
  */
 @Composable
 private fun LargeWidgetLayout(
     timerState: TimerState,
     formattedTime: String,
-    durationMinutes: Int
+    durationMinutes: Int,
+    widgetWidth: androidx.compose.ui.unit.Dp,
+    widgetHeight: androidx.compose.ui.unit.Dp
 ) {
+    val scaleFactor = minOf(widgetWidth / 250.dp, widgetHeight / 110.dp)
+    val hourglassSize = (20 * scaleFactor).toInt().coerceIn(16, 36)
+    val titleFontSize = (10 * scaleFactor).toInt().coerceIn(8, 18)
+    val timerFontSize = (20 * scaleFactor).toInt().coerceIn(16, 36)
+    val labelFontSize = (8 * scaleFactor).toInt().coerceIn(7, 14)
+    val buttonSize = (36 * scaleFactor).toInt().coerceIn(32, 56)
+
     Column(
         modifier = GlanceModifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -159,49 +184,114 @@ private fun LargeWidgetLayout(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            HourglassImage(timerState, sizeDP = 20)
+            HourglassImage(timerState, sizeDP = hourglassSize)
             Spacer(GlanceModifier.width(4.dp))
             Text(
                 text = "FLOW TIME",
                 style = TextStyle(
                     color = WidgetTextColor,
-                    fontSize = 10.sp,
+                    fontSize = titleFontSize.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Monospace
                 )
             )
         }
-        Spacer(GlanceModifier.height(4.dp))
+        Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
 
         // Timer readout
-        TimerText(formattedTime, fontSize = 20)
-        Spacer(GlanceModifier.height(4.dp))
+        TimerText(formattedTime, fontSize = timerFontSize)
+        Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
 
         // Status + duration label
         Row(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            StatusText(timerState)
+            StatusText(timerState, fontSize = labelFontSize)
             Spacer(GlanceModifier.width(8.dp))
             Text(
                 text = "${durationMinutes} min",
                 style = TextStyle(
                     color = WidgetTextDim,
-                    fontSize = 8.sp,
+                    fontSize = labelFontSize.sp,
                     fontFamily = FontFamily.Monospace
                 )
             )
         }
-        Spacer(GlanceModifier.height(4.dp))
+        Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
 
-        // Control buttons
+        // Control button
+        PlayPauseButton(timerState, buttonSize = buttonSize)
+    }
+}
+
+// ── Extra-Large Layout (5×3+, ~320×180 dp) ──────────────────────────────
+
+/**
+ * Extra-large layout for bigger widget sizes. Same structure as Large
+ * but with proportionally larger elements to fill the space.
+ */
+@Composable
+private fun ExtraLargeWidgetLayout(
+    timerState: TimerState,
+    formattedTime: String,
+    durationMinutes: Int,
+    widgetWidth: androidx.compose.ui.unit.Dp,
+    widgetHeight: androidx.compose.ui.unit.Dp
+) {
+    val scaleFactor = minOf(widgetWidth / 320.dp, widgetHeight / 180.dp)
+    val hourglassSize = (32 * scaleFactor).toInt().coerceIn(28, 56)
+    val titleFontSize = (14 * scaleFactor).toInt().coerceIn(12, 24)
+    val timerFontSize = (32 * scaleFactor).toInt().coerceIn(28, 52)
+    val labelFontSize = (10 * scaleFactor).toInt().coerceIn(9, 18)
+    val buttonSize = (48 * scaleFactor).toInt().coerceIn(40, 72)
+    val spacing = (8 * scaleFactor).toInt().coerceAtLeast(8)
+
+    Column(
+        modifier = GlanceModifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Title row
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            HourglassImage(timerState, sizeDP = hourglassSize)
+            Spacer(GlanceModifier.width(8.dp))
+            Text(
+                text = "FLOW TIME",
+                style = TextStyle(
+                    color = WidgetTextColor,
+                    fontSize = titleFontSize.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace
+                )
+            )
+        }
+        Spacer(GlanceModifier.height(spacing.dp))
+
+        // Timer readout
+        TimerText(formattedTime, fontSize = timerFontSize)
+        Spacer(GlanceModifier.height(spacing.dp))
+
+        // Status + duration label
         Row(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            PlayPauseButton(timerState)
-            Spacer(GlanceModifier.width(8.dp))
-            ResetButton(timerState)
+            StatusText(timerState, fontSize = labelFontSize)
+            Spacer(GlanceModifier.width(12.dp))
+            Text(
+                text = "${durationMinutes} min",
+                style = TextStyle(
+                    color = WidgetTextDim,
+                    fontSize = labelFontSize.sp,
+                    fontFamily = FontFamily.Monospace
+                )
+            )
         }
+        Spacer(GlanceModifier.height(spacing.dp))
+
+        // Control button
+        PlayPauseButton(timerState, buttonSize = buttonSize)
     }
 }
 
@@ -240,7 +330,7 @@ private fun TimerText(formattedTime: String, fontSize: Int) {
 }
 
 @Composable
-private fun StatusText(timerState: TimerState) {
+private fun StatusText(timerState: TimerState, fontSize: Int = 8) {
     val (label, color) = when (timerState) {
         is TimerState.Idle -> "READY" to WidgetTextDim
         is TimerState.Running -> "FLOWING" to WidgetAccentBlue
@@ -250,50 +340,36 @@ private fun StatusText(timerState: TimerState) {
         text = label,
         style = TextStyle(
             color = color,
-            fontSize = 8.sp,
+            fontSize = fontSize.sp,
             fontFamily = FontFamily.Monospace
         )
     )
 }
 
 /**
- * Play/Reset toggle button.
- * Shows ▶ when idle/finished, ↺ when running.
+ * Play/Stop toggle button.
+ * Shows ▶ when idle/finished, ■ when running.
  * Tapping sends [StartAction] (idle/finished) or [ResetAction] (running).
  */
 @Composable
-private fun PlayPauseButton(timerState: TimerState) {
+private fun PlayPauseButton(timerState: TimerState, buttonSize: Int = 36) {
     val label = when (timerState) {
-        is TimerState.Running -> "↺"
+        is TimerState.Running -> "■"
         is TimerState.Idle -> "▶"
         is TimerState.Finished -> "▶"
     }
     val contentDesc = when (timerState) {
-        is TimerState.Running -> "Reset timer"
+        is TimerState.Running -> "Stop timer"
         is TimerState.Idle -> "Start timer"
         is TimerState.Finished -> "Start timer"
     }
-    // Running → reset (pause/stop); Idle/Finished → start
+    // Running → reset (stop); Idle/Finished → start
     val action: Action = when (timerState) {
         is TimerState.Running -> actionRunCallback<ResetAction>()
         is TimerState.Idle -> actionRunCallback<StartAction>()
         is TimerState.Finished -> actionRunCallback<StartAction>()
     }
-    WidgetButton(text = label, contentDescription = contentDesc, action = action)
-}
-
-/**
- * Reset button. Visually dimmed when idle (no action attached).
- */
-@Composable
-private fun ResetButton(timerState: TimerState) {
-    val isIdle = timerState is TimerState.Idle
-    WidgetButton(
-        text = "↺",
-        contentDescription = "Reset timer",
-        dimmed = isIdle,
-        action = if (isIdle) null else actionRunCallback<ResetAction>()
-    )
+    WidgetButton(text = label, contentDescription = contentDesc, action = action, buttonSize = buttonSize)
 }
 
 @Composable
@@ -301,10 +377,11 @@ private fun WidgetButton(
     text: String,
     contentDescription: String,
     dimmed: Boolean = false,
-    action: Action? = null
+    action: Action? = null,
+    buttonSize: Int = 36
 ) {
     val modifier = GlanceModifier
-        .size(36.dp)
+        .size(buttonSize.dp)
         .cornerRadius(8.dp)
         .background(WidgetCardBackground)
         .let { mod -> if (action != null) mod.clickable(action) else mod }
@@ -317,7 +394,7 @@ private fun WidgetButton(
             text = text,
             style = TextStyle(
                 color = if (dimmed) WidgetTextDim else WidgetTextColor,
-                fontSize = 16.sp
+                fontSize = (buttonSize * 0.44f).toInt().sp
             )
         )
     }
