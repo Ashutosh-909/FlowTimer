@@ -14,6 +14,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
 
 /**
@@ -224,5 +225,162 @@ class FlowSessionDaoTest {
         assertTrue(results[0].id != results[1].id)
         assertTrue(results[0].id > 0)
         assertTrue(results[1].id > 0)
+    }
+
+    // ── Edge Cases ──────────────────────────────────────────────────────
+
+    @Test
+    fun sessionsInRange_boundaryInclusive_startAndEndMatch() = runTest {
+        val exactStart = 1_709_000_000_000L
+        val exactEnd = 1_709_001_500_000L
+
+        dao.insert(
+            FlowSession(
+                startEpochMillis = exactStart,
+                durationMinutes = 25,
+                completedEpochMillis = exactStart // completed at exact start boundary
+            )
+        )
+        dao.insert(
+            FlowSession(
+                startEpochMillis = exactStart,
+                durationMinutes = 30,
+                completedEpochMillis = exactEnd // completed at exact end boundary
+            )
+        )
+
+        val results = dao.sessionsInRange(
+            startMillis = exactStart,
+            endMillis = exactEnd
+        ).first()
+
+        assertEquals(2, results.size)
+    }
+
+    @Test
+    fun sessionsInRange_boundaryExclusive_justOutside() = runTest {
+        val rangeStart = 1_709_000_000_000L
+        val rangeEnd = 1_709_002_000_000L
+
+        // Session completed 1 ms before range start
+        dao.insert(
+            FlowSession(
+                startEpochMillis = rangeStart - 100_000L,
+                durationMinutes = 10,
+                completedEpochMillis = rangeStart - 1L
+            )
+        )
+        // Session completed 1 ms after range end
+        dao.insert(
+            FlowSession(
+                startEpochMillis = rangeEnd,
+                durationMinutes = 10,
+                completedEpochMillis = rangeEnd + 1L
+            )
+        )
+
+        val results = dao.sessionsInRange(
+            startMillis = rangeStart,
+            endMillis = rangeEnd
+        ).first()
+
+        assertTrue(results.isEmpty())
+    }
+
+    @Test
+    fun dailyAggregates_midnightBoundary_sessionsGroupCorrectly() = runTest {
+        val zone = ZoneId.systemDefault()
+        val today = LocalDate.now()
+        val yesterday = today.minusDays(1)
+
+        // Session completed 1 minute before midnight (belongs to yesterday)
+        val beforeMidnight = yesterday.atTime(LocalTime.of(23, 59))
+            .atZone(zone).toInstant().toEpochMilli()
+        // Session completed 1 minute after midnight (belongs to today)
+        val afterMidnight = today.atTime(LocalTime.of(0, 1))
+            .atZone(zone).toInstant().toEpochMilli()
+
+        dao.insert(
+            FlowSession(
+                startEpochMillis = beforeMidnight - 25 * 60_000L,
+                durationMinutes = 25,
+                completedEpochMillis = beforeMidnight
+            )
+        )
+        dao.insert(
+            FlowSession(
+                startEpochMillis = afterMidnight - 15 * 60_000L,
+                durationMinutes = 15,
+                completedEpochMillis = afterMidnight
+            )
+        )
+
+        val rangeStart = yesterday.atStartOfDay(zone).toInstant().toEpochMilli()
+        val rangeEnd = today.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli() - 1
+
+        val aggregates = dao.dailyAggregates(
+            startMillis = rangeStart,
+            endMillis = rangeEnd
+        ).first()
+
+        assertEquals(2, aggregates.size)
+        // Yesterday's aggregate
+        assertEquals(yesterday.toString(), aggregates[0].day)
+        assertEquals(25, aggregates[0].totalMinutes)
+        // Today's aggregate
+        assertEquals(today.toString(), aggregates[1].day)
+        assertEquals(15, aggregates[1].totalMinutes)
+    }
+
+    @Test
+    fun dailyAggregates_singleSession_returnsCountOne() = runTest {
+        val today = LocalDate.now()
+        val zone = ZoneId.systemDefault()
+        val startOfDay = today.atStartOfDay(zone).toInstant().toEpochMilli()
+
+        dao.insert(
+            FlowSession(
+                startEpochMillis = startOfDay,
+                durationMinutes = 45,
+                completedEpochMillis = startOfDay + 45 * 60_000L
+            )
+        )
+
+        val aggregates = dao.dailyAggregates(
+            startMillis = startOfDay,
+            endMillis = startOfDay + 24 * 60 * 60_000L
+        ).first()
+
+        assertEquals(1, aggregates.size)
+        assertEquals(45, aggregates[0].totalMinutes)
+        assertEquals(1, aggregates[0].sessionCount)
+    }
+
+    @Test
+    fun dailyAggregates_manySessions_sumsCorrectly() = runTest {
+        val today = LocalDate.now()
+        val zone = ZoneId.systemDefault()
+        val startOfDay = today.atStartOfDay(zone).toInstant().toEpochMilli()
+
+        // Insert 5 sessions of 10 minutes each
+        repeat(5) { i ->
+            val offset = i * 15 * 60_000L
+            dao.insert(
+                FlowSession(
+                    startEpochMillis = startOfDay + offset,
+                    durationMinutes = 10,
+                    completedEpochMillis = startOfDay + offset + 10 * 60_000L
+                )
+            )
+        }
+
+        val aggregates = dao.dailyAggregates(
+            startMillis = startOfDay,
+            endMillis = startOfDay + 24 * 60 * 60_000L
+        ).first()
+
+        assertEquals(1, aggregates.size)
+        assertEquals(50, aggregates[0].totalMinutes) // 5 × 10
+        assertEquals(5, aggregates[0].sessionCount)
     }
 }
