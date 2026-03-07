@@ -8,6 +8,8 @@ import android.content.pm.ServiceInfo
 import android.os.IBinder
 import android.os.SystemClock
 import com.ashutosh.flowtimer.core.data.PreferencesRepository
+import com.ashutosh.flowtimer.core.data.SessionRepository
+import com.ashutosh.flowtimer.core.data.db.FlowTimerDatabase
 import com.ashutosh.flowtimer.core.timer.TimerEngine
 import com.ashutosh.flowtimer.core.timer.TimerState
 import com.ashutosh.flowtimer.widget.FlowTimeWidget
@@ -53,6 +55,7 @@ class TimerForegroundService : Service() {
 
     private lateinit var timerEngine: TimerEngine
     private lateinit var repository: PreferencesRepository
+    private lateinit var sessionRepository: SessionRepository
 
     // ── Lifecycle ────────────────────────────────────────────────────────
 
@@ -62,6 +65,9 @@ class TimerForegroundService : Service() {
         NotificationHelper.createChannels(this)
 
         repository = PreferencesRepository(applicationContext)
+        sessionRepository = SessionRepository(
+            FlowTimerDatabase.getInstance(applicationContext).flowSessionDao()
+        )
         timerEngine = TimerEngine(serviceScope, elapsedRealtimeProvider = SystemClock::elapsedRealtime)
 
         observeEngineState()
@@ -276,7 +282,16 @@ class TimerForegroundService : Service() {
             repository.setTimerState(TimerState.Finished.name)
             repository.setRemainingMillis(0L)
             repository.recordSessionCompleted()
+
+            // Persist session to Room for dashboard history
+            val startEpoch = repository.lastStartEpoch.first()
             val duration = repository.flowDurationMinutes.first()
+            sessionRepository.recordSession(
+                startEpoch = startEpoch,
+                durationMinutes = duration,
+                completedEpoch = System.currentTimeMillis()
+            )
+
             FlowTimeWidget.pushStateAndUpdate(
                 context = this@TimerForegroundService,
                 stateName = TimerState.Finished.name,
