@@ -23,7 +23,7 @@ final class FlowTimerObservable: ObservableObject {
             DispatchQueue.main.async { self?.uiState = state }
         }
         pickerCancellable = viewModel.observeShowPicker { [weak self] show in
-            DispatchQueue.main.async { self?.showDurationPicker = show }
+            DispatchQueue.main.async { self?.showDurationPicker = show.boolValue }
         }
     }
 

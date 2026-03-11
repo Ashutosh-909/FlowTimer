@@ -8,8 +8,8 @@ struct HourglassView: View {
     let onTap: () -> Void
     let onLongPress: () -> Void
 
-    private var isRunning: Bool { timerState is TimerStateRunning }
-    private var isFinished: Bool { timerState is TimerStateFinished }
+    private var isRunning: Bool { timerState is TimerState.Running }
+    private var isFinished: Bool { timerState is TimerState.Finished }
 
     var body: some View {
         ZStack {
@@ -83,7 +83,7 @@ private struct HourglassShape: View {
             outline.addLine(to: CGPoint(x: w, y: h))
             outline.addLine(to: CGPoint(x: 0, y: h))
             outline.addLine(to: CGPoint(x: w / 2 - 4, y: mid + 2))
-            outline.closePath()
+            outline.closeSubpath()
 
             context.fill(outline, with: .color(Color(red: 0.13, green: 0.22, blue: 0.33)))
             context.stroke(outline, with: .color(Color(red: 0.49, green: 0.78, blue: 0.89).opacity(0.5)), lineWidth: 1.5)
@@ -97,7 +97,7 @@ private struct HourglassShape: View {
             topSand.addLine(to: CGPoint(x: w - 4, y: topY))
             topSand.addLine(to: CGPoint(x: w / 2 + 2, y: mid - 4))
             topSand.addLine(to: CGPoint(x: w / 2 - 2, y: mid - 4))
-            topSand.closePath()
+            topSand.closeSubpath()
             context.fill(topSand, with: .color(sandColor))
 
             // Bottom chamber — collected sand (fills as progress increases)
@@ -117,7 +117,7 @@ private struct HourglassShape: View {
             botClip.addLine(to: CGPoint(x: w / 2 + 2, y: mid + 4))
             botClip.addLine(to: CGPoint(x: w - 4, y: h - 4))
             botClip.addLine(to: CGPoint(x: 4, y: h - 4))
-            botClip.closePath()
+            botClip.closeSubpath()
             context.clip(to: botClip)
             context.fill(botSand, with: .color(sandColor))
         }
