@@ -1,0 +1,64 @@
+# azure-pipelines.yml
+# Flow Timer — KMP + SwiftUI
+# Repo: git@github.com:Ashutosh-909/FlowTimer.git
+# See ONBOARDING.md in nextjedi/apps-ops for full setup instructions.
+#
+# Azure DevOps Library setup required before running:
+#
+# Variable groups (Library -> Variable groups):
+#   mobile-shared-signing   (Vsts)
+#     ASC_KEY_ID            KFMUN9Z5NJ
+#     ASC_ISSUER_ID         6e580434-840b-439f-8296-e30ad8913481
+#
+#   mobile-shared-secrets   (Key Vault linked)
+#     P12_PASSWORD          linked to ios-p12-password
+#
+#   app-flow-timer          (Vsts)
+#     ANDROID_PACKAGE_NAME  com.ashutosh.flowtimer
+#     IOS_BUNDLE_ID         com.nextjedi.flowtimer
+#     KEY_ALIAS             flowtimer
+#     IOS_SCHEME            iosApp
+#     APPLE_TEAM_ID         DLQ4JM3YPQ
+#
+#   app-flow-timer-secrets  (Key Vault linked)
+#     KEYSTORE_PASSWORD     linked to flow-timer-keystore-password
+#     KEY_PASSWORD          linked to flow-timer-key-password
+#
+# Secure files (Library -> Secure files):
+#   upload-keystore.jks                              Android signing keystore
+#   distribution.p12                                 iOS distribution certificate
+#   ios-distribution.mobileprovision                 iOS App Store provisioning profile
+#   AuthKey_KFMUN9Z5NJ.p8                            Apple App Store Connect API key
+#   playstore-deployment-478918-bfdbcec06414.json    Google service account key
+#
+# GitHub service connection:
+#   endpoint: GitHub-nextjedi   (must have access to Ashutosh-909/FlowTimer)
+
+resources:
+  repositories:
+    - repository: devops-central
+      type: github
+      name: nextjedi/apps-ops
+      ref: refs/heads/main
+      endpoint: GitHub-nextjedi
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - "*.md"
+      - docs/**
+
+pr:
+  branches:
+    include:
+      - main
+
+extends:
+  template: azure-pipelines/templates/kmp-swiftui-deploy.yml@devops-central
+  parameters:
+    appVariableGroup: "app-flow-timer"
+    androidModule: "app"
+    iosWorkspace: "iosApp/iosApp.xcodeproj/project.xcworkspace"

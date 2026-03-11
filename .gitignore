@@ -21,3 +21,14 @@ local.properties
 *.jks
 *.keystore
 upload-keystore.jks
+
+# ── iOS / Fastlane secrets (never commit) ──────────────────────────────────
+.env
+*.p8
+*.p12
+*.mobileprovision
+*.cer
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output

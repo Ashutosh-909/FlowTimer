@@ -1,0 +1,135 @@
+opt_out_usage
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Build KMP iOS app and upload to TestFlight"
+  lane :deploy do
+    app_dir = ENV.fetch("APP_SOURCE_DIR", File.expand_path("../..", __FILE__))
+
+    api_key = app_store_connect_api_key(
+      key_id:       ENV.fetch("ASC_KEY_ID"),
+      issuer_id:    ENV.fetch("ASC_ISSUER_ID"),
+      key_filepath: ENV.fetch("ASC_P8_FILE_PATH")
+    )
+
+    # Step 1: Build KMP shared framework
+    sh("cd '#{app_dir}' && JAVA_HOME=#{ENV.fetch('JAVA_HOME', '/opt/homebrew/Cellar/openjdk@17/17.0.18/libexec/openjdk.jdk/Contents/Home')} ./gradlew :shared:linkReleaseFrameworkIosArm64")
+
+    # Step 2: Archive with xcodebuild
+    scheme    = ENV.fetch("XCODE_SCHEME", "iosApp")
+    project   = "#{app_dir}/iosApp/iosApp.xcodeproj"
+
+    sh(
+      "xcodebuild",
+      "-project", project,
+      "-scheme", scheme,
+      "-configuration", "Release",
+      "-sdk", "iphoneos",
+      "-destination", "generic/platform=iOS",
+      "-archivePath", "#{app_dir}/build/ios/FlowTimer.xcarchive",
+      "archive",
+      "DEVELOPMENT_TEAM=#{ENV.fetch('DEVELOPMENT_TEAM', 'DLQ4JM3YPQ')}",
+      "-allowProvisioningUpdates"
+    )
+
+    # Step 3: Export IPA
+    export_options = "#{app_dir}/iosApp/ExportOptions.plist"
+
+    sh(
+      "xcodebuild",
+      "-exportArchive",
+      "-archivePath", "#{app_dir}/build/ios/FlowTimer.xcarchive",
+      "-exportPath", "#{app_dir}/build/ios/ipa",
+      "-exportOptionsPlist", export_options,
+      "-allowProvisioningUpdates"
+    )
+
+    ipa_path = Dir["#{app_dir}/build/ios/ipa/*.ipa"].first
+    raise "IPA not found after export" unless ipa_path
+
+    # Step 4: Upload to TestFlight
+    pilot(
+      api_key:                           api_key,
+      app_identifier:                    ENV.fetch("IOS_BUNDLE_ID", "com.nextjedi.flowtimer"),
+      ipa:                               ipa_path,
+      skip_waiting_for_build_processing: true,
+      skip_submission:                   true
+    )
+  end
+
+  desc "Register App ID and fetch provisioning profile"
+  lane :register_app do
+    api_key = app_store_connect_api_key(
+      key_id:       ENV.fetch("ASC_KEY_ID"),
+      issuer_id:    ENV.fetch("ASC_ISSUER_ID"),
+      key_filepath: ENV.fetch("ASC_P8_FILE_PATH")
+    )
+
+    # Fetch or create App Store Distribution provisioning profile
+    get_provisioning_profile(
+      app_identifier: "com.nextjedi.flowtimer",
+      team_id:        ENV.fetch("DEVELOPMENT_TEAM", "DLQ4JM3YPQ"),
+      api_key:        api_key,
+      force:          true,
+      filename:       "flow-timer-appstore.mobileprovision"
+    )
+  end
+
+  desc "Upload an existing IPA to TestFlight"
+  lane :upload do
+    api_key = app_store_connect_api_key(
+      key_id:       ENV.fetch("ASC_KEY_ID"),
+      issuer_id:    ENV.fetch("ASC_ISSUER_ID"),
+      key_filepath: ENV.fetch("ASC_P8_FILE_PATH")
+    )
+
+    app_dir = ENV.fetch("APP_SOURCE_DIR", File.expand_path("../..", __FILE__))
+    ipa_path = ENV.fetch("IPA_PATH", Dir["#{app_dir}/build/ios/ipa/*.ipa"].first)
+    raise "IPA not found" unless ipa_path
+
+    pilot(
+      api_key:                           api_key,
+      app_identifier:                    ENV.fetch("IOS_BUNDLE_ID", "com.nextjedi.flowtimer"),
+      ipa:                               ipa_path,
+      skip_waiting_for_build_processing: true,
+      skip_submission:                   true
+    )
+  end
+
+  desc "Build only (no upload) — for local testing"
+  lane :build do
+    app_dir = ENV.fetch("APP_SOURCE_DIR", File.expand_path("../..", __FILE__))
+
+    sh("cd '#{app_dir}' && JAVA_HOME=#{ENV.fetch('JAVA_HOME', '/opt/homebrew/Cellar/openjdk@17/17.0.18/libexec/openjdk.jdk/Contents/Home')} ./gradlew :shared:linkReleaseFrameworkIosArm64")
+
+    scheme  = ENV.fetch("XCODE_SCHEME", "iosApp")
+    project = "#{app_dir}/iosApp/iosApp.xcodeproj"
+
+    sh(
+      "xcodebuild",
+      "-project", project,
+      "-scheme", scheme,
+      "-configuration", "Release",
+      "-sdk", "iphoneos",
+      "-destination", "generic/platform=iOS",
+      "-archivePath", "#{app_dir}/build/ios/FlowTimer.xcarchive",
+      "archive",
+      "DEVELOPMENT_TEAM=#{ENV.fetch('DEVELOPMENT_TEAM', 'DLQ4JM3YPQ')}",
+      "-allowProvisioningUpdates"
+    )
+
+    export_options = "#{app_dir}/iosApp/ExportOptions.plist"
+
+    sh(
+      "xcodebuild",
+      "-exportArchive",
+      "-archivePath", "#{app_dir}/build/ios/FlowTimer.xcarchive",
+      "-exportPath", "#{app_dir}/build/ios/ipa",
+      "-exportOptionsPlist", export_options,
+      "-allowProvisioningUpdates"
+    )
+
+    UI.success("IPA built at: #{Dir["#{app_dir}/build/ios/ipa/*.ipa"].first}")
+  end
+end
