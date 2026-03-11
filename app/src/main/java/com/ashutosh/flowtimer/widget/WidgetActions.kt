@@ -6,7 +6,9 @@ import android.os.Build
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
+import com.ashutosh.flowtimer.core.data.PreferencesRepository
 import com.ashutosh.flowtimer.core.service.TimerForegroundService
+import kotlinx.coroutines.flow.first
 
 /**
  * Widget action callbacks that send intents to [TimerForegroundService].
@@ -20,6 +22,7 @@ import com.ashutosh.flowtimer.core.service.TimerForegroundService
 
 /**
  * Sends [TimerForegroundService.ACTION_START] to begin or resume a flow session.
+ * Reads the current duration from DataStore and passes it to the service.
  */
 class StartAction : ActionCallback {
 
@@ -28,7 +31,13 @@ class StartAction : ActionCallback {
         glanceId: GlanceId,
         parameters: ActionParameters
     ) {
+        // Read the current duration from DataStore
+        val repository = PreferencesRepository(context)
+        val durationMinutes = repository.flowDurationMinutes.first()
+
         val intent = TimerForegroundService.intent(context, TimerForegroundService.ACTION_START)
+            .putExtra(TimerForegroundService.EXTRA_DURATION_MINUTES, durationMinutes)
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intent)
         } else {

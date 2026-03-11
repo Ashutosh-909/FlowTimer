@@ -130,6 +130,13 @@ class TimerForegroundService : Service() {
                     timerEngine.cancel()
                     timerEngine.start(persisted)
                     updateNotification(timerEngine.remainingMillis.value)
+                    // Sync widget state with corrected duration
+                    FlowTimeWidget.pushStateAndUpdate(
+                        context = this@TimerForegroundService,
+                        stateName = TimerState.Running.name,
+                        remainingMillis = timerEngine.remainingMillis.value,
+                        durationMinutes = persisted
+                    )
                 }
             }
         }
