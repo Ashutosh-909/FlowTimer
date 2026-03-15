@@ -6,10 +6,10 @@ com.ashutosh.flowtimer.wear-annotation-experimental-1.4.1-4 C:\Users\aspriyad\.g
 com.ashutosh.flowtimer.wear-tiles-1.4.1-5 C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\a99164bca432ee6a0d5d419aa4423cdd\workspace\transformed\tiles-1.4.1\res
 com.ashutosh.flowtimer.wear-protolayout-1.2.1-6 C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\ebd256eca395a4cf04205ae91f7b39f2\workspace\transformed\protolayout-1.2.1\res
 com.ashutosh.flowtimer.wear-protolayout-expression-1.2.1-7 C:\Users\aspriyad\.gradle\caches\9.2.1\transforms\f75aeb68c4424396406cefd4c5fd83de\workspace\transformed\protolayout-expression-1.2.1\res
-com.ashutosh.flowtimer.wear-pngs-8 C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\build\generated\res\pngs\debug
-com.ashutosh.flowtimer.wear-updated_navigation_xml-9 C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\build\generated\updated_navigation_xml\debug
-com.ashutosh.flowtimer.wear-packageDebugResources-10 C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\build\intermediates\incremental\debug\packageDebugResources\merged.dir
-com.ashutosh.flowtimer.wear-packageDebugResources-11 C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
-com.ashutosh.flowtimer.wear-debug-12 C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\build\intermediates\merged_res\debug\mergeDebugResources
-com.ashutosh.flowtimer.wear-debug-13 C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\debug\res
-com.ashutosh.flowtimer.wear-main-14 C:\Users\aspriyad\AndroidStudioProjects\FlowTimer\wear\src\main\res
+com.ashutosh.flowtimer.wear-pngs-8 C:\Users\aspriyad\source\PersonalRepo\FlowTimer\wear\build\generated\res\pngs\debug
+com.ashutosh.flowtimer.wear-updated_navigation_xml-9 C:\Users\aspriyad\source\PersonalRepo\FlowTimer\wear\build\generated\updated_navigation_xml\debug
+com.ashutosh.flowtimer.wear-packageDebugResources-10 C:\Users\aspriyad\source\PersonalRepo\FlowTimer\wear\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.ashutosh.flowtimer.wear-packageDebugResources-11 C:\Users\aspriyad\source\PersonalRepo\FlowTimer\wear\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.ashutosh.flowtimer.wear-debug-12 C:\Users\aspriyad\source\PersonalRepo\FlowTimer\wear\build\intermediates\merged_res\debug\mergeDebugResources
+com.ashutosh.flowtimer.wear-debug-13 C:\Users\aspriyad\source\PersonalRepo\FlowTimer\wear\src\debug\res
+com.ashutosh.flowtimer.wear-main-14 C:\Users\aspriyad\source\PersonalRepo\FlowTimer\wear\src\main\res

@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# ── Jetpack Glance (App Widget) ─────────────────────────────────────────
+# Glance resolves ActionCallback subclasses by fully-qualified class name
+# at runtime. R8 must not rename or remove them.
+-keep class * extends androidx.glance.appwidget.action.ActionCallback { *; }
+
+# Keep the GlanceAppWidget and GlanceAppWidgetReceiver so the system can
+# instantiate them via the manifest-declared class name.
+-keep class * extends androidx.glance.appwidget.GlanceAppWidget { *; }
+-keep class * extends androidx.glance.appwidget.GlanceAppWidgetReceiver { *; }
