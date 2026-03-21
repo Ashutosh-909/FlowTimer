@@ -29,3 +29,13 @@
 # instantiate them via the manifest-declared class name.
 -keep class * extends androidx.glance.appwidget.GlanceAppWidget { *; }
 -keep class * extends androidx.glance.appwidget.GlanceAppWidgetReceiver { *; }
+
+# ── WorkManager (transitive dep of Glance) ──────────────────────────────
+# Glance uses WorkManager internally to schedule widget updates.
+# R8 strips the no-arg constructor from InputMerger subclasses, which
+# WorkManager instantiates reflectively.
+-keep class androidx.work.InputMerger { <init>(); }
+-keep class * extends androidx.work.InputMerger { <init>(); }
+
+# Keep WorkManager's Worker subclasses used by Glance.
+-keep class * extends androidx.work.ListenableWorker { <init>(android.content.Context, androidx.work.WorkerParameters); }

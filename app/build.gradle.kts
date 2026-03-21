@@ -32,8 +32,8 @@ android {
         applicationId = "com.ashutosh.flowtimer"
         minSdk = 29
         targetSdk = 36
-        versionCode = 11
-        versionName = "11.2"
+        versionCode = 16
+        versionName = "16.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
