@@ -33,7 +33,7 @@
 # ── WorkManager (transitive dep of Glance) ──────────────────────────────
 # Glance uses WorkManager internally to schedule widget updates.
 # R8 strips the no-arg constructor from InputMerger subclasses, which
-# WorkManager instantiates reflectively.
+# WorkManager instantiates reflectively — breaking all actionRunCallback actions.
 -keep class androidx.work.InputMerger { <init>(); }
 -keep class * extends androidx.work.InputMerger { <init>(); }
 
