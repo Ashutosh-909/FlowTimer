@@ -4,7 +4,24 @@
             "outputFile": "com.ashutosh.flowtimer.wear-mergeDebugResources-9:/values-vi/values-vi.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\f31671db1272c44d61f6393f0cb73e8d\\workspace\\transformed\\core-1.2.0\\res\\values-vi\\values-vi.xml",
+                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\a60b195cd7805f47eca022742363596e\\workspace\\transformed\\play-services-base-18.5.0\\res\\values-vi\\values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
+                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+                        "startOffsets": "193,291,449,570,675,836,962,1077,1177,1346,1449,1602,1728,1883,2028,2092,2152",
+                        "endColumns": "97,157,120,104,160,125,114,99,168,102,152,125,154,144,63,59,78",
+                        "endOffsets": "290,448,569,674,835,961,1076,1176,1345,1448,1601,1727,1882,2027,2091,2151,2230"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,157,319,444,553,718,848,967,1199,1372,1479,1636,1766,1925,2074,2142,2206",
+                        "endColumns": "101,161,124,108,164,129,118,103,172,106,156,129,158,148,67,63,82",
+                        "endOffsets": "152,314,439,548,713,843,962,1066,1367,1474,1631,1761,1920,2069,2137,2201,2284"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\809f7b8d8d38e259ddcad3255a18ecbb\\workspace\\transformed\\core-1.2.0\\res\\values-vi\\values-vi.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\6a69df4b9a029a41a309fcfa87e93ccf\\workspace\\transformed\\play-services-basement-18.4.0\\res\\values-vi\\values.xml",
+                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\33f310e1edc30370d94e49f4cf89baf1\\workspace\\transformed\\play-services-basement-18.4.0\\res\\values-vi\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -35,23 +52,6 @@
                         "startOffsets": "1071",
                         "endColumns": "127",
                         "endOffsets": "1194"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\ba1343e142bb53ae2c517fb4b428a9d1\\workspace\\transformed\\play-services-base-18.5.0\\res\\values-vi\\values.xml",
-                    "from": {
-                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
-                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-                        "startOffsets": "193,291,449,570,675,836,962,1077,1177,1346,1449,1602,1728,1883,2028,2092,2152",
-                        "endColumns": "97,157,120,104,160,125,114,99,168,102,152,125,154,144,63,59,78",
-                        "endOffsets": "290,448,569,674,835,961,1076,1176,1345,1448,1601,1727,1882,2027,2091,2151,2230"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,157,319,444,553,718,848,967,1199,1372,1479,1636,1766,1925,2074,2142,2206",
-                        "endColumns": "101,161,124,108,164,129,118,103,172,106,156,129,158,148,67,63,82",
-                        "endOffsets": "152,314,439,548,713,843,962,1066,1367,1474,1631,1761,1920,2069,2137,2201,2284"
                     }
                 }
             ]

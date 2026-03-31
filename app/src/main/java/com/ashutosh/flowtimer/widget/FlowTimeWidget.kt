@@ -41,6 +41,9 @@ class FlowTimeWidget : GlanceAppWidget() {
         /** Breakpoint for large widget (4×2 cells). */
         private val LARGE = DpSize(250.dp, 110.dp)
 
+        /** Breakpoint for extra-large widget (5×3+ cells). */
+        private val EXTRA_LARGE = DpSize(320.dp, 180.dp)
+
         /**
          * Push timer state into every widget instance's Glance state store
          * and trigger a visual update.
@@ -76,7 +79,7 @@ class FlowTimeWidget : GlanceAppWidget() {
     }
 
     override val sizeMode: SizeMode = SizeMode.Responsive(
-        setOf(SMALL, MEDIUM, LARGE)
+        setOf(SMALL, MEDIUM, LARGE, EXTRA_LARGE)
     )
 
     override val stateDefinition: GlanceStateDefinition<*> =

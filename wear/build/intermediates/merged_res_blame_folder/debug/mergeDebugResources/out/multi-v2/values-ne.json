@@ -4,7 +4,7 @@
             "outputFile": "com.ashutosh.flowtimer.wear-mergeDebugResources-9:/values-ne/values-ne.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\f31671db1272c44d61f6393f0cb73e8d\\workspace\\transformed\\core-1.2.0\\res\\values-ne\\values-ne.xml",
+                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\809f7b8d8d38e259ddcad3255a18ecbb\\workspace\\transformed\\core-1.2.0\\res\\values-ne\\values-ne.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,24 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\ba1343e142bb53ae2c517fb4b428a9d1\\workspace\\transformed\\play-services-base-18.5.0\\res\\values-ne\\values.xml",
-                    "from": {
-                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
-                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-                        "startOffsets": "193,300,454,584,697,864,996,1102,1203,1379,1489,1649,1778,1922,2070,2132,2200",
-                        "endColumns": "106,153,129,112,166,131,105,100,175,109,159,128,143,147,61,67,87",
-                        "endOffsets": "299,453,583,696,863,995,1101,1202,1378,1488,1648,1777,1921,2069,2131,2199,2287"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,166,324,458,575,746,882,992,1261,1441,1555,1719,1852,2000,2152,2218,2290",
-                        "endColumns": "110,157,133,116,170,135,109,104,179,113,163,132,147,151,65,71,91",
-                        "endOffsets": "161,319,453,570,741,877,987,1092,1436,1550,1714,1847,1995,2147,2213,2285,2377"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\6a69df4b9a029a41a309fcfa87e93ccf\\workspace\\transformed\\play-services-basement-18.4.0\\res\\values-ne\\values.xml",
+                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\33f310e1edc30370d94e49f4cf89baf1\\workspace\\transformed\\play-services-basement-18.4.0\\res\\values-ne\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -52,6 +35,23 @@
                         "startOffsets": "1097",
                         "endColumns": "163",
                         "endOffsets": "1256"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\aspriyad\\.gradle\\caches\\9.2.1\\transforms\\a60b195cd7805f47eca022742363596e\\workspace\\transformed\\play-services-base-18.5.0\\res\\values-ne\\values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
+                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+                        "startOffsets": "193,300,454,584,697,864,996,1102,1203,1379,1489,1649,1778,1922,2070,2132,2200",
+                        "endColumns": "106,153,129,112,166,131,105,100,175,109,159,128,143,147,61,67,87",
+                        "endOffsets": "299,453,583,696,863,995,1101,1202,1378,1488,1648,1777,1921,2069,2131,2199,2287"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,166,324,458,575,746,882,992,1261,1441,1555,1719,1852,2000,2152,2218,2290",
+                        "endColumns": "110,157,133,116,170,135,109,104,179,113,163,132,147,151,65,71,91",
+                        "endOffsets": "161,319,453,570,741,877,987,1092,1436,1550,1714,1847,1995,2147,2213,2285,2377"
                     }
                 }
             ]

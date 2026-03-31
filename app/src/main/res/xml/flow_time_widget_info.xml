@@ -8,8 +8,6 @@
     android:targetCellHeight="1"
     android:minResizeWidth="110dp"
     android:minResizeHeight="40dp"
-    android:maxResizeWidth="250dp"
-    android:maxResizeHeight="110dp"
     android:previewLayout="@layout/widget_loading"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1800000"
