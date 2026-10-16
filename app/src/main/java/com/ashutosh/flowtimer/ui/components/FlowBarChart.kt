@@ -57,10 +57,7 @@ import com.ashutosh.flowtimer.ui.theme.SpaceMid
  * @param entries Label + value pairs to render as bars.
  */
 @Composable
-fun FlowBarChart(
-    modifier: Modifier = Modifier,
-    entries: List<DashboardViewModel.BarEntry>
-) {
+fun FlowBarChart(modifier: Modifier = Modifier, entries: List<DashboardViewModel.BarEntry>) {
     if (entries.isEmpty()) return
 
     val animProgress = remember { Animatable(0f) }
@@ -78,13 +75,13 @@ fun FlowBarChart(
         fontFamily = PixelFontFamily,
         fontSize = 8.sp,
         color = PixelTextDim,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
     )
     val tooltipStyle = TextStyle(
         fontFamily = PixelFontFamily,
         fontSize = 8.sp,
         color = PixelText,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
     )
 
     val density = LocalDensity.current
@@ -100,7 +97,7 @@ fun FlowBarChart(
     val gridLineColor = SpaceMid.copy(alpha = 0.3f)
     val barGradient = Brush.verticalGradient(listOf(GlowCyan, GlowBlue))
     val selectedBarGradient = Brush.verticalGradient(
-        listOf(GlowCyan.copy(alpha = 0.8f), GlowBlue.copy(alpha = 0.8f))
+        listOf(GlowCyan.copy(alpha = 0.8f), GlowBlue.copy(alpha = 0.8f)),
     )
 
     Canvas(
@@ -116,7 +113,7 @@ fun FlowBarChart(
                         .coerceIn(0, entries.size - 1)
                     selectedIndex = if (selectedIndex == tappedIndex) -1 else tappedIndex
                 }
-            }
+            },
     ) {
         val chartHeight = size.height - bottomPaddingPx
         val barTotalWidth = size.width / entries.size
@@ -128,7 +125,7 @@ fun FlowBarChart(
                 color = gridLineColor,
                 start = Offset(0f, y),
                 end = Offset(size.width, y),
-                strokeWidth = 1f
+                strokeWidth = 1f,
             )
         }
 
@@ -147,14 +144,14 @@ fun FlowBarChart(
                     brush = if (isSelected) selectedBarGradient else barGradient,
                     topLeft = Offset(barX, barTop),
                     size = Size(barWidth, barHeight),
-                    cornerRadius = CornerRadius(barCornerRadiusPx, barCornerRadiusPx)
+                    cornerRadius = CornerRadius(barCornerRadiusPx, barCornerRadiusPx),
                 )
             } else {
                 // Zero-value: render a small dot
                 drawCircle(
                     color = GlowBlue.copy(alpha = 0.3f),
                     radius = dotRadiusPx,
-                    center = Offset(barX + barWidth / 2, chartHeight - dotRadiusPx)
+                    center = Offset(barX + barWidth / 2, chartHeight - dotRadiusPx),
                 )
             }
 
@@ -164,8 +161,8 @@ fun FlowBarChart(
                 textLayoutResult = labelResult,
                 topLeft = Offset(
                     barX + (barWidth - labelResult.size.width) / 2,
-                    chartHeight + labelOffsetPx
-                )
+                    chartHeight + labelOffsetPx,
+                ),
             )
         }
 
@@ -192,12 +189,12 @@ fun FlowBarChart(
                 color = CardSurface,
                 topLeft = Offset(tooltipX, tooltipY),
                 size = Size(tooltipW, tooltipH),
-                cornerRadius = CornerRadius(tooltipCornerPx)
+                cornerRadius = CornerRadius(tooltipCornerPx),
             )
             // Text
             drawText(
                 textLayoutResult = tooltipResult,
-                topLeft = Offset(tooltipX + tooltipPadHPx, tooltipY + tooltipPadVPx)
+                topLeft = Offset(tooltipX + tooltipPadHPx, tooltipY + tooltipPadVPx),
             )
         }
     }
@@ -212,7 +209,7 @@ private val sampleWeekEntries = listOf(
     DashboardViewModel.BarEntry("THU", 60),
     DashboardViewModel.BarEntry("FRI", 30),
     DashboardViewModel.BarEntry("SAT", 90),
-    DashboardViewModel.BarEntry("SUN", 15)
+    DashboardViewModel.BarEntry("SUN", 15),
 )
 
 private val sampleMonthEntries = listOf(
@@ -220,7 +217,7 @@ private val sampleMonthEntries = listOf(
     DashboardViewModel.BarEntry("W2", 200),
     DashboardViewModel.BarEntry("W3", 80),
     DashboardViewModel.BarEntry("W4", 160),
-    DashboardViewModel.BarEntry("W5", 50)
+    DashboardViewModel.BarEntry("W5", 50),
 )
 
 private val sampleYearEntries = listOf(
@@ -235,7 +232,7 @@ private val sampleYearEntries = listOf(
     DashboardViewModel.BarEntry("SEP", 280),
     DashboardViewModel.BarEntry("OCT", 0),
     DashboardViewModel.BarEntry("NOV", 0),
-    DashboardViewModel.BarEntry("DEC", 0)
+    DashboardViewModel.BarEntry("DEC", 0),
 )
 
 @Preview(showBackground = true, backgroundColor = 0xFF0D1B2A)
@@ -245,7 +242,7 @@ private fun FlowBarChartWeekPreview() {
         Box(modifier = Modifier.background(SpaceBackground).padding(16.dp)) {
             FlowBarChart(
                 entries = sampleWeekEntries,
-                modifier = Modifier.fillMaxWidth().height(200.dp)
+                modifier = Modifier.fillMaxWidth().height(200.dp),
             )
         }
     }
@@ -258,7 +255,7 @@ private fun FlowBarChartMonthPreview() {
         Box(modifier = Modifier.background(SpaceBackground).padding(16.dp)) {
             FlowBarChart(
                 entries = sampleMonthEntries,
-                modifier = Modifier.fillMaxWidth().height(200.dp)
+                modifier = Modifier.fillMaxWidth().height(200.dp),
             )
         }
     }
@@ -271,7 +268,7 @@ private fun FlowBarChartYearPreview() {
         Box(modifier = Modifier.background(SpaceBackground).padding(16.dp)) {
             FlowBarChart(
                 entries = sampleYearEntries,
-                modifier = Modifier.fillMaxWidth().height(200.dp)
+                modifier = Modifier.fillMaxWidth().height(200.dp),
             )
         }
     }

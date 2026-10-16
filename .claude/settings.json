@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "extraKnownMarketplaces": {
+    "nextjedi": {
+      "source": {
+        "source": "github",
+        "repo": "nextjedi/platform"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "nextjedi-core@nextjedi": true,
+    "nextjedi-kmp@nextjedi": true
+  },
+  "env": {
+    "NEXTJEDI_PRODUCT": "flowtimer"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(make setup)",
+      "Bash(make verify)",
+      "Bash(make format)",
+      "Bash(make lint)",
+      "Bash(make test)",
+      "Bash(make build)",
+      "Bash(sh ./gradlew:*)",
+      "Bash(./gradlew:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./keystore.properties)",
+      "Read(./**/*.jks)",
+      "Read(./**/*.keystore)",
+      "Bash(git push --force:*)",
+      "Bash(rm -rf:*)"
+    ]
+  }
+}

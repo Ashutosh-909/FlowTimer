@@ -14,17 +14,13 @@ import kotlinx.coroutines.flow.Flow
 class SessionRepository(private val dao: FlowSessionDao) {
 
     /** Record a completed flow session in the Room database. */
-    suspend fun recordSession(
-        startEpoch: Long,
-        durationMinutes: Int,
-        completedEpoch: Long
-    ) {
+    suspend fun recordSession(startEpoch: Long, durationMinutes: Int, completedEpoch: Long) {
         dao.insert(
             FlowSession(
                 startEpochMillis = startEpoch,
                 durationMinutes = durationMinutes,
-                completedEpochMillis = completedEpoch
-            )
+                completedEpochMillis = completedEpoch,
+            ),
         )
     }
 
@@ -32,13 +28,11 @@ class SessionRepository(private val dao: FlowSessionDao) {
      * Observable daily aggregates (sum of minutes + count) within a date range.
      * Used by the dashboard bar chart and total focus text.
      */
-    fun dailyAggregates(startMillis: Long, endMillis: Long): Flow<List<DailyAggregate>> =
-        dao.dailyAggregates(startMillis, endMillis)
+    fun dailyAggregates(startMillis: Long, endMillis: Long): Flow<List<DailyAggregate>> = dao.dailyAggregates(startMillis, endMillis)
 
     /**
      * Observable list of individual sessions within a date range.
      * Ordered oldest-first.
      */
-    fun sessionsInRange(startMillis: Long, endMillis: Long): Flow<List<FlowSession>> =
-        dao.sessionsInRange(startMillis, endMillis)
+    fun sessionsInRange(startMillis: Long, endMillis: Long): Flow<List<FlowSession>> = dao.sessionsInRange(startMillis, endMillis)
 }

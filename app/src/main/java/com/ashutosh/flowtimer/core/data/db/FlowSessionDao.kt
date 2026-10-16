@@ -23,7 +23,7 @@ interface FlowSessionDao {
         SELECT * FROM flow_sessions
         WHERE completedEpochMillis BETWEEN :startMillis AND :endMillis
         ORDER BY completedEpochMillis ASC
-        """
+        """,
     )
     fun sessionsInRange(startMillis: Long, endMillis: Long): Flow<List<FlowSession>>
 
@@ -40,7 +40,7 @@ interface FlowSessionDao {
         WHERE completedEpochMillis BETWEEN :startMillis AND :endMillis
         GROUP BY day
         ORDER BY day ASC
-        """
+        """,
     )
     fun dailyAggregates(startMillis: Long, endMillis: Long): Flow<List<DailyAggregate>>
 }

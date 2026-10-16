@@ -50,7 +50,7 @@ private fun MainContent() {
     Box(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) { page ->
             when (page) {
                 0 -> DashboardScreen()
@@ -64,7 +64,7 @@ private fun MainContent() {
                 .align(Alignment.TopCenter)
                 .statusBarsPadding()
                 .padding(top = 8.dp)
-                .clearAndSetSemantics { }
+                .clearAndSetSemantics { },
         ) {
             repeat(2) { page ->
                 val color = if (pagerState.currentPage == page) {
@@ -76,7 +76,7 @@ private fun MainContent() {
                     modifier = Modifier
                         .padding(horizontal = 3.dp)
                         .size(6.dp)
-                        .background(color, CircleShape)
+                        .background(color, CircleShape),
                 )
             }
         }

@@ -30,7 +30,7 @@ private val PixelColorScheme = darkColorScheme(
     outlineVariant = GlowBlue,
     error = NotifPink,
     onError = SpaceBackground,
-    scrim = Color.Black
+    scrim = Color.Black,
 )
 
 /**
@@ -38,9 +38,7 @@ private val PixelColorScheme = darkColorScheme(
  * No light variant — the space aesthetic is the identity.
  */
 @Composable
-fun FlowTimerTheme(
-    content: @Composable () -> Unit
-) {
+fun FlowTimerTheme(content: @Composable () -> Unit) {
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -54,6 +52,6 @@ fun FlowTimerTheme(
         colorScheme = PixelColorScheme,
         typography = PixelTypography,
         shapes = PixelShapes,
-        content = content
+        content = content,
     )
 }

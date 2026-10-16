@@ -33,7 +33,7 @@ class FlowSessionDaoTest {
     fun setup() {
         database = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
-            FlowTimerDatabase::class.java
+            FlowTimerDatabase::class.java,
         ).allowMainThreadQueries().build()
         dao = database.flowSessionDao()
     }
@@ -50,13 +50,13 @@ class FlowSessionDaoTest {
         val session = FlowSession(
             startEpochMillis = 1_709_000_000_000L,
             durationMinutes = 25,
-            completedEpochMillis = 1_709_001_500_000L
+            completedEpochMillis = 1_709_001_500_000L,
         )
         dao.insert(session)
 
         val results = dao.sessionsInRange(
             startMillis = 1_709_000_000_000L,
-            endMillis = 1_709_002_000_000L
+            endMillis = 1_709_002_000_000L,
         ).first()
 
         assertEquals(1, results.size)
@@ -70,19 +70,19 @@ class FlowSessionDaoTest {
         val inside = FlowSession(
             startEpochMillis = 1_709_000_000_000L,
             durationMinutes = 25,
-            completedEpochMillis = 1_709_001_500_000L
+            completedEpochMillis = 1_709_001_500_000L,
         )
         val outside = FlowSession(
             startEpochMillis = 1_700_000_000_000L,
             durationMinutes = 30,
-            completedEpochMillis = 1_700_001_800_000L
+            completedEpochMillis = 1_700_001_800_000L,
         )
         dao.insert(inside)
         dao.insert(outside)
 
         val results = dao.sessionsInRange(
             startMillis = 1_709_000_000_000L,
-            endMillis = 1_709_002_000_000L
+            endMillis = 1_709_002_000_000L,
         ).first()
 
         assertEquals(1, results.size)
@@ -94,12 +94,12 @@ class FlowSessionDaoTest {
         val first = FlowSession(
             startEpochMillis = 1_709_000_000_000L,
             durationMinutes = 25,
-            completedEpochMillis = 1_709_001_500_000L
+            completedEpochMillis = 1_709_001_500_000L,
         )
         val second = FlowSession(
             startEpochMillis = 1_709_002_000_000L,
             durationMinutes = 30,
-            completedEpochMillis = 1_709_003_800_000L
+            completedEpochMillis = 1_709_003_800_000L,
         )
         // Insert in reverse order
         dao.insert(second)
@@ -107,7 +107,7 @@ class FlowSessionDaoTest {
 
         val results = dao.sessionsInRange(
             startMillis = 1_709_000_000_000L,
-            endMillis = 1_709_004_000_000L
+            endMillis = 1_709_004_000_000L,
         ).first()
 
         assertEquals(2, results.size)
@@ -118,7 +118,7 @@ class FlowSessionDaoTest {
     fun emptyDatabase_returnsEmptyList() = runTest {
         val results = dao.sessionsInRange(
             startMillis = 0L,
-            endMillis = Long.MAX_VALUE
+            endMillis = Long.MAX_VALUE,
         ).first()
 
         assertTrue(results.isEmpty())
@@ -136,20 +136,20 @@ class FlowSessionDaoTest {
             FlowSession(
                 startEpochMillis = startOfDay,
                 durationMinutes = 25,
-                completedEpochMillis = startOfDay + 25 * 60_000L
-            )
+                completedEpochMillis = startOfDay + 25 * 60_000L,
+            ),
         )
         dao.insert(
             FlowSession(
                 startEpochMillis = startOfDay + 30 * 60_000L,
                 durationMinutes = 15,
-                completedEpochMillis = startOfDay + 45 * 60_000L
-            )
+                completedEpochMillis = startOfDay + 45 * 60_000L,
+            ),
         )
 
         val aggregates = dao.dailyAggregates(
             startMillis = startOfDay,
-            endMillis = startOfDay + 24 * 60 * 60_000L
+            endMillis = startOfDay + 24 * 60 * 60_000L,
         ).first()
 
         assertEquals(1, aggregates.size)
@@ -169,20 +169,20 @@ class FlowSessionDaoTest {
             FlowSession(
                 startEpochMillis = yesterdayStart,
                 durationMinutes = 30,
-                completedEpochMillis = yesterdayStart + 30 * 60_000L
-            )
+                completedEpochMillis = yesterdayStart + 30 * 60_000L,
+            ),
         )
         dao.insert(
             FlowSession(
                 startEpochMillis = todayStart,
                 durationMinutes = 25,
-                completedEpochMillis = todayStart + 25 * 60_000L
-            )
+                completedEpochMillis = todayStart + 25 * 60_000L,
+            ),
         )
 
         val aggregates = dao.dailyAggregates(
             startMillis = yesterdayStart,
-            endMillis = rangeEnd
+            endMillis = rangeEnd,
         ).first()
 
         assertEquals(2, aggregates.size)
@@ -195,7 +195,7 @@ class FlowSessionDaoTest {
     fun dailyAggregates_emptyDatabase_returnsEmptyList() = runTest {
         val aggregates = dao.dailyAggregates(
             startMillis = 0L,
-            endMillis = Long.MAX_VALUE
+            endMillis = Long.MAX_VALUE,
         ).first()
 
         assertTrue(aggregates.isEmpty())
@@ -206,19 +206,19 @@ class FlowSessionDaoTest {
         val session1 = FlowSession(
             startEpochMillis = 1_709_000_000_000L,
             durationMinutes = 25,
-            completedEpochMillis = 1_709_001_500_000L
+            completedEpochMillis = 1_709_001_500_000L,
         )
         val session2 = FlowSession(
             startEpochMillis = 1_709_002_000_000L,
             durationMinutes = 30,
-            completedEpochMillis = 1_709_003_800_000L
+            completedEpochMillis = 1_709_003_800_000L,
         )
         dao.insert(session1)
         dao.insert(session2)
 
         val results = dao.sessionsInRange(
             startMillis = 1_709_000_000_000L,
-            endMillis = 1_709_004_000_000L
+            endMillis = 1_709_004_000_000L,
         ).first()
 
         assertEquals(2, results.size)
@@ -238,20 +238,20 @@ class FlowSessionDaoTest {
             FlowSession(
                 startEpochMillis = exactStart,
                 durationMinutes = 25,
-                completedEpochMillis = exactStart // completed at exact start boundary
-            )
+                completedEpochMillis = exactStart, // completed at exact start boundary
+            ),
         )
         dao.insert(
             FlowSession(
                 startEpochMillis = exactStart,
                 durationMinutes = 30,
-                completedEpochMillis = exactEnd // completed at exact end boundary
-            )
+                completedEpochMillis = exactEnd, // completed at exact end boundary
+            ),
         )
 
         val results = dao.sessionsInRange(
             startMillis = exactStart,
-            endMillis = exactEnd
+            endMillis = exactEnd,
         ).first()
 
         assertEquals(2, results.size)
@@ -267,21 +267,21 @@ class FlowSessionDaoTest {
             FlowSession(
                 startEpochMillis = rangeStart - 100_000L,
                 durationMinutes = 10,
-                completedEpochMillis = rangeStart - 1L
-            )
+                completedEpochMillis = rangeStart - 1L,
+            ),
         )
         // Session completed 1 ms after range end
         dao.insert(
             FlowSession(
                 startEpochMillis = rangeEnd,
                 durationMinutes = 10,
-                completedEpochMillis = rangeEnd + 1L
-            )
+                completedEpochMillis = rangeEnd + 1L,
+            ),
         )
 
         val results = dao.sessionsInRange(
             startMillis = rangeStart,
-            endMillis = rangeEnd
+            endMillis = rangeEnd,
         ).first()
 
         assertTrue(results.isEmpty())
@@ -304,15 +304,15 @@ class FlowSessionDaoTest {
             FlowSession(
                 startEpochMillis = beforeMidnight - 25 * 60_000L,
                 durationMinutes = 25,
-                completedEpochMillis = beforeMidnight
-            )
+                completedEpochMillis = beforeMidnight,
+            ),
         )
         dao.insert(
             FlowSession(
                 startEpochMillis = afterMidnight - 15 * 60_000L,
                 durationMinutes = 15,
-                completedEpochMillis = afterMidnight
-            )
+                completedEpochMillis = afterMidnight,
+            ),
         )
 
         val rangeStart = yesterday.atStartOfDay(zone).toInstant().toEpochMilli()
@@ -320,7 +320,7 @@ class FlowSessionDaoTest {
 
         val aggregates = dao.dailyAggregates(
             startMillis = rangeStart,
-            endMillis = rangeEnd
+            endMillis = rangeEnd,
         ).first()
 
         assertEquals(2, aggregates.size)
@@ -342,13 +342,13 @@ class FlowSessionDaoTest {
             FlowSession(
                 startEpochMillis = startOfDay,
                 durationMinutes = 45,
-                completedEpochMillis = startOfDay + 45 * 60_000L
-            )
+                completedEpochMillis = startOfDay + 45 * 60_000L,
+            ),
         )
 
         val aggregates = dao.dailyAggregates(
             startMillis = startOfDay,
-            endMillis = startOfDay + 24 * 60 * 60_000L
+            endMillis = startOfDay + 24 * 60 * 60_000L,
         ).first()
 
         assertEquals(1, aggregates.size)
@@ -369,14 +369,14 @@ class FlowSessionDaoTest {
                 FlowSession(
                     startEpochMillis = startOfDay + offset,
                     durationMinutes = 10,
-                    completedEpochMillis = startOfDay + offset + 10 * 60_000L
-                )
+                    completedEpochMillis = startOfDay + offset + 10 * 60_000L,
+                ),
             )
         }
 
         val aggregates = dao.dailyAggregates(
             startMillis = startOfDay,
-            endMillis = startOfDay + 24 * 60 * 60_000L
+            endMillis = startOfDay + 24 * 60 * 60_000L,
         ).first()
 
         assertEquals(1, aggregates.size)

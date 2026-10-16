@@ -18,6 +18,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FlowTimer">
+
+        <!-- Sentry: disabled unless SENTRY_DSN is set at build time (see app/build.gradle.kts) -->
+        <meta-data
+            android:name="io.sentry.auto-init"
+            android:value="${sentryAutoInit}" />
+        <meta-data
+            android:name="io.sentry.dsn"
+            android:value="${sentryDsn}" />
+        <meta-data
+            android:name="io.sentry.environment"
+            android:value="${sentryEnvironment}" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

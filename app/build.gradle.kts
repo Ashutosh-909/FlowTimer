@@ -1,10 +1,11 @@
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kover)
 }
 
 kotlin {
@@ -36,6 +37,18 @@ android {
         versionName = "16.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Sentry crash reporting is off unless SENTRY_DSN is set (env var or Gradle property) at build time.
+        // With no DSN the SDK never initialises (io.sentry.auto-init = false), so behaviour is unchanged.
+        val sentryDsn = providers.environmentVariable("SENTRY_DSN")
+            .orElse(providers.gradleProperty("SENTRY_DSN"))
+            .getOrElse("")
+        val sentryEnvironment = providers.environmentVariable("SENTRY_ENVIRONMENT")
+            .orElse(providers.gradleProperty("SENTRY_ENVIRONMENT"))
+            .getOrElse("dev")
+        manifestPlaceholders["sentryDsn"] = sentryDsn
+        manifestPlaceholders["sentryAutoInit"] = sentryDsn.isNotBlank().toString()
+        manifestPlaceholders["sentryEnvironment"] = sentryEnvironment
     }
 
     signingConfigs {
@@ -54,7 +67,7 @@ android {
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
             ndk {
                 debugSymbolLevel = "FULL"
@@ -96,6 +109,9 @@ dependencies {
     // Glance (App Widget)
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material3)
+
+    // Crash reporting (no-op unless SENTRY_DSN is set at build time, see defaultConfig)
+    implementation(libs.sentry.android.core)
 
     // Unit tests
     testImplementation(libs.junit)

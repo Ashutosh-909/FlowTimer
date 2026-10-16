@@ -35,10 +35,10 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ashutosh.flowtimer.R
 import androidx.core.content.FileProvider
 import androidx.core.view.drawToBitmap
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ashutosh.flowtimer.R
 import com.ashutosh.flowtimer.ui.components.CalendarHeatmap
 import com.ashutosh.flowtimer.ui.components.FlowBarChart
 import com.ashutosh.flowtimer.ui.components.ShareButton
@@ -66,10 +66,7 @@ import java.time.LocalDate
  * @param viewModel The [DashboardViewModel] providing UI state and actions.
  */
 @Composable
-fun DashboardScreen(
-    modifier: Modifier = Modifier,
-    viewModel: DashboardViewModel = viewModel()
-) {
+fun DashboardScreen(modifier: Modifier = Modifier, viewModel: DashboardViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val view = LocalView.current
@@ -80,7 +77,7 @@ fun DashboardScreen(
         onTimeframeSelected = viewModel::onTimeframeSelected,
         onShare = {
             shareDashboardCapture(view, context, uiState.totalFocusMinutes, uiState.timeframe)
-        }
+        },
     )
 }
 
@@ -93,7 +90,7 @@ internal fun DashboardScreenContent(
     modifier: Modifier = Modifier,
     uiState: DashboardViewModel.UiState = DashboardViewModel.UiState(),
     onTimeframeSelected: (DashboardViewModel.Timeframe) -> Unit = {},
-    onShare: () -> Unit = {}
+    onShare: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -101,7 +98,7 @@ internal fun DashboardScreenContent(
             .background(SpaceBackground)
             .statusBarsPadding()
             .padding(horizontal = 16.dp)
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
     ) {
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -114,20 +111,20 @@ internal fun DashboardScreenContent(
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 bitmap = hourglassBitmap,
                 contentDescription = "Hourglass",
                 filterQuality = FilterQuality.None,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(28.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "FLOW TIME",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
 
@@ -136,7 +133,7 @@ internal fun DashboardScreenContent(
         // ── Timeframe selector ──
         TimeframeSelector(
             selected = uiState.timeframe,
-            onSelected = onTimeframeSelected
+            onSelected = onTimeframeSelected,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -151,7 +148,7 @@ internal fun DashboardScreenContent(
             entries = uiState.barData,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(200.dp),
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -161,7 +158,7 @@ internal fun DashboardScreenContent(
             days = uiState.heatmapData,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(140.dp)
+                .height(140.dp),
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -182,10 +179,7 @@ internal fun DashboardScreenContent(
  * [PixelTextDim]. Falls back to "0 min" for zero.
  */
 @Composable
-private fun TotalFocusText(
-    modifier: Modifier = Modifier,
-    totalMinutes: Int
-) {
+private fun TotalFocusText(modifier: Modifier = Modifier, totalMinutes: Int) {
     val hours = totalMinutes / 60
     val minutes = totalMinutes % 60
 
@@ -200,7 +194,7 @@ private fun TotalFocusText(
         style = MaterialTheme.typography.displayMedium,
         color = PixelText,
         textAlign = TextAlign.Center,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     )
 }
 
@@ -210,12 +204,7 @@ private fun TotalFocusText(
  * Captures the current view as a bitmap, saves it to the app cache, and
  * launches the system share sheet with the image and a text summary.
  */
-private fun shareDashboardCapture(
-    view: View,
-    context: Context,
-    totalMinutes: Int,
-    timeframe: DashboardViewModel.Timeframe
-) {
+private fun shareDashboardCapture(view: View, context: Context, totalMinutes: Int, timeframe: DashboardViewModel.Timeframe) {
     val bitmap = view.drawToBitmap(Bitmap.Config.ARGB_8888)
 
     val file = File(context.cacheDir, "flow_stats.png")
@@ -227,7 +216,7 @@ private fun shareDashboardCapture(
     val uri = FileProvider.getUriForFile(
         context,
         "${context.packageName}.fileprovider",
-        file
+        file,
     )
 
     val timeframeLabel = timeframe.name.lowercase()
@@ -244,7 +233,7 @@ private fun shareDashboardCapture(
         putExtra(Intent.EXTRA_STREAM, uri)
         putExtra(
             Intent.EXTRA_TEXT,
-            "I focused for $timeText this $timeframeLabel with Flow Time! \uD83D\uDD25"
+            "I focused for $timeText this $timeframeLabel with Flow Time! \uD83D\uDD25",
         )
         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
@@ -261,7 +250,7 @@ private fun sampleBarEntries() = listOf(
     DashboardViewModel.BarEntry("THU", 60),
     DashboardViewModel.BarEntry("FRI", 30),
     DashboardViewModel.BarEntry("SAT", 90),
-    DashboardViewModel.BarEntry("SUN", 15)
+    DashboardViewModel.BarEntry("SUN", 15),
 )
 
 private fun sampleHeatmapDays(): List<DashboardViewModel.HeatmapDay> {
@@ -272,8 +261,11 @@ private fun sampleHeatmapDays(): List<DashboardViewModel.HeatmapDay> {
     var i = 0
     while (!d.isAfter(today)) {
         val m = when {
-            i % 7 == 0 -> 0; i % 5 == 0 -> 100; i % 3 == 0 -> 50
-            i % 2 == 0 -> 20; else -> 5
+            i % 7 == 0 -> 0
+            i % 5 == 0 -> 100
+            i % 3 == 0 -> 50
+            i % 2 == 0 -> 20
+            else -> 5
         }
         days.add(DashboardViewModel.HeatmapDay(d, m))
         d = d.plusDays(1)
@@ -292,8 +284,8 @@ private fun DashboardScreenWeekPreview() {
                 totalFocusMinutes = 265,
                 barData = sampleBarEntries(),
                 heatmapData = sampleHeatmapDays(),
-                isLoading = false
-            )
+                isLoading = false,
+            ),
         )
     }
 }
@@ -313,11 +305,11 @@ private fun DashboardScreenEmptyPreview() {
                     DashboardViewModel.BarEntry("THU", 0),
                     DashboardViewModel.BarEntry("FRI", 0),
                     DashboardViewModel.BarEntry("SAT", 0),
-                    DashboardViewModel.BarEntry("SUN", 0)
+                    DashboardViewModel.BarEntry("SUN", 0),
                 ),
                 heatmapData = emptyList(),
-                isLoading = false
-            )
+                isLoading = false,
+            ),
         )
     }
 }

@@ -1,2 +1,0 @@
-com.ashutosh.flowtimer.wear
-string app_name

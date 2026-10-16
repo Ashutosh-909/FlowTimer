@@ -20,3 +20,14 @@ keystore.properties
 encrypted_key.zip
 pepk.jar
 encryption_public_key.pem
+
+# Build outputs in every module and Kotlin daemon logs
+build/
+.kotlin/
+.idea/deploymentTargetSelector.xml
+
+# Local env and Claude settings (never committed)
+.env
+.claude/settings.local.json
+replay_pid*.log
+hs_err_pid*.log

@@ -40,7 +40,7 @@ class DashboardScreenTest {
         DashboardViewModel.BarEntry("THU", 60),
         DashboardViewModel.BarEntry("FRI", 30),
         DashboardViewModel.BarEntry("SAT", 90),
-        DashboardViewModel.BarEntry("SUN", 15)
+        DashboardViewModel.BarEntry("SUN", 15),
     )
 
     private fun sampleHeatmapDays(): List<DashboardViewModel.HeatmapDay> {
@@ -49,21 +49,19 @@ class DashboardScreenTest {
         return (0..30L).map { offset ->
             DashboardViewModel.HeatmapDay(
                 date = start.plusDays(offset),
-                totalMinutes = (offset * 3).toInt()
+                totalMinutes = (offset * 3).toInt(),
             )
         }
     }
 
-    private fun sampleUiState(
-        timeframe: DashboardViewModel.Timeframe = DashboardViewModel.Timeframe.WEEK,
-        totalMinutes: Int = 265
-    ) = DashboardViewModel.UiState(
-        timeframe = timeframe,
-        totalFocusMinutes = totalMinutes,
-        barData = sampleBarData(),
-        heatmapData = sampleHeatmapDays(),
-        isLoading = false
-    )
+    private fun sampleUiState(timeframe: DashboardViewModel.Timeframe = DashboardViewModel.Timeframe.WEEK, totalMinutes: Int = 265) =
+        DashboardViewModel.UiState(
+            timeframe = timeframe,
+            totalFocusMinutes = totalMinutes,
+            barData = sampleBarData(),
+            heatmapData = sampleHeatmapDays(),
+            isLoading = false,
+        )
 
     // ── DashboardScreenContent ──────────────────────────────────────────
 
@@ -83,7 +81,7 @@ class DashboardScreenTest {
         composeTestRule.setContent {
             FlowTimerTheme {
                 DashboardScreenContent(
-                    uiState = sampleUiState(totalMinutes = 155)
+                    uiState = sampleUiState(totalMinutes = 155),
                 )
             }
         }
@@ -97,7 +95,7 @@ class DashboardScreenTest {
         composeTestRule.setContent {
             FlowTimerTheme {
                 DashboardScreenContent(
-                    uiState = sampleUiState(totalMinutes = 0)
+                    uiState = sampleUiState(totalMinutes = 0),
                 )
             }
         }
@@ -139,7 +137,7 @@ class DashboardScreenTest {
             FlowTimerTheme {
                 DashboardScreenContent(
                     uiState = sampleUiState(timeframe = DashboardViewModel.Timeframe.WEEK),
-                    onTimeframeSelected = { selected = it }
+                    onTimeframeSelected = { selected = it },
                 )
             }
         }
@@ -156,7 +154,7 @@ class DashboardScreenTest {
             FlowTimerTheme {
                 DashboardScreenContent(
                     uiState = sampleUiState(timeframe = DashboardViewModel.Timeframe.WEEK),
-                    onTimeframeSelected = { selected = it }
+                    onTimeframeSelected = { selected = it },
                 )
             }
         }
@@ -205,7 +203,7 @@ class DashboardScreenTest {
 
         // Bar chart total: 45+25+0+60+30+90+15 = 265
         composeTestRule.onNode(
-            hasContentDescription("Bar chart showing 265 total minutes across 7 bars")
+            hasContentDescription("Bar chart showing 265 total minutes across 7 bars"),
         ).assertExists()
     }
 
@@ -219,7 +217,7 @@ class DashboardScreenTest {
 
         // Heatmap has 31 days, first day (offset 0) has 0 minutes, so 30 active
         composeTestRule.onNode(
-            hasContentDescription(value = "Calendar heatmap", substring = true)
+            hasContentDescription(value = "Calendar heatmap", substring = true),
         ).assertExists()
     }
 
@@ -244,7 +242,7 @@ class DashboardScreenTest {
             FlowTimerTheme {
                 DashboardScreenContent(
                     uiState = sampleUiState(),
-                    onShare = { shared = true }
+                    onShare = { shared = true },
                 )
             }
         }

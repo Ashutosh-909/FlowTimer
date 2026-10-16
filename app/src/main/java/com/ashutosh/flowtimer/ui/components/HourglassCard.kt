@@ -36,7 +36,7 @@ import com.ashutosh.flowtimer.ui.theme.SpaceBackground
 enum class HourglassVisualState {
     IDLE,
     RUNNING,
-    FINISHED
+    FINISHED,
 }
 
 /**
@@ -64,7 +64,7 @@ fun HourglassCard(
     sandProgress: Float = 0f,
     onTapHourglass: () -> Unit = {},
     onLongPressReset: () -> Unit = {},
-    accessibilityStateDescription: String = ""
+    accessibilityStateDescription: String = "",
 ) {
     val glowColor: Color
     val glowAlpha: Float
@@ -76,11 +76,13 @@ fun HourglassCard(
             glowAlpha = 0.2f
             overlayText = "TAP TO START!"
         }
+
         HourglassVisualState.RUNNING -> {
             glowColor = GlowCyan
             glowAlpha = 0.6f
             overlayText = null
         }
+
         HourglassVisualState.FINISHED -> {
             glowColor = GlowGold
             glowAlpha = 0.7f
@@ -97,7 +99,7 @@ fun HourglassCard(
     GlowContainer(
         glowColor = glowColor,
         glowAlpha = glowAlpha,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Column(
             modifier = Modifier
@@ -108,11 +110,11 @@ fun HourglassCard(
                 }
                 .combinedClickable(
                     onClick = onTapHourglass,
-                    onLongClick = onLongPressReset
+                    onLongClick = onLongPressReset,
                 )
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             // Overlay text above hourglass (Idle / Finished states)
             if (overlayText != null) {
@@ -121,7 +123,7 @@ fun HourglassCard(
                     style = MaterialTheme.typography.bodyLarge,
                     color = PixelTextDim,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = 8.dp),
                 )
             }
 
@@ -129,7 +131,7 @@ fun HourglassCard(
             PlaceholderHourglass(
                 isRunning = visualState == HourglassVisualState.RUNNING,
                 sandProgress = sandProgress,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
 
             // Play icon overlay for Idle state
@@ -138,7 +140,7 @@ fun HourglassCard(
                     text = "▶",
                     style = MaterialTheme.typography.titleLarge,
                     color = Color(0xCCFFFFFF),
-                    modifier = Modifier.padding(top = 8.dp)
+                    modifier = Modifier.padding(top = 8.dp),
                 )
             }
         }
@@ -152,7 +154,7 @@ fun HourglassCard(
     backgroundColor = 0xFF0D1B2A,
     widthDp = 320,
     heightDp = 420,
-    name = "HourglassCard – Idle"
+    name = "HourglassCard – Idle",
 )
 @Composable
 private fun HourglassCardIdlePreview() {
@@ -161,11 +163,11 @@ private fun HourglassCardIdlePreview() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(SpaceBackground),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             HourglassCard(
                 visualState = HourglassVisualState.IDLE,
-                sandProgress = 0f
+                sandProgress = 0f,
             )
         }
     }
@@ -176,7 +178,7 @@ private fun HourglassCardIdlePreview() {
     backgroundColor = 0xFF0D1B2A,
     widthDp = 320,
     heightDp = 420,
-    name = "HourglassCard – Running"
+    name = "HourglassCard – Running",
 )
 @Composable
 private fun HourglassCardRunningPreview() {
@@ -185,11 +187,11 @@ private fun HourglassCardRunningPreview() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(SpaceBackground),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             HourglassCard(
                 visualState = HourglassVisualState.RUNNING,
-                sandProgress = 0.35f
+                sandProgress = 0.35f,
             )
         }
     }
@@ -200,7 +202,7 @@ private fun HourglassCardRunningPreview() {
     backgroundColor = 0xFF0D1B2A,
     widthDp = 320,
     heightDp = 420,
-    name = "HourglassCard – Finished"
+    name = "HourglassCard – Finished",
 )
 @Composable
 private fun HourglassCardFinishedPreview() {
@@ -209,11 +211,11 @@ private fun HourglassCardFinishedPreview() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(SpaceBackground),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             HourglassCard(
                 visualState = HourglassVisualState.FINISHED,
-                sandProgress = 1f
+                sandProgress = 1f,
             )
         }
     }

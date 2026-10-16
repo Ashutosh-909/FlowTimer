@@ -22,10 +22,7 @@ import kotlinx.coroutines.launch
  *   `SystemClock.elapsedRealtime()`). Must be provided by the caller so that
  *   `core/timer` stays free of Android framework imports.
  */
-class TimerEngine(
-    private val scope: CoroutineScope,
-    private val elapsedRealtimeProvider: () -> Long
-) {
+class TimerEngine(private val scope: CoroutineScope, private val elapsedRealtimeProvider: () -> Long) {
     private val _state = MutableStateFlow<TimerState>(TimerState.Idle)
     val state: StateFlow<TimerState> = _state.asStateFlow()
 
@@ -81,12 +78,7 @@ class TimerEngine(
      * Restore the engine to a specific state (e.g., after process death).
      * Used by the foreground service to recover from persisted DataStore values.
      */
-    fun restore(
-        timerState: TimerState,
-        remainingMs: Long,
-        totalDurationMs: Long,
-        lastStartEpoch: Long
-    ) {
+    fun restore(timerState: TimerState, remainingMs: Long, totalDurationMs: Long, lastStartEpoch: Long) {
         totalDurationMillis = totalDurationMs
         _remainingMillis.value = remainingMs
 
@@ -99,9 +91,11 @@ class TimerEngine(
                 _state.value = TimerState.Running
                 startTickLoop()
             }
+
             is TimerState.Finished -> {
                 _state.value = TimerState.Finished
             }
+
             is TimerState.Idle -> {
                 _state.value = TimerState.Idle
             }

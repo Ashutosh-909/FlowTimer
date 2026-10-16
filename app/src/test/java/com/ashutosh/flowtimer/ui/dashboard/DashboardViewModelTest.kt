@@ -21,7 +21,7 @@ class DashboardViewModelTest {
     @Test
     fun `WEEK range starts on Monday and spans 7 days`() {
         val (start, end) = DashboardViewModel.dateRangeLocalFor(
-            DashboardViewModel.Timeframe.WEEK
+            DashboardViewModel.Timeframe.WEEK,
         )
         assertEquals(DayOfWeek.MONDAY, start.dayOfWeek)
         assertEquals(DayOfWeek.SUNDAY, end.dayOfWeek)
@@ -31,7 +31,7 @@ class DashboardViewModelTest {
     @Test
     fun `MONTH range starts on 1st and ends on last day of month`() {
         val (start, end) = DashboardViewModel.dateRangeLocalFor(
-            DashboardViewModel.Timeframe.MONTH
+            DashboardViewModel.Timeframe.MONTH,
         )
         val today = LocalDate.now()
         assertEquals(1, start.dayOfMonth)
@@ -44,7 +44,7 @@ class DashboardViewModelTest {
     @Test
     fun `YEAR range starts on Jan 1 and ends on Dec 31`() {
         val (start, end) = DashboardViewModel.dateRangeLocalFor(
-            DashboardViewModel.Timeframe.YEAR
+            DashboardViewModel.Timeframe.YEAR,
         )
         val today = LocalDate.now()
         assertEquals(1, start.monthValue)
@@ -64,7 +64,7 @@ class DashboardViewModelTest {
             DashboardViewModel.Timeframe.WEEK,
             emptyList(),
             monday,
-            sunday
+            sunday,
         )
 
         assertEquals(7, entries.size)
@@ -77,14 +77,14 @@ class DashboardViewModelTest {
         val wednesday = monday.plusDays(2)
 
         val aggregates = listOf(
-            DailyAggregate(day = wednesday.toString(), totalMinutes = 45, sessionCount = 2)
+            DailyAggregate(day = wednesday.toString(), totalMinutes = 45, sessionCount = 2),
         )
 
         val entries = DashboardViewModel.aggregatesToBarEntries(
             DashboardViewModel.Timeframe.WEEK,
             aggregates,
             monday,
-            sunday
+            sunday,
         )
 
         // Wednesday is index 2 (Mon=0, Tue=1, Wed=2)
@@ -104,7 +104,7 @@ class DashboardViewModelTest {
             DashboardViewModel.Timeframe.WEEK,
             emptyList(),
             monday,
-            sunday
+            sunday,
         )
 
         assertTrue(entries.all { it.minutes == 0 })
@@ -123,7 +123,7 @@ class DashboardViewModelTest {
             DashboardViewModel.Timeframe.MONTH,
             emptyList(),
             first,
-            last
+            last,
         )
 
         assertEquals(expectedWeeks, entries.size)
@@ -142,14 +142,14 @@ class DashboardViewModelTest {
         // Day 1 → W1 (index 0), Day 8 → W2 (index 1)
         val aggregates = listOf(
             DailyAggregate(day = first.toString(), totalMinutes = 30, sessionCount = 1),
-            DailyAggregate(day = first.plusDays(7).toString(), totalMinutes = 60, sessionCount = 2)
+            DailyAggregate(day = first.plusDays(7).toString(), totalMinutes = 60, sessionCount = 2),
         )
 
         val entries = DashboardViewModel.aggregatesToBarEntries(
             DashboardViewModel.Timeframe.MONTH,
             aggregates,
             first,
-            last
+            last,
         )
 
         assertEquals(30, entries[0].minutes)
@@ -168,7 +168,7 @@ class DashboardViewModelTest {
             DashboardViewModel.Timeframe.YEAR,
             emptyList(),
             first,
-            last
+            last,
         )
 
         assertEquals(12, entries.size)
@@ -183,14 +183,14 @@ class DashboardViewModelTest {
         // March data
         val marchDays = listOf(
             DailyAggregate(day = "${today.year}-03-01", totalMinutes = 25, sessionCount = 1),
-            DailyAggregate(day = "${today.year}-03-15", totalMinutes = 50, sessionCount = 2)
+            DailyAggregate(day = "${today.year}-03-15", totalMinutes = 50, sessionCount = 2),
         )
 
         val entries = DashboardViewModel.aggregatesToBarEntries(
             DashboardViewModel.Timeframe.YEAR,
             marchDays,
             first,
-            last
+            last,
         )
 
         // March is index 2 (0-based)
@@ -210,7 +210,7 @@ class DashboardViewModelTest {
         val days = DashboardViewModel.aggregatesToHeatmapDays(
             emptyList(),
             start,
-            end
+            end,
         )
 
         assertEquals(10, days.size)
@@ -224,13 +224,13 @@ class DashboardViewModelTest {
         val end = LocalDate.of(2026, 1, 5)
 
         val aggregates = listOf(
-            DailyAggregate(day = "2026-01-03", totalMinutes = 90, sessionCount = 3)
+            DailyAggregate(day = "2026-01-03", totalMinutes = 90, sessionCount = 3),
         )
 
         val days = DashboardViewModel.aggregatesToHeatmapDays(
             aggregates,
             start,
-            end
+            end,
         )
 
         assertEquals(5, days.size)
@@ -249,7 +249,7 @@ class DashboardViewModelTest {
         val days = DashboardViewModel.aggregatesToHeatmapDays(
             emptyList(),
             start,
-            end
+            end,
         )
 
         assertEquals(30, days.size)
@@ -261,13 +261,13 @@ class DashboardViewModelTest {
         val date = LocalDate.of(2026, 3, 7)
 
         val aggregates = listOf(
-            DailyAggregate(day = "2026-03-07", totalMinutes = 25, sessionCount = 1)
+            DailyAggregate(day = "2026-03-07", totalMinutes = 25, sessionCount = 1),
         )
 
         val days = DashboardViewModel.aggregatesToHeatmapDays(
             aggregates,
             date,
-            date
+            date,
         )
 
         assertEquals(1, days.size)

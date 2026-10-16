@@ -52,22 +52,22 @@ fun GlowContainer(
     glowRadius: Dp = 12.dp,
     borderColor: Color = glowColor,
     cornerRadius: Dp = 16.dp,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val animatedGlowColor by animateColorAsState(
         targetValue = glowColor,
         animationSpec = tween(durationMillis = 600),
-        label = "glowColor"
+        label = "glowColor",
     )
     val animatedGlowAlpha by animateFloatAsState(
         targetValue = glowAlpha,
         animationSpec = tween(durationMillis = 600),
-        label = "glowAlpha"
+        label = "glowAlpha",
     )
     val animatedBorderColor by animateColorAsState(
         targetValue = borderColor,
         animationSpec = tween(durationMillis = 600),
-        label = "borderColor"
+        label = "borderColor",
     )
 
     val shape = RoundedCornerShape(cornerRadius)
@@ -80,7 +80,7 @@ fun GlowContainer(
                 val cornerPx = cornerRadius.toPx()
                 val expandedSize = Size(
                     size.width + glowPx * 2,
-                    size.height + glowPx * 2
+                    size.height + glowPx * 2,
                 )
                 val topLeft = Offset(-glowPx, -glowPx)
                 val center = Offset(size.width / 2f, size.height / 2f)
@@ -92,27 +92,27 @@ fun GlowContainer(
                         colors = listOf(
                             animatedGlowColor.copy(alpha = animatedGlowAlpha),
                             animatedGlowColor.copy(alpha = animatedGlowAlpha * 0.3f),
-                            Color.Transparent
+                            Color.Transparent,
                         ),
                         center = center,
-                        radius = maxDimension
+                        radius = maxDimension,
                     ),
                     topLeft = topLeft,
                     size = expandedSize,
-                    cornerRadius = CornerRadius(cornerPx + glowPx)
+                    cornerRadius = CornerRadius(cornerPx + glowPx),
                 )
 
                 // Draw the container fill
                 drawRoundRect(
                     color = CardSurface.copy(alpha = 0.85f),
-                    cornerRadius = CornerRadius(cornerPx)
+                    cornerRadius = CornerRadius(cornerPx),
                 )
             }
             .border(
                 width = 1.dp,
                 color = animatedBorderColor.copy(alpha = 0.6f),
-                shape = shape
-            )
+                shape = shape,
+            ),
     ) {
         content()
     }
@@ -121,24 +121,24 @@ fun GlowContainer(
 @Preview(
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
-    name = "GlowContainer – Idle"
+    name = "GlowContainer – Idle",
 )
 @Composable
 private fun GlowContainerIdlePreview() {
     FlowTimerTheme {
         Box(
             modifier = Modifier.padding(32.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             GlowContainer(
                 glowColor = GlowBlue,
-                glowAlpha = 0.2f
+                glowAlpha = 0.2f,
             ) {
                 Text(
                     text = "IDLE",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(48.dp)
+                    modifier = Modifier.padding(48.dp),
                 )
             }
         }
@@ -148,24 +148,24 @@ private fun GlowContainerIdlePreview() {
 @Preview(
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
-    name = "GlowContainer – Running"
+    name = "GlowContainer – Running",
 )
 @Composable
 private fun GlowContainerRunningPreview() {
     FlowTimerTheme {
         Box(
             modifier = Modifier.padding(32.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             GlowContainer(
                 glowColor = GlowCyan,
-                glowAlpha = 0.6f
+                glowAlpha = 0.6f,
             ) {
                 Text(
                     text = "RUNNING",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(48.dp)
+                    modifier = Modifier.padding(48.dp),
                 )
             }
         }
@@ -175,18 +175,18 @@ private fun GlowContainerRunningPreview() {
 @Preview(
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
-    name = "GlowContainer – Complete"
+    name = "GlowContainer – Complete",
 )
 @Composable
 private fun GlowContainerCompletePreview() {
     FlowTimerTheme {
         Box(
             modifier = Modifier.padding(32.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             GlowContainer(
                 glowColor = GlowGold,
-                glowAlpha = 0.7f
+                glowAlpha = 0.7f,
             ) {
                 Box(modifier = Modifier.size(200.dp, 280.dp))
             }

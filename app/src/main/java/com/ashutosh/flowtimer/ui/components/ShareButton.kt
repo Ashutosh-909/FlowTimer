@@ -41,10 +41,7 @@ import com.ashutosh.flowtimer.ui.theme.SpaceBackground
  * @param onShare Callback when the button is tapped.
  */
 @Composable
-fun ShareButton(
-    modifier: Modifier = Modifier,
-    onShare: () -> Unit
-) {
+fun ShareButton(modifier: Modifier = Modifier, onShare: () -> Unit) {
     val buttonShape = RoundedCornerShape(16.dp)
 
     Box(
@@ -59,23 +56,23 @@ fun ShareButton(
             .background(GlowBlue)
             .clickable(onClick = onShare)
             .padding(horizontal = 16.dp, vertical = 12.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
         ) {
             Icon(
                 imageVector = Icons.Default.Share,
                 contentDescription = null,
                 tint = PixelText,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(16.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "SHARE STATS",
                 style = MaterialTheme.typography.bodyMedium,
-                color = PixelText
+                color = PixelText,
             )
         }
     }
@@ -90,7 +87,7 @@ private fun ShareButtonPreview() {
         Box(
             modifier = Modifier
                 .background(SpaceBackground)
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             ShareButton(onShare = {})
         }

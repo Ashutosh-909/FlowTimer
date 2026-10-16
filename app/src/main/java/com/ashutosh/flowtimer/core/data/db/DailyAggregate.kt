@@ -6,8 +6,4 @@ package com.ashutosh.flowtimer.core.data.db
  *
  * [day] is formatted as `"YYYY-MM-DD"` (e.g. `"2026-03-07"`).
  */
-data class DailyAggregate(
-    val day: String,
-    val totalMinutes: Int,
-    val sessionCount: Int
-)
+data class DailyAggregate(val day: String, val totalMinutes: Int, val sessionCount: Int)

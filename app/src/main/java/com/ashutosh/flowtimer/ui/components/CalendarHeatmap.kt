@@ -48,11 +48,7 @@ import java.util.Locale
 /**
  * Cell model for the internal heatmap grid.
  */
-private data class DayCell(
-    val date: LocalDate,
-    val minutes: Int,
-    val isInRange: Boolean
-)
+private data class DayCell(val date: LocalDate, val minutes: Int, val isInRange: Boolean)
 
 /**
  * GitHub-style calendar heatmap showing daily focus intensity over ~6 months.
@@ -74,10 +70,7 @@ private data class DayCell(
  * @param days Flat list of [DashboardViewModel.HeatmapDay] spanning ~6 months.
  */
 @Composable
-fun CalendarHeatmap(
-    modifier: Modifier = Modifier,
-    days: List<DashboardViewModel.HeatmapDay>
-) {
+fun CalendarHeatmap(modifier: Modifier = Modifier, days: List<DashboardViewModel.HeatmapDay>) {
     if (days.isEmpty()) return
 
     val scrollState = rememberScrollState()
@@ -124,7 +117,7 @@ fun CalendarHeatmap(
         modifier = modifier.clearAndSetSemantics {
             contentDescription =
                 "Calendar heatmap showing $totalDays days of history with $activeDays active days"
-        }
+        },
     ) {
         // ── Tooltip ──
         if (selectedCell != null) {
@@ -136,7 +129,7 @@ fun CalendarHeatmap(
                 text = "$dateText · ${cell.minutes} min",
                 style = MaterialTheme.typography.labelSmall,
                 color = PixelText,
-                modifier = Modifier.padding(bottom = 4.dp)
+                modifier = Modifier.padding(bottom = 4.dp),
             )
         } else {
             Spacer(modifier = Modifier.height(16.dp))
@@ -146,7 +139,7 @@ fun CalendarHeatmap(
             // ── Fixed day-of-week labels ──
             Column(
                 modifier = Modifier.padding(end = 4.dp),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
+                verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
                 // Spacer for month label row
                 Spacer(modifier = Modifier.height(12.dp))
@@ -155,12 +148,12 @@ fun CalendarHeatmap(
                 dayLabels.forEach { label ->
                     Box(
                         modifier = Modifier.size(12.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = label,
                             style = MaterialTheme.typography.labelSmall,
-                            color = PixelTextDim
+                            color = PixelTextDim,
                         )
                     }
                 }
@@ -171,11 +164,11 @@ fun CalendarHeatmap(
                 modifier = Modifier
                     .weight(1f)
                     .horizontalScroll(scrollState),
-                horizontalArrangement = Arrangement.spacedBy(2.dp)
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
             ) {
                 weeks.forEachIndexed { weekIndex, weekCells ->
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
                     ) {
                         // ── Month label ──
                         val containsFirst = weekCells.any { it.date.dayOfMonth == 1 && it.isInRange }
@@ -185,22 +178,24 @@ fun CalendarHeatmap(
                             val firstOfMonth = weekCells.first { it.date.dayOfMonth == 1 && it.isInRange }
                             Text(
                                 text = firstOfMonth.date.month.getDisplayName(
-                                    TextStyle.SHORT, Locale.getDefault()
+                                    TextStyle.SHORT,
+                                    Locale.getDefault(),
                                 ).uppercase(),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = PixelTextDim,
-                                modifier = Modifier.height(12.dp)
+                                modifier = Modifier.height(12.dp),
                             )
                         } else if (isFirstWeek) {
                             val firstInRange = weekCells.firstOrNull { it.isInRange }
                             if (firstInRange != null) {
                                 Text(
                                     text = firstInRange.date.month.getDisplayName(
-                                        TextStyle.SHORT, Locale.getDefault()
+                                        TextStyle.SHORT,
+                                        Locale.getDefault(),
                                     ).uppercase(),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = PixelTextDim,
-                                    modifier = Modifier.height(12.dp)
+                                    modifier = Modifier.height(12.dp),
                                 )
                             } else {
                                 Spacer(modifier = Modifier.height(12.dp))
@@ -229,8 +224,8 @@ fun CalendarHeatmap(
                                             }
                                         } else {
                                             Modifier
-                                        }
-                                    )
+                                        },
+                                    ),
                             )
                         }
                     }
@@ -289,7 +284,7 @@ private fun CalendarHeatmapPreview() {
         Box(modifier = Modifier.background(SpaceBackground).padding(16.dp)) {
             CalendarHeatmap(
                 days = sampleHeatmapDays(),
-                modifier = Modifier.fillMaxWidth().height(140.dp)
+                modifier = Modifier.fillMaxWidth().height(140.dp),
             )
         }
     }
@@ -310,7 +305,7 @@ private fun CalendarHeatmapEmptyPreview() {
             }
             CalendarHeatmap(
                 days = emptyDays,
-                modifier = Modifier.fillMaxWidth().height(140.dp)
+                modifier = Modifier.fillMaxWidth().height(140.dp),
             )
         }
     }

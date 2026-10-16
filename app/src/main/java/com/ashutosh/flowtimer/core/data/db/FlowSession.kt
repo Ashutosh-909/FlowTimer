@@ -17,5 +17,5 @@ data class FlowSession(
     /** Configured duration for this session (minutes). */
     val durationMinutes: Int,
     /** [System.currentTimeMillis] when the session finished. */
-    val completedEpochMillis: Long
+    val completedEpochMillis: Long,
 )

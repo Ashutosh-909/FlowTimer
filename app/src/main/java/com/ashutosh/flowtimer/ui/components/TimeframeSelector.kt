@@ -45,13 +45,13 @@ import com.ashutosh.flowtimer.ui.theme.TimerPillBorder
 fun TimeframeSelector(
     modifier: Modifier = Modifier,
     selected: DashboardViewModel.Timeframe,
-    onSelected: (DashboardViewModel.Timeframe) -> Unit
+    onSelected: (DashboardViewModel.Timeframe) -> Unit,
 ) {
     val chipShape = RoundedCornerShape(16.dp)
 
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
     ) {
         DashboardViewModel.Timeframe.entries.forEach { timeframe ->
             val isSelected = timeframe == selected
@@ -77,16 +77,16 @@ fun TimeframeSelector(
                             Modifier
                                 .background(CardSurface)
                                 .border(1.dp, TimerPillBorder, chipShape)
-                        }
+                        },
                     )
                     .clickable { onSelected(timeframe) }
                     .padding(horizontal = 12.dp, vertical = 8.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = timeframe.name,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (isSelected) PixelText else PixelTextDim
+                    color = if (isSelected) PixelText else PixelTextDim,
                 )
             }
         }
@@ -102,7 +102,7 @@ private fun TimeframeSelectorWeekPreview() {
         Box(modifier = Modifier.background(SpaceBackground).padding(16.dp)) {
             TimeframeSelector(
                 selected = DashboardViewModel.Timeframe.WEEK,
-                onSelected = {}
+                onSelected = {},
             )
         }
     }
@@ -115,7 +115,7 @@ private fun TimeframeSelectorMonthPreview() {
         Box(modifier = Modifier.background(SpaceBackground).padding(16.dp)) {
             TimeframeSelector(
                 selected = DashboardViewModel.Timeframe.MONTH,
-                onSelected = {}
+                onSelected = {},
             )
         }
     }
@@ -128,7 +128,7 @@ private fun TimeframeSelectorYearPreview() {
         Box(modifier = Modifier.background(SpaceBackground).padding(16.dp)) {
             TimeframeSelector(
                 selected = DashboardViewModel.Timeframe.YEAR,
-                onSelected = {}
+                onSelected = {},
             )
         }
     }
