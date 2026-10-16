@@ -29,7 +29,7 @@ class TimerEngineTest {
         fakeElapsedRealtime = 10_000L // arbitrary start
         engine = TimerEngine(
             scope = testScope.backgroundScope, // backgroundScope tolerates uncompleted coroutines
-            elapsedRealtimeProvider = clockProvider
+            elapsedRealtimeProvider = clockProvider,
         )
     }
 
@@ -173,7 +173,7 @@ class TimerEngineTest {
             timerState = TimerState.Running,
             remainingMs = 30_000L,
             totalDurationMs = 60_000L,
-            lastStartEpoch = 0L
+            lastStartEpoch = 0L,
         )
         assertEquals(TimerState.Running, engine.state.value)
         assertEquals(30_000L, engine.remainingMillis.value)
@@ -192,7 +192,7 @@ class TimerEngineTest {
             timerState = TimerState.Idle,
             remainingMs = 60_000L,
             totalDurationMs = 60_000L,
-            lastStartEpoch = 0L
+            lastStartEpoch = 0L,
         )
         assertEquals(TimerState.Idle, engine.state.value)
         assertEquals(60_000L, engine.remainingMillis.value)

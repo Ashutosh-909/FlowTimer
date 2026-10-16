@@ -17,6 +17,7 @@ abstract class FlowTimerDatabase : RoomDatabase() {
     abstract fun flowSessionDao(): FlowSessionDao
 
     companion object {
+        @Suppress("ktlint:standard:property-naming") // Room singleton idiom
         @Volatile
         private var INSTANCE: FlowTimerDatabase? = null
 
@@ -25,13 +26,12 @@ abstract class FlowTimerDatabase : RoomDatabase() {
          *
          * @param context Application context (avoids Activity leaks).
          */
-        fun getInstance(context: Context): FlowTimerDatabase =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Room.databaseBuilder(
-                    context.applicationContext,
-                    FlowTimerDatabase::class.java,
-                    "flow_timer.db"
-                ).build().also { INSTANCE = it }
-            }
+        fun getInstance(context: Context): FlowTimerDatabase = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: Room.databaseBuilder(
+                context.applicationContext,
+                FlowTimerDatabase::class.java,
+                "flow_timer.db",
+            ).build().also { INSTANCE = it }
+        }
     }
 }

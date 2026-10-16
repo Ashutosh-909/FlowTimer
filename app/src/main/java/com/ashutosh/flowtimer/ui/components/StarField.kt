@@ -34,7 +34,7 @@ private val STAR_COLORS = listOf(
     StarCyan,
     StarPink,
     StarPurple,
-    StarGold
+    StarGold,
 )
 
 private data class Star(
@@ -43,7 +43,7 @@ private data class Star(
     val color: Color,
     val radiusDp: Float,
     val isCross: Boolean,
-    val twinklePhaseOffset: Float
+    val twinklePhaseOffset: Float,
 )
 
 /**
@@ -58,11 +58,7 @@ private data class Star(
  * @param seed Random seed for deterministic star positions (survives recomposition).
  */
 @Composable
-fun StarField(
-    modifier: Modifier = Modifier,
-    starCount: Int = 60,
-    seed: Long = 42L
-) {
+fun StarField(modifier: Modifier = Modifier, starCount: Int = 60, seed: Long = 42L) {
     val stars = remember(starCount, seed) {
         val rng = Random(seed)
         List(starCount) {
@@ -72,7 +68,7 @@ fun StarField(
                 color = STAR_COLORS[rng.nextInt(STAR_COLORS.size)],
                 radiusDp = 0.5f + rng.nextFloat() * 1.5f, // 0.5–2.0 dp
                 isCross = rng.nextFloat() < 0.12f, // ~12% are sparkle crosses
-                twinklePhaseOffset = rng.nextFloat() * 1000f
+                twinklePhaseOffset = rng.nextFloat() * 1000f,
             )
         }
     }
@@ -83,15 +79,15 @@ fun StarField(
         targetValue = 1.0f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 2000, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "twinkleAlpha"
+        label = "twinkleAlpha",
     )
 
     Canvas(
         modifier = modifier
             .fillMaxSize()
-            .clearAndSetSemantics { } // decorative — hidden from TalkBack
+            .clearAndSetSemantics { }, // decorative — hidden from TalkBack
     ) {
         val w = size.width
         val h = size.height
@@ -123,7 +119,7 @@ fun StarField(
     backgroundColor = 0xFF0D1B2A,
     widthDp = 360,
     heightDp = 800,
-    name = "StarField"
+    name = "StarField",
 )
 @Composable
 private fun StarFieldPreview() {

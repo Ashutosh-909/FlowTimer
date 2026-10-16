@@ -15,6 +15,11 @@ room = "2.7.1"
 ksp = "2.0.21-1.0.28"
 playServicesWearable = "18.2.0"
 wearTiles = "1.4.1"
+detekt = "1.23.8"
+ktlintGradle = "14.2.0"
+ktlint = "1.8.0"
+kover = "0.9.11"
+sentry = "8.61.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,10 +52,13 @@ play-services-wearable = { group = "com.google.android.gms", name = "play-servic
 wear-tiles = { group = "androidx.wear.tiles", name = "tiles", version.ref = "wearTiles" }
 wear-tiles-material = { group = "androidx.wear.tiles", name = "tiles-material", version.ref = "wearTiles" }
 wear-tiles-testing = { group = "androidx.wear.tiles", name = "tiles-testing", version.ref = "wearTiles" }
+sentry-android-core = { group = "io.sentry", name = "sentry-android-core", version.ref = "sentry" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }

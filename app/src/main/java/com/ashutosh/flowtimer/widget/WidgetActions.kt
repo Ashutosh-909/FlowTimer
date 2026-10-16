@@ -9,7 +9,7 @@ import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
 import com.ashutosh.flowtimer.core.service.TimerForegroundService
 
-/**
+/*
  * Widget action callbacks that send intents to [TimerForegroundService].
  *
  * Each callback is a thin bridge — builds an [Intent] with the appropriate
@@ -33,11 +33,7 @@ import com.ashutosh.flowtimer.core.service.TimerForegroundService
  */
 class StartAction : ActionCallback {
 
-    override suspend fun onAction(
-        context: Context,
-        glanceId: GlanceId,
-        parameters: ActionParameters
-    ) {
+    override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val intent = TimerForegroundService.intent(context, TimerForegroundService.ACTION_START)
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -61,11 +57,7 @@ class StartAction : ActionCallback {
  */
 class ResetAction : ActionCallback {
 
-    override suspend fun onAction(
-        context: Context,
-        glanceId: GlanceId,
-        parameters: ActionParameters
-    ) {
+    override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         try {
             val intent = TimerForegroundService.intent(context, TimerForegroundService.ACTION_RESET)
             context.startService(intent)

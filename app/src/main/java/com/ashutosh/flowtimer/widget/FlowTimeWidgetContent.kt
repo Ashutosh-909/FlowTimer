@@ -104,11 +104,7 @@ private fun buttonBgFor(timerState: TimerState): ColorProvider = when (timerStat
  * Dispatches to the appropriate layout based on the Glance-provided size.
  */
 @Composable
-internal fun FlowTimeWidgetContent(
-    timerState: TimerState,
-    displayMillis: Long,
-    durationMinutes: Int
-) {
+internal fun FlowTimeWidgetContent(timerState: TimerState, displayMillis: Long, durationMinutes: Int) {
     val size = LocalSize.current
     val formattedTime = formatMillis(displayMillis)
 
@@ -126,7 +122,7 @@ internal fun FlowTimeWidgetContent(
             .cornerRadius(16.dp)
             .padding(8.dp)
             .let { mod -> if (wholeWidgetAction != null) mod.clickable(wholeWidgetAction) else mod },
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         when {
             size.width >= 320.dp && size.height >= 180.dp -> ExtraLargeWidgetLayout(
@@ -134,25 +130,28 @@ internal fun FlowTimeWidgetContent(
                 formattedTime = formattedTime,
                 durationMinutes = durationMinutes,
                 widgetWidth = size.width,
-                widgetHeight = size.height
+                widgetHeight = size.height,
             )
+
             size.width >= 250.dp -> LargeWidgetLayout(
                 timerState = timerState,
                 formattedTime = formattedTime,
                 durationMinutes = durationMinutes,
                 widgetWidth = size.width,
-                widgetHeight = size.height
+                widgetHeight = size.height,
             )
+
             size.width >= 180.dp -> MediumWidgetLayout(
                 timerState = timerState,
                 formattedTime = formattedTime,
                 durationMinutes = durationMinutes,
                 widgetWidth = size.width,
-                widgetHeight = size.height
+                widgetHeight = size.height,
             )
+
             else -> SmallWidgetLayout(
                 timerState = timerState,
-                formattedTime = formattedTime
+                formattedTime = formattedTime,
             )
         }
     }
@@ -167,14 +166,11 @@ internal fun FlowTimeWidgetContent(
  * - Finished: "✦ DONE" + restart affordance (green bg)
  */
 @Composable
-private fun SmallWidgetLayout(
-    timerState: TimerState,
-    formattedTime: String
-) {
+private fun SmallWidgetLayout(timerState: TimerState, formattedTime: String) {
     Row(
         modifier = GlanceModifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         when (timerState) {
             is TimerState.Idle -> {
@@ -186,8 +182,8 @@ private fun SmallWidgetLayout(
                         color = WidgetAccentGold,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace
-                    )
+                        fontFamily = FontFamily.Monospace,
+                    ),
                 )
                 Spacer(GlanceModifier.width(4.dp))
                 Text(
@@ -195,15 +191,17 @@ private fun SmallWidgetLayout(
                     style = TextStyle(
                         color = WidgetTextDim,
                         fontSize = 11.sp,
-                        fontFamily = FontFamily.Monospace
-                    )
+                        fontFamily = FontFamily.Monospace,
+                    ),
                 )
             }
+
             is TimerState.Running -> {
                 TimerText(formattedTime, fontSize = 16, textColor = WidgetRunningTextBright)
                 Spacer(GlanceModifier.width(8.dp))
                 StopButton(buttonSize = 28)
             }
+
             is TimerState.Finished -> {
                 Text(
                     text = "✦ DONE!",
@@ -211,8 +209,8 @@ private fun SmallWidgetLayout(
                         color = WidgetFinishedTextDark,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace
-                    )
+                        fontFamily = FontFamily.Monospace,
+                    ),
                 )
                 Spacer(GlanceModifier.width(4.dp))
                 Text(
@@ -220,8 +218,8 @@ private fun SmallWidgetLayout(
                     style = TextStyle(
                         color = WidgetFinishedTextDark,
                         fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                        fontWeight = FontWeight.Bold,
+                    ),
                 )
             }
         }
@@ -235,13 +233,7 @@ private fun SmallWidgetLayout(
  * Scales icon/text based on actual widget dimensions.
  */
 @Composable
-private fun MediumWidgetLayout(
-    timerState: TimerState,
-    formattedTime: String,
-    durationMinutes: Int,
-    widgetWidth: Dp,
-    widgetHeight: Dp
-) {
+private fun MediumWidgetLayout(timerState: TimerState, formattedTime: String, durationMinutes: Int, widgetWidth: Dp, widgetHeight: Dp) {
     val scaleFactor = minOf(widgetWidth / 180.dp, widgetHeight / 110.dp)
     val timerFontSize = (18 * scaleFactor).toInt().coerceIn(14, 28)
     val statusFontSize = (9 * scaleFactor).toInt().coerceIn(7, 14)
@@ -251,7 +243,7 @@ private fun MediumWidgetLayout(
     Column(
         modifier = GlanceModifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         when (timerState) {
             is TimerState.Idle -> {
@@ -265,10 +257,11 @@ private fun MediumWidgetLayout(
                         color = WidgetAccentGold,
                         fontSize = statusFontSize.sp,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace
-                    )
+                        fontFamily = FontFamily.Monospace,
+                    ),
                 )
             }
+
             is TimerState.Running -> {
                 StatusText(timerState, fontSize = statusFontSize)
                 Spacer(GlanceModifier.height(4.dp))
@@ -276,6 +269,7 @@ private fun MediumWidgetLayout(
                 Spacer(GlanceModifier.height(8.dp))
                 StopButton(buttonSize = buttonSize)
             }
+
             is TimerState.Finished -> {
                 StatusText(timerState, fontSize = statusFontSize)
                 Spacer(GlanceModifier.height(4.dp))
@@ -287,8 +281,8 @@ private fun MediumWidgetLayout(
                         color = WidgetFinishedTextDark,
                         fontSize = statusFontSize.sp,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace
-                    )
+                        fontFamily = FontFamily.Monospace,
+                    ),
                 )
             }
         }
@@ -302,13 +296,7 @@ private fun MediumWidgetLayout(
  * Scales proportionally based on actual widget dimensions.
  */
 @Composable
-private fun LargeWidgetLayout(
-    timerState: TimerState,
-    formattedTime: String,
-    durationMinutes: Int,
-    widgetWidth: Dp,
-    widgetHeight: Dp
-) {
+private fun LargeWidgetLayout(timerState: TimerState, formattedTime: String, durationMinutes: Int, widgetWidth: Dp, widgetHeight: Dp) {
     val scaleFactor = minOf(widgetWidth / 250.dp, widgetHeight / 110.dp)
     val hourglassSize = (56 * scaleFactor).toInt().coerceIn(48, 80)
     val titleFontSize = (10 * scaleFactor).toInt().coerceIn(8, 18)
@@ -319,7 +307,7 @@ private fun LargeWidgetLayout(
     Row(
         modifier = GlanceModifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         // Big hourglass on the left
         HourglassImage(timerState, sizeDP = hourglassSize)
@@ -328,7 +316,7 @@ private fun LargeWidgetLayout(
         // Content on the right
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = "FLOW TIME",
@@ -336,8 +324,8 @@ private fun LargeWidgetLayout(
                     color = primaryTextColorFor(timerState),
                     fontSize = titleFontSize.sp,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Monospace
-                )
+                    fontFamily = FontFamily.Monospace,
+                ),
             )
             Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
 
@@ -346,12 +334,12 @@ private fun LargeWidgetLayout(
                     TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetTextDim)
                     Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
                     Text(
-                        text = "${durationMinutes} min",
+                        text = "$durationMinutes min",
                         style = TextStyle(
                             color = WidgetTextDim,
                             fontSize = labelFontSize.sp,
-                            fontFamily = FontFamily.Monospace
-                        )
+                            fontFamily = FontFamily.Monospace,
+                        ),
                     )
                     Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
                     Text(
@@ -360,22 +348,24 @@ private fun LargeWidgetLayout(
                             color = WidgetAccentGold,
                             fontSize = labelFontSize.sp,
                             fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.Monospace
-                        )
+                            fontFamily = FontFamily.Monospace,
+                        ),
                     )
                 }
+
                 is TimerState.Running -> {
                     TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetRunningTextBright)
                     Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         StatusText(timerState, fontSize = labelFontSize)
                         Spacer(GlanceModifier.width(12.dp))
                         StopButton(buttonSize = buttonSize)
                     }
                 }
+
                 is TimerState.Finished -> {
                     TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetFinishedTextDark)
                     Spacer(GlanceModifier.height((4 * scaleFactor).toInt().coerceAtLeast(4).dp))
@@ -387,8 +377,8 @@ private fun LargeWidgetLayout(
                             color = WidgetFinishedTextDark,
                             fontSize = labelFontSize.sp,
                             fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.Monospace
-                        )
+                            fontFamily = FontFamily.Monospace,
+                        ),
                     )
                 }
             }
@@ -403,13 +393,7 @@ private fun LargeWidgetLayout(
  * larger elements to fill the space.
  */
 @Composable
-private fun ExtraLargeWidgetLayout(
-    timerState: TimerState,
-    formattedTime: String,
-    durationMinutes: Int,
-    widgetWidth: Dp,
-    widgetHeight: Dp
-) {
+private fun ExtraLargeWidgetLayout(timerState: TimerState, formattedTime: String, durationMinutes: Int, widgetWidth: Dp, widgetHeight: Dp) {
     val scaleFactor = minOf(widgetWidth / 320.dp, widgetHeight / 180.dp)
     val hourglassSize = (80 * scaleFactor).toInt().coerceIn(64, 120)
     val titleFontSize = (14 * scaleFactor).toInt().coerceIn(12, 24)
@@ -421,7 +405,7 @@ private fun ExtraLargeWidgetLayout(
     Row(
         modifier = GlanceModifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         // Big hourglass on the left
         HourglassImage(timerState, sizeDP = hourglassSize)
@@ -430,7 +414,7 @@ private fun ExtraLargeWidgetLayout(
         // Content on the right
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = "FLOW TIME",
@@ -438,8 +422,8 @@ private fun ExtraLargeWidgetLayout(
                     color = primaryTextColorFor(timerState),
                     fontSize = titleFontSize.sp,
                     fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Monospace
-                )
+                    fontFamily = FontFamily.Monospace,
+                ),
             )
             Spacer(GlanceModifier.height(spacing.dp))
 
@@ -448,12 +432,12 @@ private fun ExtraLargeWidgetLayout(
                     TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetTextDim)
                     Spacer(GlanceModifier.height(spacing.dp))
                     Text(
-                        text = "${durationMinutes} min",
+                        text = "$durationMinutes min",
                         style = TextStyle(
                             color = WidgetTextDim,
                             fontSize = labelFontSize.sp,
-                            fontFamily = FontFamily.Monospace
-                        )
+                            fontFamily = FontFamily.Monospace,
+                        ),
                     )
                     Spacer(GlanceModifier.height(spacing.dp))
                     Text(
@@ -462,22 +446,24 @@ private fun ExtraLargeWidgetLayout(
                             color = WidgetAccentGold,
                             fontSize = (labelFontSize + 2).sp,
                             fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.Monospace
-                        )
+                            fontFamily = FontFamily.Monospace,
+                        ),
                     )
                 }
+
                 is TimerState.Running -> {
                     TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetRunningTextBright)
                     Spacer(GlanceModifier.height(spacing.dp))
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         StatusText(timerState, fontSize = labelFontSize)
                         Spacer(GlanceModifier.width(12.dp))
                         StopButton(buttonSize = buttonSize)
                     }
                 }
+
                 is TimerState.Finished -> {
                     TimerText(formattedTime, fontSize = timerFontSize, textColor = WidgetFinishedTextDark)
                     Spacer(GlanceModifier.height(spacing.dp))
@@ -489,8 +475,8 @@ private fun ExtraLargeWidgetLayout(
                             color = WidgetFinishedTextDark,
                             fontSize = labelFontSize.sp,
                             fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.Monospace
-                        )
+                            fontFamily = FontFamily.Monospace,
+                        ),
                     )
                 }
             }
@@ -520,7 +506,7 @@ private fun HourglassImage(timerState: TimerState, sizeDP: Int) {
         provider = ImageProvider(drawableRes),
         contentDescription = contentDesc,
         contentScale = ContentScale.Fit,
-        modifier = GlanceModifier.size(sizeDP.dp)
+        modifier = GlanceModifier.size(sizeDP.dp),
     )
 }
 
@@ -528,19 +514,15 @@ private fun HourglassImage(timerState: TimerState, sizeDP: Int) {
  * Timer readout text with configurable color for state-dependent styling.
  */
 @Composable
-private fun TimerText(
-    formattedTime: String,
-    fontSize: Int,
-    textColor: ColorProvider = WidgetTextColor
-) {
+private fun TimerText(formattedTime: String, fontSize: Int, textColor: ColorProvider = WidgetTextColor) {
     Text(
         text = formattedTime,
         style = TextStyle(
             color = textColor,
             fontSize = fontSize.sp,
             fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Monospace
-        )
+            fontFamily = FontFamily.Monospace,
+        ),
     )
 }
 
@@ -563,8 +545,8 @@ private fun StatusText(timerState: TimerState, fontSize: Int = 8) {
             color = color,
             fontSize = fontSize.sp,
             fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Monospace
-        )
+            fontFamily = FontFamily.Monospace,
+        ),
     )
 }
 
@@ -579,7 +561,7 @@ private fun StopButton(buttonSize: Int = 36) {
         contentDescription = "Stop timer",
         action = actionRunCallback<ResetAction>(),
         buttonSize = buttonSize,
-        backgroundColor = WidgetRunningButtonBg
+        backgroundColor = WidgetRunningButtonBg,
     )
 }
 
@@ -592,7 +574,7 @@ private fun WidgetButton(
     contentDescription: String,
     action: Action,
     buttonSize: Int = 36,
-    backgroundColor: ColorProvider = WidgetCardBackground
+    backgroundColor: ColorProvider = WidgetCardBackground,
 ) {
     Box(
         modifier = GlanceModifier
@@ -600,14 +582,14 @@ private fun WidgetButton(
             .cornerRadius(8.dp)
             .background(backgroundColor)
             .clickable(action),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
             style = TextStyle(
                 color = WidgetTextColor,
-                fontSize = (buttonSize * 0.44f).toInt().sp
-            )
+                fontSize = (buttonSize * 0.44f).toInt().sp,
+            ),
         )
     }
 }

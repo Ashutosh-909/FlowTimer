@@ -32,7 +32,7 @@ internal object NotificationHelper {
         val timerChannel = NotificationChannel(
             TIMER_CHANNEL_ID,
             "Timer",
-            NotificationManager.IMPORTANCE_LOW
+            NotificationManager.IMPORTANCE_LOW,
         ).apply {
             description = "Ongoing notification while a flow session is active"
             setShowBadge(false)
@@ -41,7 +41,7 @@ internal object NotificationHelper {
         val completionChannel = NotificationChannel(
             COMPLETION_CHANNEL_ID,
             "Timer Complete",
-            NotificationManager.IMPORTANCE_HIGH
+            NotificationManager.IMPORTANCE_HIGH,
         ).apply {
             description = "Alert when your flow session finishes"
         }
@@ -56,10 +56,7 @@ internal object NotificationHelper {
      *
      * Includes a **Cancel** action to reset the timer.
      */
-    fun buildTimerNotification(
-        context: Context,
-        remainingMs: Long
-    ): Notification {
+    fun buildTimerNotification(context: Context, remainingMs: Long): Notification {
         val minutes = (remainingMs / 60_000).toInt()
         val seconds = ((remainingMs % 60_000) / 1_000).toInt()
         val timeText = String.format("%02d:%02d", minutes, seconds)
@@ -73,7 +70,7 @@ internal object NotificationHelper {
             Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             },
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
         val builder = NotificationCompat.Builder(context, TIMER_CHANNEL_ID)
@@ -92,7 +89,7 @@ internal object NotificationHelper {
         builder.addAction(
             0,
             "Cancel",
-            buildServicePendingIntent(context, TimerForegroundService.ACTION_RESET, 2)
+            buildServicePendingIntent(context, TimerForegroundService.ACTION_RESET, 2),
         )
 
         return builder.build()
@@ -108,7 +105,7 @@ internal object NotificationHelper {
             Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             },
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
         return NotificationCompat.Builder(context, COMPLETION_CHANNEL_ID)
@@ -126,11 +123,7 @@ internal object NotificationHelper {
 
     // ── Helpers ─────────────────────────────────────────────────────────
 
-    private fun buildServicePendingIntent(
-        context: Context,
-        action: String,
-        requestCode: Int
-    ): PendingIntent {
+    private fun buildServicePendingIntent(context: Context, action: String, requestCode: Int): PendingIntent {
         val intent = Intent(context, TimerForegroundService::class.java).apply {
             this.action = action
         }
@@ -138,7 +131,7 @@ internal object NotificationHelper {
             context,
             requestCode,
             intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
     }
 }

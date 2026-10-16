@@ -44,7 +44,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         val totalFocusMinutes: Int = 0,
         val barData: List<BarEntry> = emptyList(),
         val heatmapData: List<HeatmapDay> = emptyList(),
-        val isLoading: Boolean = true
+        val isLoading: Boolean = true,
     ) {
         /** Formatted total focus time string (e.g., "2 h 35 min" or "45 min"). */
         val formattedTotalTime: String
@@ -60,6 +60,8 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     private val sessionRepository: SessionRepository
+
+    @Suppress("ktlint:standard:backing-property-naming")
     private val _timeframe = MutableStateFlow(Timeframe.WEEK)
 
     init {
@@ -79,7 +81,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
                 Triple(tf, aggregates, startDate to endDate)
             }
         },
-        heatmapFlow()
+        heatmapFlow(),
     ) { barTriple, heatmapDays ->
         val (tf, aggregates, dateRange) = barTriple
         val barData = aggregatesToBarEntries(tf, aggregates, dateRange.first, dateRange.second)
@@ -88,12 +90,12 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
             totalFocusMinutes = aggregates.sumOf { it.totalMinutes },
             barData = barData,
             heatmapData = heatmapDays,
-            isLoading = false
+            isLoading = false,
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000L),
-        initialValue = UiState()
+        initialValue = UiState(),
     )
 
     /** Switch the active timeframe, triggering a bar chart reload. */
@@ -126,10 +128,12 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
                     val monday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
                     monday to monday.plusDays(6)
                 }
+
                 Timeframe.MONTH -> {
                     val first = today.withDayOfMonth(1)
                     first to today.withDayOfMonth(today.lengthOfMonth())
                 }
+
                 Timeframe.YEAR -> {
                     val first = today.withDayOfYear(1)
                     first to today.withDayOfYear(today.lengthOfYear())
@@ -142,7 +146,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
             timeframe: Timeframe,
             aggregates: List<DailyAggregate>,
             startDate: LocalDate,
-            endDate: LocalDate
+            endDate: LocalDate,
         ): List<BarEntry> {
             val aggregateMap = aggregates.associate {
                 LocalDate.parse(it.day) to it.totalMinutes
@@ -156,10 +160,11 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
                         BarEntry(
                             label = dow.getDisplayName(TextStyle.SHORT, Locale.getDefault())
                                 .uppercase(),
-                            minutes = aggregateMap[day] ?: 0
+                            minutes = aggregateMap[day] ?: 0,
                         )
                     }
                 }
+
                 Timeframe.MONTH -> {
                     val weeks = mutableMapOf<Int, Int>()
                     var day = startDate
@@ -174,6 +179,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
                         BarEntry("W${w + 1}", weeks[w] ?: 0)
                     }
                 }
+
                 Timeframe.YEAR -> {
                     (1..12).map { month ->
                         val monthStart = LocalDate.of(startDate.year, month, 1)
@@ -188,9 +194,9 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
                         BarEntry(
                             label = monthStart.month.getDisplayName(
                                 TextStyle.SHORT,
-                                Locale.getDefault()
+                                Locale.getDefault(),
                             ).uppercase(),
-                            minutes = total
+                            minutes = total,
                         )
                     }
                 }
@@ -198,11 +204,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         }
 
         /** Convert daily aggregates into a flat list of [HeatmapDay] for the given range. */
-        fun aggregatesToHeatmapDays(
-            aggregates: List<DailyAggregate>,
-            startDate: LocalDate,
-            endDate: LocalDate
-        ): List<HeatmapDay> {
+        fun aggregatesToHeatmapDays(aggregates: List<DailyAggregate>, startDate: LocalDate, endDate: LocalDate): List<HeatmapDay> {
             val aggregateMap = aggregates.associate {
                 LocalDate.parse(it.day) to it.totalMinutes
             }

@@ -45,10 +45,9 @@ class TimerForegroundService : Service() {
         const val EXTRA_DURATION_MINUTES = "extra_duration_minutes"
 
         /** Convenience factory for launching the service with an action. */
-        fun intent(context: Context, action: String): Intent =
-            Intent(context, TimerForegroundService::class.java).apply {
-                this.action = action
-            }
+        fun intent(context: Context, action: String): Intent = Intent(context, TimerForegroundService::class.java).apply {
+            this.action = action
+        }
     }
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
@@ -66,7 +65,7 @@ class TimerForegroundService : Service() {
 
         repository = PreferencesRepository(applicationContext)
         sessionRepository = SessionRepository(
-            FlowTimerDatabase.getInstance(applicationContext).flowSessionDao()
+            FlowTimerDatabase.getInstance(applicationContext).flowSessionDao(),
         )
         timerEngine = TimerEngine(serviceScope, elapsedRealtimeProvider = SystemClock::elapsedRealtime)
 
@@ -76,9 +75,11 @@ class TimerForegroundService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> handleStart(
-                intent.getIntExtra(EXTRA_DURATION_MINUTES, -1)
+                intent.getIntExtra(EXTRA_DURATION_MINUTES, -1),
             )
+
             ACTION_RESET -> handleReset()
+
             null -> handleRestart() // System restart (START_STICKY)
         }
         return START_STICKY
@@ -115,7 +116,7 @@ class TimerForegroundService : Service() {
         // 2. Start engine & go foreground immediately — no suspension.
         timerEngine.start(durationMinutes)
         startForegroundWithNotification(
-            timerEngine.remainingMillis.value
+            timerEngine.remainingMillis.value,
         )
 
         // 3. Persist asynchronously (safe — foreground is already active).
@@ -135,7 +136,7 @@ class TimerForegroundService : Service() {
                         context = this@TimerForegroundService,
                         stateName = TimerState.Running.name,
                         remainingMillis = timerEngine.remainingMillis.value,
-                        durationMinutes = persisted
+                        durationMinutes = persisted,
                     )
                 }
             }
@@ -161,7 +162,7 @@ class TimerForegroundService : Service() {
                 context = this@TimerForegroundService,
                 stateName = TimerState.Idle.name,
                 remainingMillis = 0L,
-                durationMinutes = duration
+                durationMinutes = duration,
             )
             stopSelf()
         }
@@ -204,15 +205,16 @@ class TimerForegroundService : Service() {
                         timerState = state,
                         remainingMs = correctedRemaining,
                         totalDurationMs = totalDurationMs,
-                        lastStartEpoch = lastStartEpoch
+                        lastStartEpoch = lastStartEpoch,
                     )
                     // Update the epoch to now for future drift corrections
                     repository.setLastStartEpoch(System.currentTimeMillis())
 
                     startForegroundWithNotification(
-                        correctedRemaining
+                        correctedRemaining,
                     )
                 }
+
                 is TimerState.Idle, is TimerState.Finished -> {
                     // Nothing to restore — stop the service
                     stopSelf()
@@ -233,7 +235,7 @@ class TimerForegroundService : Service() {
         serviceScope.launch {
             combine(
                 timerEngine.state,
-                timerEngine.remainingMillis
+                timerEngine.remainingMillis,
             ) { state, remaining -> state to remaining }
                 .distinctUntilChanged()
                 .collect { (state, remaining) ->
@@ -242,9 +244,11 @@ class TimerForegroundService : Service() {
                             updateNotification(remaining)
                             persistState(TimerState.Running, remaining)
                         }
+
                         is TimerState.Finished -> {
                             onTimerFinished()
                         }
+
                         is TimerState.Idle -> {
                             // No-op; handled by handleReset
                         }
@@ -268,7 +272,7 @@ class TimerForegroundService : Service() {
                 context = this@TimerForegroundService,
                 stateName = state.name,
                 remainingMillis = remainingMs,
-                durationMinutes = duration
+                durationMinutes = duration,
             )
         }
     }
@@ -278,7 +282,7 @@ class TimerForegroundService : Service() {
         val manager = getSystemService(NotificationManager::class.java)
         manager.notify(
             NotificationHelper.COMPLETION_NOTIFICATION_ID,
-            NotificationHelper.buildCompletionNotification(this)
+            NotificationHelper.buildCompletionNotification(this),
         )
 
         // Remove the ongoing timer notification and stop foreground
@@ -296,14 +300,14 @@ class TimerForegroundService : Service() {
             sessionRepository.recordSession(
                 startEpoch = startEpoch,
                 durationMinutes = duration,
-                completedEpoch = System.currentTimeMillis()
+                completedEpoch = System.currentTimeMillis(),
             )
 
             FlowTimeWidget.pushStateAndUpdate(
                 context = this@TimerForegroundService,
                 stateName = TimerState.Finished.name,
                 remainingMillis = 0L,
-                durationMinutes = duration
+                durationMinutes = duration,
             )
             stopSelf()
         }
@@ -314,12 +318,12 @@ class TimerForegroundService : Service() {
     private fun startForegroundWithNotification(remainingMs: Long) {
         val notification = NotificationHelper.buildTimerNotification(
             this,
-            remainingMs
+            remainingMs,
         )
         startForeground(
             NotificationHelper.TIMER_NOTIFICATION_ID,
             notification,
-            ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE,
         )
     }
 
@@ -327,7 +331,7 @@ class TimerForegroundService : Service() {
         val manager = getSystemService(NotificationManager::class.java)
         manager.notify(
             NotificationHelper.TIMER_NOTIFICATION_ID,
-            NotificationHelper.buildTimerNotification(this, remainingMs)
+            NotificationHelper.buildTimerNotification(this, remainingMs),
         )
     }
 }

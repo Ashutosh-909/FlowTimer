@@ -52,12 +52,7 @@ class FlowTimeWidget : GlanceAppWidget() {
          * DataStore. Glance only re-renders when its managed state changes,
          * so we must copy the relevant values here.
          */
-        suspend fun pushStateAndUpdate(
-            context: Context,
-            stateName: String,
-            remainingMillis: Long,
-            durationMinutes: Int
-        ) {
+        suspend fun pushStateAndUpdate(context: Context, stateName: String, remainingMillis: Long, durationMinutes: Int) {
             val manager = GlanceAppWidgetManager(context)
             val widget = FlowTimeWidget()
             val glanceIds = manager.getGlanceIds(FlowTimeWidget::class.java)
@@ -65,7 +60,7 @@ class FlowTimeWidget : GlanceAppWidget() {
                 updateAppWidgetState(
                     context,
                     PreferencesGlanceStateDefinition,
-                    glanceId
+                    glanceId,
                 ) { prefs ->
                     prefs.toMutablePreferences().apply {
                         this[PreferencesKeys.TIMER_STATE] = stateName
@@ -79,7 +74,7 @@ class FlowTimeWidget : GlanceAppWidget() {
     }
 
     override val sizeMode: SizeMode = SizeMode.Responsive(
-        setOf(SMALL, MEDIUM, LARGE, EXTRA_LARGE)
+        setOf(SMALL, MEDIUM, LARGE, EXTRA_LARGE),
     )
 
     override val stateDefinition: GlanceStateDefinition<*> =
@@ -91,7 +86,7 @@ class FlowTimeWidget : GlanceAppWidget() {
 
             val timerState = TimerState.fromName(
                 prefs[PreferencesKeys.TIMER_STATE]
-                    ?: PreferencesRepository.DEFAULT_TIMER_STATE
+                    ?: PreferencesRepository.DEFAULT_TIMER_STATE,
             )
             val remainingMillis = prefs[PreferencesKeys.REMAINING_MILLIS]
                 ?: PreferencesRepository.DEFAULT_REMAINING_MILLIS
@@ -109,7 +104,7 @@ class FlowTimeWidget : GlanceAppWidget() {
                 FlowTimeWidgetContent(
                     timerState = timerState,
                     displayMillis = displayMillis,
-                    durationMinutes = durationMinutes
+                    durationMinutes = durationMinutes,
                 )
             }
         }

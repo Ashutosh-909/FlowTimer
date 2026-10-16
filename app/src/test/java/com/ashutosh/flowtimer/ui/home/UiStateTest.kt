@@ -50,7 +50,7 @@ class UiStateTest {
     fun `accessibilityTimeDescription for 25 minutes idle`() {
         val state = HomeViewModel.UiState(
             timerState = TimerState.Idle,
-            displayMillis = 25 * 60_000L
+            displayMillis = 25 * 60_000L,
         )
         assertEquals("25 minutes", state.accessibilityTimeDescription)
     }
@@ -59,7 +59,7 @@ class UiStateTest {
     fun `accessibilityTimeDescription for 1 minute 30 seconds`() {
         val state = HomeViewModel.UiState(
             timerState = TimerState.Running,
-            displayMillis = 90_000L
+            displayMillis = 90_000L,
         )
         assertEquals("1 minute, 30 seconds", state.accessibilityTimeDescription)
     }
@@ -68,7 +68,7 @@ class UiStateTest {
     fun `accessibilityTimeDescription for 0 seconds shows 0 seconds`() {
         val state = HomeViewModel.UiState(
             timerState = TimerState.Idle,
-            displayMillis = 0L
+            displayMillis = 0L,
         )
         assertEquals("0 seconds", state.accessibilityTimeDescription)
     }
@@ -77,7 +77,7 @@ class UiStateTest {
     fun `accessibilityTimeDescription for finished state appends complete`() {
         val state = HomeViewModel.UiState(
             timerState = TimerState.Finished,
-            displayMillis = 0L
+            displayMillis = 0L,
         )
         assertTrue(state.accessibilityTimeDescription.contains("Timer complete."))
     }
@@ -86,7 +86,7 @@ class UiStateTest {
     fun `accessibilityTimeDescription singular minute`() {
         val state = HomeViewModel.UiState(
             timerState = TimerState.Running,
-            displayMillis = 60_000L
+            displayMillis = 60_000L,
         )
         assertEquals("1 minute", state.accessibilityTimeDescription)
     }
@@ -95,7 +95,7 @@ class UiStateTest {
     fun `accessibilityTimeDescription singular second`() {
         val state = HomeViewModel.UiState(
             timerState = TimerState.Running,
-            displayMillis = 1_000L
+            displayMillis = 1_000L,
         )
         assertEquals("1 second", state.accessibilityTimeDescription)
     }
@@ -106,7 +106,7 @@ class UiStateTest {
     fun `accessibilityStateDescription for Idle`() {
         val state = HomeViewModel.UiState(
             timerState = TimerState.Idle,
-            displayMillis = 25 * 60_000L
+            displayMillis = 25 * 60_000L,
         )
         assertEquals("Idle, 25:00", state.accessibilityStateDescription)
     }
@@ -115,7 +115,7 @@ class UiStateTest {
     fun `accessibilityStateDescription for Running`() {
         val state = HomeViewModel.UiState(
             timerState = TimerState.Running,
-            displayMillis = 90_000L
+            displayMillis = 90_000L,
         )
         assertEquals("Running, 1 minute, 30 seconds remaining", state.accessibilityStateDescription)
     }
@@ -124,7 +124,7 @@ class UiStateTest {
     fun `accessibilityStateDescription for Finished`() {
         val state = HomeViewModel.UiState(
             timerState = TimerState.Finished,
-            displayMillis = 0L
+            displayMillis = 0L,
         )
         assertEquals("Complete", state.accessibilityStateDescription)
     }

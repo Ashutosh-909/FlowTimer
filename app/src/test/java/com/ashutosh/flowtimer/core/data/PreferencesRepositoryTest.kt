@@ -31,7 +31,7 @@ class PreferencesRepositoryTest {
     @Before
     fun setup() {
         dataStore = PreferenceDataStoreFactory.create(
-            scope = CoroutineScope(testDispatcher + Job())
+            scope = CoroutineScope(testDispatcher + Job()),
         ) {
             tmpFolder.newFile("test_prefs.preferences_pb")
         }

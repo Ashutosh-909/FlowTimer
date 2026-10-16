@@ -1,0 +1,39 @@
+# PR title must be a conventional commit (the squash-merge commit that release-please reads).
+name: commitlint
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  pr-title:
+    name: conventional PR title
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Lint PR title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          dir="$RUNNER_TEMP/commitlint"
+          mkdir -p "$dir"
+          echo '{"private": true}' > "$dir/package.json"
+          npm install --prefix "$dir" --no-audit --no-fund --silent @commitlint/cli@19 @commitlint/config-conventional@19
+          cat > "$dir/commitlint.config.mjs" <<'CONFIG'
+          export default {
+            extends: ['@commitlint/config-conventional'],
+            rules: {
+              'header-max-length': [2, 'always', 100],
+              'subject-case': [0],
+              'body-max-line-length': [0],
+              'footer-max-line-length': [0],
+            },
+          };
+          CONFIG
+          printf '%s\n' "$PR_TITLE" | "$dir/node_modules/.bin/commitlint" --config "$dir/commitlint.config.mjs" --cwd "$dir"

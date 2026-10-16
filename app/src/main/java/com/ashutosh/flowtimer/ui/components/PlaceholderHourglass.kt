@@ -1,5 +1,6 @@
 package com.ashutosh.flowtimer.ui.components
 
+import android.graphics.BitmapFactory
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -16,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import android.graphics.BitmapFactory
 import com.ashutosh.flowtimer.R
 
 /**
@@ -34,12 +34,13 @@ import com.ashutosh.flowtimer.R
 internal fun PlaceholderHourglass(
     modifier: Modifier = Modifier,
     isRunning: Boolean = false,
-    sandProgress: Float = 0f // kept for API compat, unused for now
+    // kept for API compat, unused for now
+    sandProgress: Float = 0f,
 ) {
     val rotation by animateFloatAsState(
         targetValue = if (isRunning) 180f else 0f,
         animationSpec = tween(durationMillis = 600),
-        label = "hourglassFlip"
+        label = "hourglassFlip",
     )
 
     val context = LocalContext.current
@@ -55,7 +56,7 @@ internal fun PlaceholderHourglass(
         modifier = modifier
             .size(160.dp, 220.dp)
             .clearAndSetSemantics { }
-            .graphicsLayer { rotationZ = rotation }
+            .graphicsLayer { rotationZ = rotation },
     )
 }
 
@@ -64,7 +65,7 @@ internal fun PlaceholderHourglass(
 @Preview(
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
-    name = "Hourglass – Idle"
+    name = "Hourglass – Idle",
 )
 @Composable
 private fun HourglassIdlePreview() {
@@ -74,7 +75,7 @@ private fun HourglassIdlePreview() {
 @Preview(
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
-    name = "Hourglass – Running"
+    name = "Hourglass – Running",
 )
 @Composable
 private fun HourglassRunningPreview() {

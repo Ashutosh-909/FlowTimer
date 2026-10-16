@@ -85,10 +85,7 @@ import com.ashutosh.flowtimer.ui.theme.TimerPillBorder
  * @param viewModel The [HomeViewModel] providing UI state and actions.
  */
 @Composable
-fun HomeScreen(
-    modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel()
-) {
+fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val showDurationPicker by viewModel.showDurationPicker.collectAsState()
     val context = LocalContext.current
@@ -98,7 +95,7 @@ fun HomeScreen(
     var showNotificationRationale by remember { mutableStateOf(false) }
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
+        contract = ActivityResultContracts.RequestPermission(),
     ) { _ ->
         // Whether granted or denied, proceed with the timer start.
         // The timer works without notifications — graceful degradation.
@@ -115,16 +112,18 @@ fun HomeScreen(
             val permission = Manifest.permission.POST_NOTIFICATIONS
             when {
                 ContextCompat.checkSelfPermission(context, permission) ==
-                        PackageManager.PERMISSION_GRANTED -> {
+                    PackageManager.PERMISSION_GRANTED -> {
                     // Already granted
                     viewModel.onTapHourglass()
                 }
+
                 (context as? android.app.Activity)?.let {
                     ActivityCompat.shouldShowRequestPermissionRationale(it, permission)
                 } == true -> {
                     // Show rationale dialog before requesting
                     showNotificationRationale = true
                 }
+
                 else -> {
                     // First ask or "don't ask again" — launch the system dialog
                     notificationPermissionLauncher.launch(permission)
@@ -143,7 +142,7 @@ fun HomeScreen(
         uiState = uiState,
         onTapHourglass = onTapHourglassWithPermission,
         onLongPressReset = viewModel::onLongPressReset,
-        onTapSetDuration = viewModel::onTapSetDuration
+        onTapSetDuration = viewModel::onTapSetDuration,
     )
 
     // ── Duration picker dialog ───────────────────────────────────────────
@@ -152,7 +151,7 @@ fun HomeScreen(
         PixelDurationPicker(
             currentMinutes = uiState.durationMinutes,
             onConfirm = viewModel::onConfirmDuration,
-            onDismiss = viewModel::onDismissDurationPicker
+            onDismiss = viewModel::onDismissDurationPicker,
         )
     }
 
@@ -170,7 +169,7 @@ fun HomeScreen(
                 showNotificationRationale = false
                 // Start timer anyway — graceful degradation
                 viewModel.onTapHourglass()
-            }
+            },
         )
     }
 }
@@ -185,7 +184,7 @@ internal fun HomeScreenContent(
     uiState: HomeViewModel.UiState = HomeViewModel.UiState(),
     onTapHourglass: () -> Unit = {},
     onLongPressReset: () -> Unit = {},
-    onTapSetDuration: () -> Unit = {}
+    onTapSetDuration: () -> Unit = {},
 ) {
     val visualState = when (uiState.timerState) {
         is TimerState.Idle -> HourglassVisualState.IDLE
@@ -196,7 +195,7 @@ internal fun HomeScreenContent(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(SpaceBackground)
+            .background(SpaceBackground),
     ) {
         // Layer 1: Animated starfield background
         StarField()
@@ -208,9 +207,9 @@ internal fun HomeScreenContent(
             targetValue = -6f,
             animationSpec = infiniteRepeatable(
                 animation = tween(durationMillis = 900),
-                repeatMode = RepeatMode.Reverse
+                repeatMode = RepeatMode.Reverse,
             ),
-            label = "arrowNudge"
+            label = "arrowNudge",
         )
         Icon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
@@ -220,7 +219,7 @@ internal fun HomeScreenContent(
                 .align(Alignment.CenterStart)
                 .offset(x = offsetX.dp)
                 .padding(start = 4.dp)
-                .size(28.dp)
+                .size(28.dp),
         )
 
         // Layer 3: Main content
@@ -230,27 +229,27 @@ internal fun HomeScreenContent(
                 .statusBarsPadding()
                 .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.SpaceBetween,
         ) {
             // ── Top: Title + session count ──
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 48.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = "FLOW",
                     style = MaterialTheme.typography.displayLarge,
                     color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "TIME",
                     style = MaterialTheme.typography.displayLarge,
                     color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
                 if (uiState.completedSessionCount > 0) {
                     Spacer(modifier = Modifier.height(12.dp))
@@ -258,7 +257,7 @@ internal fun HomeScreenContent(
                         text = "${uiState.completedSessionCount} flow session${if (uiState.completedSessionCount != 1) "s" else ""}",
                         style = MaterialTheme.typography.bodySmall,
                         color = PixelTextDim,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
             }
@@ -270,7 +269,7 @@ internal fun HomeScreenContent(
                 sandProgress = uiState.sandProgress,
                 onTapHourglass = onTapHourglass,
                 onLongPressReset = onLongPressReset,
-                accessibilityStateDescription = uiState.accessibilityStateDescription
+                accessibilityStateDescription = uiState.accessibilityStateDescription,
             )
 
             // ── Bottom: Timer readout ──
@@ -279,7 +278,7 @@ internal fun HomeScreenContent(
                 formattedTime = uiState.formattedTime,
                 isIdle = uiState.isIdle,
                 onTapSetDuration = onTapSetDuration,
-                accessibilityTimeDescription = uiState.accessibilityTimeDescription
+                accessibilityTimeDescription = uiState.accessibilityTimeDescription,
             )
         }
     }
@@ -298,10 +297,7 @@ internal fun HomeScreenContent(
  * @param onDismiss Called when the user taps "SKIP" or back-presses — timer starts anyway.
  */
 @Composable
-internal fun NotificationRationaleDialog(
-    onConfirm: () -> Unit = {},
-    onDismiss: () -> Unit = {}
-) {
+internal fun NotificationRationaleDialog(onConfirm: () -> Unit = {}, onDismiss: () -> Unit = {}) {
     val containerShape = RoundedCornerShape(16.dp)
 
     Dialog(onDismissRequest = onDismiss) {
@@ -313,16 +309,16 @@ internal fun NotificationRationaleDialog(
                 .border(
                     width = 1.dp,
                     color = TimerPillBorder,
-                    shape = containerShape
+                    shape = containerShape,
                 )
                 .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = "NOTIFICATIONS",
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -331,14 +327,14 @@ internal fun NotificationRationaleDialog(
                 text = "Flow Time needs notification permission to show a timer countdown and alert you when your session is complete.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = PixelTextDim,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally)
+                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
             ) {
                 // Skip
                 Box(
@@ -352,16 +348,16 @@ internal fun NotificationRationaleDialog(
                         .border(
                             width = 1.dp,
                             color = TimerPillBorder,
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(12.dp),
                         )
                         .clickable(onClick = onDismiss)
                         .padding(horizontal = 20.dp, vertical = 12.dp),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = "SKIP",
                         style = MaterialTheme.typography.labelMedium,
-                        color = PixelTextDim
+                        color = PixelTextDim,
                     )
                 }
 
@@ -377,16 +373,16 @@ internal fun NotificationRationaleDialog(
                         .border(
                             width = 1.dp,
                             color = GlowCyan,
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(12.dp),
                         )
                         .clickable(onClick = onConfirm)
                         .padding(horizontal = 20.dp, vertical = 12.dp),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = "ALLOW",
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = MaterialTheme.colorScheme.onBackground,
                     )
                 }
             }
@@ -399,7 +395,7 @@ internal fun NotificationRationaleDialog(
 @Preview(
     showBackground = true,
     showSystemUi = true,
-    name = "HomeScreen – Idle"
+    name = "HomeScreen – Idle",
 )
 @Composable
 private fun HomeScreenIdlePreview() {
@@ -409,8 +405,8 @@ private fun HomeScreenIdlePreview() {
                 timerState = TimerState.Idle,
                 displayMillis = 25 * 60_000L,
                 durationMinutes = 25,
-                sandProgress = 0f
-            )
+                sandProgress = 0f,
+            ),
         )
     }
 }
@@ -418,7 +414,7 @@ private fun HomeScreenIdlePreview() {
 @Preview(
     showBackground = true,
     showSystemUi = true,
-    name = "HomeScreen – Running"
+    name = "HomeScreen – Running",
 )
 @Composable
 private fun HomeScreenRunningPreview() {
@@ -428,8 +424,8 @@ private fun HomeScreenRunningPreview() {
                 timerState = TimerState.Running,
                 displayMillis = 18 * 60_000L + 30_000L,
                 durationMinutes = 25,
-                sandProgress = 0.26f
-            )
+                sandProgress = 0.26f,
+            ),
         )
     }
 }
@@ -437,7 +433,7 @@ private fun HomeScreenRunningPreview() {
 @Preview(
     showBackground = true,
     showSystemUi = true,
-    name = "HomeScreen – Finished"
+    name = "HomeScreen – Finished",
 )
 @Composable
 private fun HomeScreenFinishedPreview() {
@@ -447,8 +443,8 @@ private fun HomeScreenFinishedPreview() {
                 timerState = TimerState.Finished,
                 displayMillis = 0L,
                 durationMinutes = 25,
-                sandProgress = 1f
-            )
+                sandProgress = 1f,
+            ),
         )
     }
 }
@@ -457,7 +453,7 @@ private fun HomeScreenFinishedPreview() {
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
     widthDp = 360,
-    name = "Notification Rationale Dialog"
+    name = "Notification Rationale Dialog",
 )
 @Composable
 private fun NotificationRationaleDialogPreview() {
@@ -466,7 +462,7 @@ private fun NotificationRationaleDialogPreview() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(SpaceBackground),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             // Direct content without Dialog wrapper for preview
             val containerShape = RoundedCornerShape(16.dp)
@@ -478,31 +474,31 @@ private fun NotificationRationaleDialogPreview() {
                     .border(
                         width = 1.dp,
                         color = TimerPillBorder,
-                        shape = containerShape
+                        shape = containerShape,
                     )
                     .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = "NOTIFICATIONS",
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = "Flow Time needs notification permission to show a timer countdown and alert you when your session is complete.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = PixelTextDim,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(
                         12.dp,
-                        Alignment.CenterHorizontally
-                    )
+                        Alignment.CenterHorizontally,
+                    ),
                 ) {
                     Box(
                         modifier = Modifier
@@ -510,12 +506,12 @@ private fun NotificationRationaleDialogPreview() {
                             .background(SpaceBackground)
                             .border(1.dp, TimerPillBorder, RoundedCornerShape(12.dp))
                             .padding(horizontal = 20.dp, vertical = 12.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = "SKIP",
                             style = MaterialTheme.typography.labelMedium,
-                            color = PixelTextDim
+                            color = PixelTextDim,
                         )
                     }
                     Box(
@@ -524,12 +520,12 @@ private fun NotificationRationaleDialogPreview() {
                             .background(GlowBlue.copy(alpha = 0.3f))
                             .border(1.dp, GlowCyan, RoundedCornerShape(12.dp))
                             .padding(horizontal = 20.dp, vertical = 12.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = "ALLOW",
                             style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onBackground
+                            color = MaterialTheme.colorScheme.onBackground,
                         )
                     }
                 }

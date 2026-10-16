@@ -44,11 +44,13 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                         repository.resetTimerState()
                     }
                 }
+
                 is TimerState.Finished -> {
                     // Finished with no service → reset so the user sees the
                     // duration again instead of a stuck 00:00.
                     repository.resetTimerState()
                 }
+
                 is TimerState.Idle -> { /* nothing to recover */ }
             }
         }
@@ -64,7 +66,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         repository.timerState,
         repository.remainingMillis,
         repository.flowDurationMinutes,
-        repository.completedSessionCount
+        repository.completedSessionCount,
     ) { stateName, remainingMs, durationMinutes, sessionCount ->
         val timerState = TimerState.fromName(stateName)
         val totalMs = durationMinutes * 60_000L
@@ -77,7 +79,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
         val sandProgress = when (timerState) {
             is TimerState.Idle -> 0f
+
             is TimerState.Finished -> 1f
+
             is TimerState.Running -> {
                 if (totalMs > 0) {
                     1f - (remainingMs.toFloat() / totalMs.toFloat())
@@ -92,12 +96,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             displayMillis = displayMillis,
             durationMinutes = durationMinutes,
             sandProgress = sandProgress,
-            completedSessionCount = sessionCount
+            completedSessionCount = sessionCount,
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000L),
-        initialValue = UiState()
+        initialValue = UiState(),
     )
 
     // ── User actions ─────────────────────────────────────────────────────
@@ -113,10 +117,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                     .putExtra(TimerForegroundService.EXTRA_DURATION_MINUTES, uiState.value.durationMinutes)
                 context.startForegroundService(intent)
             }
+
             is TimerState.Running -> {
                 // Tapping while running resets back to Idle
                 onLongPressReset()
             }
+
             is TimerState.Finished -> {
                 // Tap on finished → reset
                 onLongPressReset()
@@ -128,7 +134,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     fun onLongPressReset() {
         val context = getApplication<Application>()
         context.startService(
-            TimerForegroundService.intent(context, TimerForegroundService.ACTION_RESET)
+            TimerForegroundService.intent(context, TimerForegroundService.ACTION_RESET),
         )
     }
 
@@ -164,7 +170,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         val displayMillis: Long = PreferencesRepository.DEFAULT_FLOW_DURATION_MINUTES * 60_000L,
         val durationMinutes: Int = PreferencesRepository.DEFAULT_FLOW_DURATION_MINUTES,
         val sandProgress: Float = 0f,
-        val completedSessionCount: Int = 0
+        val completedSessionCount: Int = 0,
     ) {
         /** Formatted time string for display (e.g., "25:00"). */
         val formattedTime: String

@@ -60,20 +60,20 @@ fun PixelDurationPicker(
     modifier: Modifier = Modifier,
     currentMinutes: Int = 25,
     onConfirm: (Int) -> Unit = {},
-    onDismiss: () -> Unit = {}
+    onDismiss: () -> Unit = {},
 ) {
     var selectedMinutes by remember(currentMinutes) { mutableIntStateOf(currentMinutes) }
 
     Dialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
+        properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
         PixelDurationPickerContent(
             modifier = modifier,
             selectedMinutes = selectedMinutes,
             onMinutesChange = { selectedMinutes = it },
             onConfirm = { onConfirm(selectedMinutes) },
-            onDismiss = onDismiss
+            onDismiss = onDismiss,
         )
     }
 }
@@ -87,7 +87,7 @@ internal fun PixelDurationPickerContent(
     selectedMinutes: Int = 25,
     onMinutesChange: (Int) -> Unit = {},
     onConfirm: () -> Unit = {},
-    onDismiss: () -> Unit = {}
+    onDismiss: () -> Unit = {},
 ) {
     val containerShape = RoundedCornerShape(16.dp)
 
@@ -99,17 +99,17 @@ internal fun PixelDurationPickerContent(
             .border(
                 width = 1.dp,
                 color = TimerPillBorder,
-                shape = containerShape
+                shape = containerShape,
             )
             .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         // ── Title ──
         Text(
             text = "SET FLOW TIME",
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onBackground,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -117,7 +117,7 @@ internal fun PixelDurationPickerContent(
         // ── Minute selector: [ – ]  MM min  [ + ] ──
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
         ) {
             // Decrement button
             PickerButton(
@@ -126,7 +126,7 @@ internal fun PixelDurationPickerContent(
                 enabled = selectedMinutes > MIN_DURATION,
                 onClick = {
                     onMinutesChange((selectedMinutes - STEP_SIZE).coerceAtLeast(MIN_DURATION))
-                }
+                },
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -139,21 +139,21 @@ internal fun PixelDurationPickerContent(
                     }
                     .background(
                         color = TimerPillFill,
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
                     )
                     .border(
                         width = 1.dp,
                         color = TimerPillBorder,
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
                     )
                     .padding(horizontal = 20.dp, vertical = 12.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = String.format("%d", selectedMinutes),
                     style = MaterialTheme.typography.displayMedium,
                     color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             }
 
@@ -166,7 +166,7 @@ internal fun PixelDurationPickerContent(
                 enabled = selectedMinutes < MAX_DURATION,
                 onClick = {
                     onMinutesChange((selectedMinutes + STEP_SIZE).coerceAtMost(MAX_DURATION))
-                }
+                },
             )
         }
 
@@ -176,7 +176,7 @@ internal fun PixelDurationPickerContent(
             text = "min",
             style = MaterialTheme.typography.bodyMedium,
             color = PixelTextDim,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -184,7 +184,7 @@ internal fun PixelDurationPickerContent(
         // ── Confirm / Cancel buttons ──
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally)
+            horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
         ) {
             // Cancel
             Box(
@@ -198,16 +198,16 @@ internal fun PixelDurationPickerContent(
                     .border(
                         width = 1.dp,
                         color = TimerPillBorder,
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
                     )
                     .clickable(onClick = onDismiss)
                     .padding(horizontal = 20.dp, vertical = 12.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = "CANCEL",
                     style = MaterialTheme.typography.labelMedium,
-                    color = PixelTextDim
+                    color = PixelTextDim,
                 )
             }
 
@@ -223,16 +223,16 @@ internal fun PixelDurationPickerContent(
                     .border(
                         width = 1.dp,
                         color = GlowCyan,
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
                     )
                     .clickable(onClick = onConfirm)
                     .padding(horizontal = 20.dp, vertical = 12.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = "OK",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
         }
@@ -243,12 +243,7 @@ internal fun PixelDurationPickerContent(
  * Circular increment/decrement button for the duration picker.
  */
 @Composable
-private fun PickerButton(
-    text: String,
-    contentDesc: String,
-    enabled: Boolean,
-    onClick: () -> Unit
-) {
+private fun PickerButton(text: String, contentDesc: String, enabled: Boolean, onClick: () -> Unit) {
     val alpha = if (enabled) 1f else 0.3f
 
     Box(
@@ -263,18 +258,21 @@ private fun PickerButton(
             .border(
                 width = 1.dp,
                 color = GlowBlue.copy(alpha = alpha),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(12.dp),
             )
             .then(
-                if (enabled) Modifier.clickable(onClick = onClick)
-                else Modifier
+                if (enabled) {
+                    Modifier.clickable(onClick = onClick)
+                } else {
+                    Modifier
+                },
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = alpha)
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = alpha),
         )
     }
 }
@@ -289,7 +287,7 @@ private const val STEP_SIZE = 5
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
     widthDp = 360,
-    name = "PixelDurationPicker – Default (25 min)"
+    name = "PixelDurationPicker – Default (25 min)",
 )
 @Composable
 private fun PixelDurationPickerDefault() {
@@ -298,7 +296,7 @@ private fun PixelDurationPickerDefault() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(SpaceBackground),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             PixelDurationPickerContent(selectedMinutes = 25)
         }
@@ -309,7 +307,7 @@ private fun PixelDurationPickerDefault() {
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
     widthDp = 360,
-    name = "PixelDurationPicker – Min (5 min)"
+    name = "PixelDurationPicker – Min (5 min)",
 )
 @Composable
 private fun PixelDurationPickerMin() {
@@ -318,7 +316,7 @@ private fun PixelDurationPickerMin() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(SpaceBackground),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             PixelDurationPickerContent(selectedMinutes = 5)
         }
@@ -329,7 +327,7 @@ private fun PixelDurationPickerMin() {
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
     widthDp = 360,
-    name = "PixelDurationPicker – Max (120 min)"
+    name = "PixelDurationPicker – Max (120 min)",
 )
 @Composable
 private fun PixelDurationPickerMax() {
@@ -338,7 +336,7 @@ private fun PixelDurationPickerMax() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(SpaceBackground),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             PixelDurationPickerContent(selectedMinutes = 120)
         }

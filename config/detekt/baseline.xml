@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:CalendarHeatmap.kt$@Composable fun CalendarHeatmap(modifier: Modifier = Modifier, days: List&lt;DashboardViewModel.HeatmapDay&gt;)</ID>
+    <ID>CyclomaticComplexMethod:FlowBarChart.kt$@Composable fun FlowBarChart(modifier: Modifier = Modifier, entries: List&lt;DashboardViewModel.BarEntry&gt;)</ID>
+    <ID>ImplicitDefaultLocale:HomeViewModel.kt$HomeViewModel.UiState$String.format("%02d:%02d", minutes, seconds)</ID>
+    <ID>ImplicitDefaultLocale:NotificationHelper.kt$NotificationHelper$String.format("%02d:%02d", minutes, seconds)</ID>
+    <ID>ImplicitDefaultLocale:PixelDurationPicker.kt$String.format("%d", selectedMinutes)</ID>
+    <ID>LongMethod:CalendarHeatmap.kt$@Composable fun CalendarHeatmap(modifier: Modifier = Modifier, days: List&lt;DashboardViewModel.HeatmapDay&gt;)</ID>
+    <ID>LongMethod:DashboardScreen.kt$@Composable internal fun DashboardScreenContent( modifier: Modifier = Modifier, uiState: DashboardViewModel.UiState = DashboardViewModel.UiState(), onTimeframeSelected: (DashboardViewModel.Timeframe) -&gt; Unit = {}, onShare: () -&gt; Unit = {}, )</ID>
+    <ID>LongMethod:FlowBarChart.kt$@Composable fun FlowBarChart(modifier: Modifier = Modifier, entries: List&lt;DashboardViewModel.BarEntry&gt;)</ID>
+    <ID>LongMethod:FlowTimeWidgetContent.kt$@Composable private fun ExtraLargeWidgetLayout(timerState: TimerState, formattedTime: String, durationMinutes: Int, widgetWidth: Dp, widgetHeight: Dp)</ID>
+    <ID>LongMethod:FlowTimeWidgetContent.kt$@Composable private fun LargeWidgetLayout(timerState: TimerState, formattedTime: String, durationMinutes: Int, widgetWidth: Dp, widgetHeight: Dp)</ID>
+    <ID>LongMethod:HomeScreen.kt$@Composable fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = viewModel())</ID>
+    <ID>LongMethod:HomeScreen.kt$@Composable internal fun HomeScreenContent( modifier: Modifier = Modifier, uiState: HomeViewModel.UiState = HomeViewModel.UiState(), onTapHourglass: () -&gt; Unit = {}, onLongPressReset: () -&gt; Unit = {}, onTapSetDuration: () -&gt; Unit = {}, )</ID>
+    <ID>LongMethod:HomeScreen.kt$@Composable internal fun NotificationRationaleDialog(onConfirm: () -&gt; Unit = {}, onDismiss: () -&gt; Unit = {})</ID>
+    <ID>LongMethod:HomeScreen.kt$@Preview( showBackground = true, backgroundColor = 0xFF0D1B2A, widthDp = 360, name = "Notification Rationale Dialog", ) @Composable private fun NotificationRationaleDialogPreview()</ID>
+    <ID>LongMethod:HourglassCard.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun HourglassCard( modifier: Modifier = Modifier, visualState: HourglassVisualState = HourglassVisualState.IDLE, sandProgress: Float = 0f, onTapHourglass: () -&gt; Unit = {}, onLongPressReset: () -&gt; Unit = {}, accessibilityStateDescription: String = "", )</ID>
+    <ID>LongMethod:PixelDurationPicker.kt$@Composable internal fun PixelDurationPickerContent( modifier: Modifier = Modifier, selectedMinutes: Int = 25, onMinutesChange: (Int) -&gt; Unit = {}, onConfirm: () -&gt; Unit = {}, onDismiss: () -&gt; Unit = {}, )</ID>
+    <ID>MagicNumber:CalendarHeatmap.kt$100</ID>
+    <ID>MagicNumber:CalendarHeatmap.kt$15</ID>
+    <ID>MagicNumber:CalendarHeatmap.kt$20</ID>
+    <ID>MagicNumber:CalendarHeatmap.kt$3</ID>
+    <ID>MagicNumber:CalendarHeatmap.kt$45</ID>
+    <ID>MagicNumber:CalendarHeatmap.kt$5</ID>
+    <ID>MagicNumber:CalendarHeatmap.kt$50</ID>
+    <ID>MagicNumber:CalendarHeatmap.kt$6</ID>
+    <ID>MagicNumber:CalendarHeatmap.kt$7</ID>
+    <ID>MagicNumber:CalendarHeatmap.kt$90</ID>
+    <ID>MagicNumber:DashboardScreen.kt$100</ID>
+    <ID>MagicNumber:DashboardScreen.kt$15</ID>
+    <ID>MagicNumber:DashboardScreen.kt$20</ID>
+    <ID>MagicNumber:DashboardScreen.kt$25</ID>
+    <ID>MagicNumber:DashboardScreen.kt$3</ID>
+    <ID>MagicNumber:DashboardScreen.kt$30</ID>
+    <ID>MagicNumber:DashboardScreen.kt$45</ID>
+    <ID>MagicNumber:DashboardScreen.kt$5</ID>
+    <ID>MagicNumber:DashboardScreen.kt$50</ID>
+    <ID>MagicNumber:DashboardScreen.kt$6</ID>
+    <ID>MagicNumber:DashboardScreen.kt$60</ID>
+    <ID>MagicNumber:DashboardScreen.kt$7</ID>
+    <ID>MagicNumber:DashboardScreen.kt$90</ID>
+    <ID>MagicNumber:DashboardViewModel.kt$DashboardViewModel$6</ID>
+    <ID>MagicNumber:DashboardViewModel.kt$DashboardViewModel.Companion$12</ID>
+    <ID>MagicNumber:DashboardViewModel.kt$DashboardViewModel.Companion$6</ID>
+    <ID>MagicNumber:DashboardViewModel.kt$DashboardViewModel.Companion$7</ID>
+    <ID>MagicNumber:DashboardViewModel.kt$DashboardViewModel.UiState$60</ID>
+    <ID>MagicNumber:FlowTimeWidget.kt$FlowTimeWidget$60_000L</ID>
+    <ID>MagicNumber:FlowTimeWidgetContent.kt$0xFF2E7D32</ID>
+    <ID>MagicNumber:FlowTimeWidgetContent.kt$0xFFFFCC80</ID>
+    <ID>MagicNumber:FlowTimeWidgetContent.kt$1_000</ID>
+    <ID>MagicNumber:FlowTimeWidgetContent.kt$60</ID>
+    <ID>MagicNumber:HomeViewModel.kt$HomeViewModel$60_000L</ID>
+    <ID>MagicNumber:HomeViewModel.kt$HomeViewModel.UiState$1_000</ID>
+    <ID>MagicNumber:HomeViewModel.kt$HomeViewModel.UiState$60</ID>
+    <ID>MagicNumber:HomeViewModel.kt$HomeViewModel.UiState$60_000L</ID>
+    <ID>MagicNumber:NotificationHelper.kt$NotificationHelper$1_000</ID>
+    <ID>MagicNumber:NotificationHelper.kt$NotificationHelper$60_000</ID>
+    <ID>MagicNumber:NotificationHelper.kt$NotificationHelper$60_000L</ID>
+    <ID>MagicNumber:TimerEngine.kt$TimerEngine$1000L</ID>
+    <ID>MagicNumber:TimerEngine.kt$TimerEngine$60_000L</ID>
+    <ID>MagicNumber:TimerForegroundService.kt$TimerForegroundService$60_000L</ID>
+    <ID>MatchingDeclarationName:HourglassCard.kt$HourglassVisualState</ID>
+    <ID>MaxLineLength:DashboardScreen.kt$private</ID>
+    <ID>MaxLineLength:DashboardScreenTest.kt$DashboardScreenTest$private</ID>
+    <ID>MaxLineLength:DashboardViewModel.kt$DashboardViewModel.Companion$fun</ID>
+    <ID>MaxLineLength:FlowTimeWidget.kt$FlowTimeWidget.Companion$suspend</ID>
+    <ID>MaxLineLength:FlowTimeWidgetContent.kt$private</ID>
+    <ID>MaxLineLength:HomeScreen.kt$text = "${uiState.completedSessionCount} flow session${if (uiState.completedSessionCount != 1) "s" else ""}"</ID>
+    <ID>MaxLineLength:HomeScreen.kt$text = "Flow Time needs notification permission to show a timer countdown and alert you when your session is complete."</ID>
+    <ID>MaxLineLength:SessionRepository.kt$SessionRepository$fun</ID>
+    <ID>MaxLineLength:TimerForegroundService.kt$TimerForegroundService.Companion$fun</ID>
+    <ID>TooGenericExceptionCaught:WidgetActions.kt$ResetAction$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:WidgetActions.kt$StartAction$e: Exception</ID>
+    <ID>TooManyFunctions:FlowTimeWidgetContent.kt$com.ashutosh.flowtimer.widget.FlowTimeWidgetContent.kt</ID>
+    <ID>TooManyFunctions:TimerForegroundService.kt$TimerForegroundService : Service</ID>
+    <ID>UnusedParameter:FlowTimeWidgetContent.kt$contentDescription: String</ID>
+    <ID>UnusedParameter:FlowTimeWidgetContent.kt$durationMinutes: Int</ID>
+    <ID>UnusedParameter:PlaceholderHourglass.kt$sandProgress: Float = 0f</ID>
+    <ID>UnusedParameter:TimerEngine.kt$TimerEngine$lastStartEpoch: Long</ID>
+    <ID>UnusedPrivateMember:FlowTimeWidgetContent.kt$private fun buttonBgFor(timerState: TimerState): ColorProvider</ID>
+    <ID>UnusedPrivateMember:FlowTimeWidgetContent.kt$private fun secondaryTextColorFor(timerState: TimerState): ColorProvider</ID>
+  </CurrentIssues>
+</SmellBaseline>

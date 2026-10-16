@@ -48,14 +48,14 @@ fun TimerReadout(
     formattedTime: String = "25:00",
     isIdle: Boolean = true,
     onTapSetDuration: () -> Unit = {},
-    accessibilityTimeDescription: String = "25 minutes, 0 seconds"
+    accessibilityTimeDescription: String = "25 minutes, 0 seconds",
 ) {
     val pillShape = RoundedCornerShape(24.dp)
 
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         // Timer pill — tappable when idle to open the duration picker.
         // The entire pill is the touch target (not just the hint text below).
@@ -72,25 +72,28 @@ fun TimerReadout(
                 }
                 .background(
                     color = TimerPillFill,
-                    shape = pillShape
+                    shape = pillShape,
                 )
                 .border(
                     width = 1.dp,
                     color = TimerPillBorder,
-                    shape = pillShape
+                    shape = pillShape,
                 )
                 .then(
-                    if (isIdle) Modifier.clickable(onClick = onTapSetDuration)
-                    else Modifier
+                    if (isIdle) {
+                        Modifier.clickable(onClick = onTapSetDuration)
+                    } else {
+                        Modifier
+                    },
                 )
                 .padding(horizontal = 32.dp, vertical = 16.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = formattedTime,
                 style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
 
@@ -103,7 +106,7 @@ fun TimerReadout(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .clickable(onClick = onTapSetDuration)
-                    .padding(8.dp)
+                    .padding(8.dp),
             )
         }
     }
@@ -115,7 +118,7 @@ fun TimerReadout(
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
     widthDp = 360,
-    name = "TimerReadout – Idle (25:00)"
+    name = "TimerReadout – Idle (25:00)",
 )
 @Composable
 private fun TimerReadoutIdlePreview() {
@@ -124,11 +127,11 @@ private fun TimerReadoutIdlePreview() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(SpaceBackground),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             TimerReadout(
                 formattedTime = "25:00",
-                isIdle = true
+                isIdle = true,
             )
         }
     }
@@ -138,7 +141,7 @@ private fun TimerReadoutIdlePreview() {
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
     widthDp = 360,
-    name = "TimerReadout – Running (24:30)"
+    name = "TimerReadout – Running (24:30)",
 )
 @Composable
 private fun TimerReadoutRunningPreview() {
@@ -147,12 +150,12 @@ private fun TimerReadoutRunningPreview() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(SpaceBackground),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             TimerReadout(
                 formattedTime = "24:30",
                 isIdle = false,
-                accessibilityTimeDescription = "24 minutes, 30 seconds"
+                accessibilityTimeDescription = "24 minutes, 30 seconds",
             )
         }
     }
@@ -162,7 +165,7 @@ private fun TimerReadoutRunningPreview() {
     showBackground = true,
     backgroundColor = 0xFF0D1B2A,
     widthDp = 360,
-    name = "TimerReadout – Complete (00:00)"
+    name = "TimerReadout – Complete (00:00)",
 )
 @Composable
 private fun TimerReadoutCompletePreview() {
@@ -171,12 +174,12 @@ private fun TimerReadoutCompletePreview() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(SpaceBackground),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             TimerReadout(
                 formattedTime = "00:00",
                 isIdle = false,
-                accessibilityTimeDescription = "0 minutes, 0 seconds. Timer complete."
+                accessibilityTimeDescription = "0 minutes, 0 seconds. Timer complete.",
             )
         }
     }
